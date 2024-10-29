@@ -1,10 +1,9 @@
-function  Header() {
-  return (
-    <header>
-      <h1>Senior Love</h1>
-    </header>
-  );
+function Header() {
+	return (
+		<header>
+			<h1> Test header </h1>
+		</header>
+	);
 }
 
 export default Header;
-

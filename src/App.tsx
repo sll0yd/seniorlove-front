@@ -9,11 +9,14 @@ function App() {
 		<div>
 			<Nav />
 			<Header/>
+
 			<Footer/>
 
-			<h1>Senior Love 💘</h1>
 		</div>
 	);
 }
 
 export default App;
+
+
+
