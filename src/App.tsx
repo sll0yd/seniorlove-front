@@ -9,7 +9,9 @@ function App() {
 		<div>
 			<Nav />
 			<Header/>
-			<Footer />
+
+			<Footer/>
+
 		</div>
 	);
 }
