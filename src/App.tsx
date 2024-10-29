@@ -1,6 +1,7 @@
 import "./index.css";
 import Nav from "./components/Nav";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -8,10 +9,12 @@ function App() {
 		<div>
 			<Nav />
 			<Header/>
-
-			<h1>Senior Love 💘</h1>
+			<Footer />
 		</div>
 	);
 }
 
 export default App;
+
+
+
