@@ -1,15 +1,15 @@
 function Footer() {
   return (
-    <footer>
-      <p>Commencez dès aujourd’hui à rencontrer des personnes prêtes à partager de beaux moments et à construire une relation sincère.</p>
-      <button>S'inscrire</button>
-      <div>
-        <a href="/conditions-generales">Conditions générales</a>
-        <a href="/regles-de-communaute">Règles de communauté</a>
-        <a href="/politiques-confidentialite">Politiques de confidentialité</a>
-        <a href="/signaler-contenu-illegal">Signaler un contenu illégal</a>
+    <footer className="bg-white p-5">
+      <div className="justify-evenly space-x-5 flex py-5 px-10">
+        <a href="#" className="text-black">Conditions Générales</a>
+        <a href="#" className="text-black">Règles de Communautés</a>
+        <a href="#" className="text-black">Politiques de Confidentialité</a>
+        <a href="#" className="text-black">Signaler un Contenu Illégal</a>
       </div>
-        <p>© Senior Love</p>
+      <div className="text-center md:text-left">
+        <h1 className="text-xl font-semibold text-black text-center pt-2 pb-5">© Senior Love 💘</h1>
+      </div>
     </footer>
   );
 }
