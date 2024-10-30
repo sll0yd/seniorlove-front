@@ -1,8 +1,8 @@
 function Nav() {
   return (
-    <nav className="flex justify-between p-4 bg-white shadow-md">
-      <a href="/">
-        <img src="" alt="logo coeur" className="" />
+    <nav className="flex justify-between p-4 bg-white shadow-md ">
+      <a className="w-64 h-8" href="/">
+        <img src="/icon/SL_logo.png" alt="logo coeur" className="" />
       </a>
       <ul className="flex space-x-20 m-auto">
         <li>
@@ -25,12 +25,14 @@ function Nav() {
         <button
           type="button"
           className="p-1 border-2 mr-6 shadow-lg rounded-lg"
+          onClick={() => {}}
         >
           se connecter
         </button>
         <button
           type="button"
-          className="p-1 border-custom-pink border-2 mr-6 shadow-lg rounded-lg"
+          className="p-1 border-custom-pink border-2 mr-6 shadow-lg rounded-lg text-custom-pink"
+          onClick={() => {}}
         >
           s'inscrire
         </button>
