@@ -1,9 +1,10 @@
 function FooterBanner() {
   return (
-    <>
-      <div className=" bg-pink-50 h-full left-[calc(50%-200px)] right-0 rounded-l-3xl">
-        <div className="flex items-center justify-between px-4 py-9">
-          <p className="text-center text-2xl flex-1 italic mr-4 ">
+    <div className="py-12">
+      <div className="relative">
+        <div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
+        <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
+          <p className="text-center text-2xl flex-1 italic mr-4 py-4">
             Commencez dès aujourd'hui à rencontrer des personnes prêtes à
             partager de beaux moments et à construire une relation sincère
           </p>
@@ -12,7 +13,8 @@ function FooterBanner() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
+
 export default FooterBanner;
