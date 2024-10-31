@@ -37,14 +37,14 @@ function Nav() {
       <div className="items-center mr-1">
         <button
           type="button"
-          className="p-1 border-2 mr-6 shadow-lg rounded-lg"
+          className="p-1 border-2 mr-6 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
           onClick={handleOpenForm} // Ouvre le formulaire
         >
           se connecter
         </button>
         <button
           type="button"
-          className="p-1 border-custom-pink border-2 mr-6 shadow-lg rounded-lg text-custom-pink"
+          className="p-1 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300 mr-6"
           onClick={() => {}}
         >
           s'inscrire
