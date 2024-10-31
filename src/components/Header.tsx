@@ -18,16 +18,16 @@ function Header() {
     password: ''
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     console.log('Form submitted with data:', formData);
     // Future APi Post
   };
