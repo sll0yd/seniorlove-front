@@ -16,7 +16,7 @@ function App() {
       <DiscoverSeniorLove />
 			<EventsForYou />
 			<CategoriesForYou />
-			<Testimony />
+			<Testimony /> 
       <Footer />
     </div>
   );
