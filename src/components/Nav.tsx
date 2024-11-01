@@ -30,9 +30,9 @@ function Nav() {
         onClick={toggleMenu}
       >
         <div className="space-y-1 space h-5 pt-1">
-          <span className={`h-1 block h-0.5 w-7 bg-gray-700 rounded-xl transform transition duration-300 ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`h-1 block h-0.5 w-7 bg-gray-700 rounded-xl transition duration-300 ${isMenuOpen ? "opacity-0" : ""}`} />
-          <span className={`h-1 block h-0.5 w-7 bg-gray-700 rounded-xl transform transition duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          <span className={`h-1 block w-7 bg-gray-700 rounded-xl transform transition duration-200 ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
+          <span className={`h-1 block w-7 bg-gray-700 rounded-xl transition duration-200 ${isMenuOpen ? "opacity-0" : ""}`} />
+          <span className={`h-1 block w-7 bg-gray-700 rounded-xl transform transition duration-200 ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
         </div>
       </button>
 
