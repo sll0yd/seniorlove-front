@@ -21,7 +21,7 @@ function Nav() {
     <nav className="flex justify-evenly items-center bg-white shadow-lg w-full pt-3 pl-6 pr-16 pb-3">
       {/* Logo dynamique, taille adaptative */}
       <a className="max-h-8" href="/">
-        <img src={isMenuOpen ? "/icon/heart.png" : "/icon/copie_logo.png"} alt="logo" className="flex-col max-h-11 items-center pb-2" />
+        <img src={isMenuOpen ? "/icon/heart.png" : "/icon/copie_logo.png"} alt="logo" className="flex-col max-h-11 items-center pb-3" />
       </a>
 
       {/* Bouton Burger / Croix (position fixe en haut à droite) */}
@@ -29,10 +29,10 @@ function Nav() {
         className="flex text-gray-700 md:hidden absolute top-4 right-6 items-center"
         onClick={toggleMenu}
       >
-        <div className="space-y-1 space h-5">
-          <span className={`h-1 block h-0.5 w-6 bg-gray-700 transform transition duration-500 ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`h-1 block h-0.5 w-6 bg-gray-700 transition duration-500 ${isMenuOpen ? "opacity-0" : ""}`} />
-          <span className={`h-1 block h-0.5 w-6 bg-gray-700 transform transition duration-500 ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+        <div className="space-y-1 space h-5 pt-1">
+          <span className={`h-1 block h-0.5 w-7 bg-gray-700 rounded-xl transform transition duration-300 ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
+          <span className={`h-1 block h-0.5 w-7 bg-gray-700 rounded-xl transition duration-300 ${isMenuOpen ? "opacity-0" : ""}`} />
+          <span className={`h-1 block h-0.5 w-7 bg-gray-700 rounded-xl transform transition duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
         </div>
       </button>
 
