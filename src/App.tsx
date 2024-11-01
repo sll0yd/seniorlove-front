@@ -1,11 +1,10 @@
 import './index.css';
 import './pages/Homepage';
-import HomePage from './pages/Homepage';
-
+import ProfileList from './pages/ProfileListPage';
 function App() {
   return (
     <div>
-      <HomePage />
+      <ProfileList />
     </div>
   );
 }
