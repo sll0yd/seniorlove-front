@@ -8,7 +8,10 @@ function FooterBanner() {
             Commencez dès aujourd'hui à rencontrer des personnes prêtes à
             partager de beaux moments et à construire une relation sincère
           </p>
-          <button className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300">
+          <button
+            type="button"
+            className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+          >
             S'inscrire
           </button>
         </div>
