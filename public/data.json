@@ -1,0 +1,222 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "userName": "Alice",
+      "gender": "F",
+      "picture": "https://example.com/profiles/alice.jpg",
+      "role": "member",
+      "email": "alice@example.com",
+      "password": "hashedpassword",
+      "age": 29,
+      "hometown": "Paris",
+      "bio": "Passionnée de voyage et de culture",
+      "created_at": "2024-01-01T10:00:00Z",
+      "updated_at": "2024-01-02T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "userName": "Bob",
+      "gender": "M",
+      "picture": "https://example.com/profiles/bob.jpg",
+      "role": "admin",
+      "email": "bob@example.com",
+      "password": "hashedpassword",
+      "age": 34,
+      "hometown": "Lyon",
+      "bio": "Amateur de sports extrêmes",
+      "created_at": "2024-01-02T11:30:00Z",
+      "updated_at": "2024-01-02T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "userName": "Claire",
+      "gender": "F",
+      "picture": "https://example.com/profiles/claire.jpg",
+      "role": "member",
+      "email": "claire@example.com",
+      "password": "hashedpassword",
+      "age": 26,
+      "hometown": "Marseille",
+      "bio": "Exploratrice culinaire",
+      "created_at": "2024-01-03T08:15:00Z",
+      "updated_at": "2024-01-03T09:45:00Z"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Sortie à la montagne",
+      "picture": "https://example.com/events/mountain.jpg",
+      "description": "Randonnée dans les Alpes",
+      "date": "2024-02-15",
+      "location": "Alpes, France",
+      "creator_id": 2,
+      "created_at": "2024-01-10T08:00:00Z",
+      "updated_at": "2024-01-10T09:00:00Z"
+    },
+    {
+      "id": 2,
+      "title": "Atelier de cuisine",
+      "picture": "https://example.com/events/cooking.jpg",
+      "description": "Découverte des spécialités méditerranéennes",
+      "date": "2024-02-20",
+      "location": "Marseille, France",
+      "creator_id": 3,
+      "created_at": "2024-01-12T15:30:00Z",
+      "updated_at": "2024-01-12T16:00:00Z"
+    },
+    {
+      "id": 3,
+      "title": "Yoga en plein air",
+      "picture": "https://example.com/events/yoga.jpg",
+      "description": "Session de yoga pour se détendre",
+      "date": "2024-03-10",
+      "location": "Paris, France",
+      "creator_id": 1,
+      "created_at": "2024-01-15T10:30:00Z",
+      "updated_at": "2024-01-15T11:00:00Z"
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "Aventure",
+      "color": "FF5733",
+      "created_at": "2024-01-05T14:00:00Z",
+      "updated_at": "2024-01-05T14:30:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Culture",
+      "color": "33FF57",
+      "created_at": "2024-01-06T09:15:00Z",
+      "updated_at": "2024-01-06T09:45:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Bien-être",
+      "color": "3357FF",
+      "created_at": "2024-01-07T10:00:00Z",
+      "updated_at": "2024-01-07T10:15:00Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "sender_id": 1,
+      "receiver_id": 2,
+      "content": "Salut Bob ! Tu viens à la randonnée ?",
+      "created_at": "2024-01-12T10:15:00Z",
+      "updated_at": "2024-01-12T10:16:00Z"
+    },
+    {
+      "id": 2,
+      "sender_id": 2,
+      "receiver_id": 3,
+      "content": "Claire, tu participes à l'atelier cuisine ?",
+      "created_at": "2024-01-13T09:00:00Z",
+      "updated_at": "2024-01-13T09:01:00Z"
+    },
+    {
+      "id": 3,
+      "sender_id": 3,
+      "receiver_id": 1,
+      "content": "Alice, inscris-toi au yoga en plein air !",
+      "created_at": "2024-01-14T11:30:00Z",
+      "updated_at": "2024-01-14T11:31:00Z"
+    }
+  ],
+  "user_has_tags": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "tag_id": 1,
+      "created_at": "2024-01-05T14:30:00Z",
+      "updated_at": "2024-01-05T15:00:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "tag_id": 2,
+      "created_at": "2024-01-06T09:45:00Z",
+      "updated_at": "2024-01-06T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "user_id": 3,
+      "tag_id": 3,
+      "created_at": "2024-01-07T10:15:00Z",
+      "updated_at": "2024-01-07T10:30:00Z"
+    }
+  ],
+  "event_has_tags": [
+    {
+      "id": 1,
+      "event_id": 1,
+      "tag_id": 1,
+      "created_at": "2024-01-10T08:30:00Z",
+      "updated_at": "2024-01-10T08:45:00Z"
+    },
+    {
+      "id": 2,
+      "event_id": 2,
+      "tag_id": 2,
+      "created_at": "2024-01-12T15:45:00Z",
+      "updated_at": "2024-01-12T16:15:00Z"
+    },
+    {
+      "id": 3,
+      "event_id": 3,
+      "tag_id": 3,
+      "created_at": "2024-01-15T10:45:00Z",
+      "updated_at": "2024-01-15T11:15:00Z"
+    }
+  ],
+  "event_participants": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "event_id": 1,
+      "created_at": "2024-01-10T09:00:00Z",
+      "updated_at": "2024-01-10T09:30:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "event_id": 2,
+      "created_at": "2024-01-12T16:00:00Z",
+      "updated_at": "2024-01-12T16:30:00Z"
+    },
+    {
+      "id": 3,
+      "user_id": 3,
+      "event_id": 3,
+      "created_at": "2024-01-15T11:00:00Z",
+      "updated_at": "2024-01-15T11:30:00Z"
+    }
+  ],
+  "testimonies": [
+    {
+      "id": 1,
+      "content": "C'était une superbe randonnée !",
+      "user_id": 1,
+      "created_at": "2024-02-20T12:00:00Z",
+      "updated_at": "2024-02-20T12:30:00Z"
+    },
+    {
+      "id": 2,
+      "content": "Moment de partage incroyable en cuisine !",
+      "user_id": 2,
+      "created_at": "2024-02-21T09:00:00Z",
+      "updated_at": "2024-02-21T09:30:00Z"
+    },
+    {
+      "id": 3,
+      "content": "Le yoga en plein air était revitalisant.",
+      "user_id": 3,
+      "created_at": "2024-03-15T10:00:00Z",
+      "updated_at": "2024-03-15T10:30:00Z"
+    }
+  ]
+}

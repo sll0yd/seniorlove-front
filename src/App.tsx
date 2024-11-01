@@ -6,7 +6,7 @@ import DiscoverSeniorLove from './components/DiscoverSeniorLove';
 import EventsForYou from './components/EventsForYou';
 import Testimony from './components/Testimony';
 import CategoriesForYou from './components/CategoriesForYou';
-
+import FooterBanner from './components/FooterBanner';
 
 function App() {
   return (
@@ -14,9 +14,10 @@ function App() {
       <Nav />
       <Header />
       <DiscoverSeniorLove />
-			<EventsForYou />
-			<CategoriesForYou />
-			<Testimony />
+      <EventsForYou />
+      <CategoriesForYou />
+      <Testimony />
+      <FooterBanner />
       <Footer />
     </div>
   );
