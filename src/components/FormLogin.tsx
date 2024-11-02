@@ -39,7 +39,9 @@ const FormLogin: React.FC<FormLoginProps> = ({ onClose }) => {
           required
         />
       </label>
-      <button type="submit">connexion</button>
+      <button className="" type="submit">
+        connexion
+      </button>
     </form>
   );
 };
