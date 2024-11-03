@@ -5,7 +5,7 @@ interface ProfileProps {
   profile: IProfile;
 }
 
-function ProfilesLists() {
+function ProfilesLists({ profile }: ProfileProps) {
   const [profiles, setProfiles] = useState<IProfile[]>([]);
 
   useEffect(() => {
