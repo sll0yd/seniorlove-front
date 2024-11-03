@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Profile } from '../@types'; // Assurez-vous que le type Profile est correctement défini
+import { IProfile } from '../@types'; // Assurez-vous que le type Profile est correctement défini
 
 interface ProfileProps {
-  profile: Profile;
+  profile: IProfile;
 }
 
 function ProfilesLists() {
-  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [profiles, setProfiles] = useState<IProfile[]>([]);
 
   useEffect(() => {
     // public file so don't need to put all the path
@@ -54,7 +54,7 @@ function ProfilesLists() {
               <div className="flex gap-4">
                 <img
                   src={
-                    profile.avatar ||
+                    profile.picture ||
                     'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
                   }
                   alt="Avatar"
