@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import FormLogin from './FormLogin';
 import AxiosInstance from '../utils/axios'; // Import Axios
 
@@ -115,12 +116,14 @@ function Nav() {
       <div className="hidden md:flex items-center space-x-4">
         {userName ? (
           <>
-            <button
-              type="button"
-              className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
-            >
-              Mon compte
-            </button>
+            <Link to="/profile">
+              <button
+                type="button"
+                className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
+              >
+                Mon compte
+              </button>
+            </Link>
             <button
               type="button"
               className="p-1 border-2 shadow-lg rounded-lg bg-white border-red-400 text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-300"
