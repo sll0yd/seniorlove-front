@@ -8,6 +8,7 @@ import Testimony from './components/Testimony';
 import CategoriesForYou from './components/CategoriesForYou';
 import FooterBanner from './components/FooterBanner';
 
+
 function App() {
   return (
     <div>
