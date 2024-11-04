@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
-import { IProfile } from '../@types'; // Assurez-vous que le type Profile est correctement défini
+import type { IUser } from '../@types'; // Assurez-vous que le type Profile est correctement défini
 
-interface ProfileProps {
-  profile: IProfile;
-}
-
-function ProfilesLists({ profile }: ProfileProps) {
-  const [profiles, setProfiles] = useState<IProfile[]>([]);
+function ProfilesLists() {
+  const [profiles, setProfiles] = useState<IUser[]>([]);
 
   useEffect(() => {
     // public file so don't need to put all the path

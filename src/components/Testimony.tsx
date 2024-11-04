@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ITestimony } from '../@types';
+import type { ITestimony } from '../@types';
 
 interface TestimonyProps {
   testimony: ITestimony;
