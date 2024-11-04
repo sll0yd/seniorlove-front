@@ -1,31 +1,23 @@
 import { useEffect, useState } from "react";
-import type { IUser } from "../../@types"; // Assurez-vous que le type Profile est correctement défini
+import type { IUser } from "../../@types";
+import axios from "axios";
 
 function ProfilesLists() {
 	const [profiles, setProfiles] = useState<IUser[]>([]);
 
 	useEffect(() => {
-		// public file so don't need to put all the path
-		fetch("/data.json")
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error("Erreur lors du chargement du fichier JSON");
-				}
-				return response.json();
-			})
-			.then((data) => {
-				if (data && Array.isArray(data.users)) {
-					console.log(data.users);
-					setProfiles(data.users);
-				} else {
-					console.error(
-						"Les données JSON ne contiennent pas un tableau d'utilisateurs",
-					);
-				}
-			})
-			.catch((error) =>
-				console.error("Erreur lors du chargement des profils :", error),
-			);
+		const fetchUsers = async () => {
+			try {
+				const response = await axios.get<IUser[]>(
+					"http://localhost:3000/api/users",
+				);
+				setProfiles(response.data);
+			} catch (error) {
+				console.error("Error fetching users:", error);
+			}
+		};
+
+		fetchUsers();
 	}, []);
 
 	return (
