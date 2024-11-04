@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { IUser } from '../@types'; // Assurez-vous que le type Profile est correctement défini
+import type { IUser } from '../../@types'; // Assurez-vous que le type Profile est correctement défini
 
 function ProfilesLists() {
   const [profiles, setProfiles] = useState<IUser[]>([]);
