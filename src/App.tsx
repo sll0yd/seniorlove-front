@@ -1,25 +1,12 @@
 import './index.css';
-import Nav from './components/Nav';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import DiscoverSeniorLove from './components/DiscoverSeniorLove';
-import EventsForYou from './components/EventsForYou';
-import Testimony from './components/Testimony';
-import CategoriesForYou from './components/CategoriesForYou';
-import FooterBanner from './components/FooterBanner';
+import HomePage from './pages/Homepage';
+import ProfileList from './pages/ProfileListPage';
 
 
 function App() {
   return (
     <div>
-      <Nav />
-      <Header />
-      <DiscoverSeniorLove />
-      <EventsForYou />
-      <CategoriesForYou />
-      <Testimony />
-      <FooterBanner />
-      <Footer />
+      <ProfileList />
     </div>
   );
 }
