@@ -20,7 +20,7 @@ function ProfilesLists() {
 	}, []);
 
 	return (
-		<div className="min-h-screen bg-gray-100 pt-24">
+		<div className="min-h-screen  pt-24">
 			<div className="relative mb-12">
 				<div className="absolute bg-blue-50 h-full w-[300px] left-0 rounded-r-3xl" />
 				<div className="relative max-w-[300px]">
