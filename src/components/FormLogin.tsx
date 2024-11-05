@@ -2,9 +2,9 @@ import { type FormEvent, useState } from 'react';
 import AxiosInstance from '../utils/axios';
 
 interface FormLoginProps {
-  onClose: () => void; // Type pour onClose
-  userName: string | undefined; // Recevoir le userName en props
-  setUserName: React.Dispatch<React.SetStateAction<string>>; // Setter pour le userName
+  onClose: () => void;
+  userName: string | undefined;
+  setUserName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FormLogin: React.FC<FormLoginProps> = ({
@@ -18,7 +18,7 @@ const FormLogin: React.FC<FormLoginProps> = ({
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false); // État pour contrôler l'affichage du message
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
-    event.preventDefault(); // On empêche le rechargement de la page
+    event.preventDefault();
     const formElm = event.currentTarget;
 
     // Récupérer les données du formulaire
@@ -42,7 +42,7 @@ const FormLogin: React.FC<FormLoginProps> = ({
         // Timer pour masquer le message et fermer le formulaire après 5 secondes
         setTimeout(() => {
           setShowWelcomeMessage(false); // Cache le message après 5 secondes
-          onClose(); // Ferme le formulaire
+          onClose();
         }, 4000);
       })
       .catch(() => {
@@ -54,7 +54,7 @@ const FormLogin: React.FC<FormLoginProps> = ({
     <div>
       {/* Affiche "Bonjour {userName}" si l'utilisateur est connecté */}
       {showWelcomeMessage && userName ? (
-        <div>Bonjour {userName}</div> // Affiche le message de bienvenue
+        <div>Bonjour {userName}</div>
       ) : (
         <form onSubmit={handleSubmit}>
           <label>
