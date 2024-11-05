@@ -3,7 +3,7 @@ import AxiosInstance from '../utils/axios';
 
 interface FormLoginProps {
   onClose: () => void;
-  userName: string | undefined;
+  userName: string | null;
   setUserName: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -21,12 +21,12 @@ const FormLogin: React.FC<FormLoginProps> = ({
     const token = localStorage.getItem('token');
     if (token) {
       // Optionally, you can verify the token with the server here
-      AxiosInstance.get('/verify-token', {
+      AxiosInstance.get('/me', {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((response) => {
           const { user } = response.data;
-          setUserName(user.userName);
+          setUserName(user.userName || null);
         })
         .catch((error) => {
           console.error('Token verification failed:', error);
