@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import type { IEvent } from '../../@types';
+import AxiosInstance from "../../utils/axios";
+
 
 function Eventlists() {
   const [events, setEvents] = useState<IEvent[]>([]);
@@ -8,9 +9,7 @@ function Eventlists() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get<IEvent[]>(
-          'http://localhost:3000/api/events',
-        );
+        const response = await AxiosInstance.get<IEvent[]>('/events');
         setEvents(response.data);
       } catch (error) {
         console.error('Error fetching events:', error);
