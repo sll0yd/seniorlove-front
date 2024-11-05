@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import type { IUser } from "../../@types";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import type { IUser } from '../../@types';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 function ProfileDetail() {
@@ -10,10 +10,12 @@ function ProfileDetail() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get<IUser>(`http://localhost:3000/api/users/${id}`);
+        const response = await axios.get<IUser>(
+          `http://localhost:3000/api/users/${id}`,
+        );
         setUser(response.data);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error('Error fetching user:', error);
       }
     };
 
@@ -25,7 +27,7 @@ function ProfileDetail() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="max-w-4xl mx-auto p-4 pt-20">
       <h1 className="text-lg text-blue-600 mb-4">Mon profil</h1>
       <div className="bg-blue-50 rounded-lg p-8">
         <div className="flex flex-col md:flex-row gap-12">
@@ -39,8 +41,11 @@ function ProfileDetail() {
             </div>
 
             <div className="flex gap-3 mt-6 justify-center md:justify-start">
-              {user.tags?.map((tag, index) => (
-                <span key={index} className="px-4 py-1.5 bg-purple-600 text-white text-sm rounded-full">
+              {user.tags?.map((tag) => (
+                <span
+                  key={tag.name}
+                  className="px-4 py-1.5 bg-purple-600 text-white text-sm rounded-full"
+                >
                   {tag.name}
                 </span>
               ))}
@@ -57,7 +62,7 @@ function ProfileDetail() {
 
             <h3 className="font-medium text-lg mb-3">À propos de moi</h3>
             <p className="text-gray-700 leading-relaxed text-lg">
-              {user.bio || "Pas de biographie fournie."}
+              {user.bio || 'Pas de biographie fournie.'}
             </p>
           </div>
         </div>

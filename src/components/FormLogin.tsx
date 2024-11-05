@@ -28,9 +28,13 @@ const FormLogin: React.FC<FormLoginProps> = ({
     // Appel de l'API pour se connecter
     AxiosInstance.post('/login', data)
       .then((response) => {
+        const { user, token } = response.data;
         console.log(response.data);
-        setUserName(response.data.user.userName); // Met à jour userName dans Nav
-        AxiosInstance.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+
+        // Stocker le token dans localStorage pour que l'intercepteur l'ajoute automatiquement
+        localStorage.setItem('token', token);
+
+        setUserName(user.userName); // Met à jour userName dans Nav
         formElm.reset(); // Réinitialise le formulaire
         setShowWelcomeMessage(true);
         setErrorMessage(undefined); // Affiche le message de bienvenue

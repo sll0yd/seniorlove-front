@@ -28,14 +28,20 @@ function Nav() {
   };
 
   return (
-    <nav className="flex justify-evenly items-center bg-white shadow-lg w-full pt-3 pl-6 pr-16 pb-3">
-      <a className="max-h-8" href="/">
+    <nav className="fixed z-50 flex justify-evenly items-center bg-white shadow-lg w-full pt-3 pl-6 pr-16 pb-3">
+      {/* Logo dynamique, taille adaptative */}
+      <Link
+        className="max-h-8"
+        to="/"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      >
+
         <img
           src={isMenuOpen ? '/icon/heart.png' : '/icon/copie_logo.png'}
           alt="logo"
           className="flex-col max-h-11 items-center pb-3"
         />
-      </a>
+      </Link>
 
       <button
         type="button"
@@ -59,19 +65,23 @@ function Nav() {
         className={`flex-col space-y-4 md:mt-0 md:space-y-0 md:flex-row md:space-x-20 ${isMenuOpen ? 'flex' : 'hidden'} md:flex`}
       >
         <li>
-          <a href="/" className="text-gray-700 hover:text-gray-900">
+          <Link to="/" className="text-gray-700 hover:text-gray-900">
             Qui sommes-nous ?
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/" className="text-gray-700 hover:text-gray-900">
+          <Link
+            to="/events"
+            className="text-gray-700 hover:text-gray-900 object-center"
+          >
+
             Évènements
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/" className="text-gray-700 hover:text-gray-900">
+          <Link to="/" className="text-gray-700 hover:text-gray-900">
             Témoignages
-          </a>
+          </Link>
         </li>
       </ul>
 
