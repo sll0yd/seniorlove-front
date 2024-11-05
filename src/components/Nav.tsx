@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import FormLogin from './FormLogin';
 import { Link } from 'react-router-dom';
+import FormLogin from './FormLogin';
+import AxiosInstance from '../utils/axios'; // Import Axios
 
 function Nav() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -8,15 +9,22 @@ function Nav() {
   const [userName, setUserName] = useState('');
 
   const handleOpenForm = (): void => {
-    setIsFormOpen(true); // Ouvre le formulaire
+    setIsFormOpen(true); // open the form
   };
 
   const handleCloseForm = (): void => {
-    setIsFormOpen(false); // Ferme le formulaire
+    setIsFormOpen(false); // close the form
   };
 
   const toggleMenu = (): void => {
-    setIsMenuOpen(!isMenuOpen); // Ouvre ou ferme le menu burger
+    setIsMenuOpen(!isMenuOpen); // Open and  close burger menu
+  };
+
+  // Fonction pour la déconnexion
+  const handleLogout = (): void => {
+    setUserName(''); // Put the username to empty
+    AxiosInstance.defaults.headers.common.Authorization = undefined; // Delete the token JWT
+    setIsMenuOpen(false);
   };
 
   return (
@@ -27,6 +35,7 @@ function Nav() {
         to="/"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
+
         <img
           src={isMenuOpen ? '/icon/heart.png' : '/icon/copie_logo.png'}
           alt="logo"
@@ -34,7 +43,6 @@ function Nav() {
         />
       </Link>
 
-      {/* Bouton Burger / Croix (position fixe en haut à droite) */}
       <button
         type="button"
         className="flex text-gray-700 md:hidden absolute top-4 right-6 items-center"
@@ -53,7 +61,6 @@ function Nav() {
         </div>
       </button>
 
-      {/* Menu principal (horizontal en desktop, burger en mobile) */}
       <ul
         className={`flex-col space-y-4 md:mt-0 md:space-y-0 md:flex-row md:space-x-20 ${isMenuOpen ? 'flex' : 'hidden'} md:flex`}
       >
@@ -67,6 +74,7 @@ function Nav() {
             to="/events"
             className="text-gray-700 hover:text-gray-900 object-center"
           >
+
             Évènements
           </Link>
         </li>
@@ -77,45 +85,82 @@ function Nav() {
         </li>
       </ul>
 
-      {/* Boutons d'action dans le menu burger (placés sous la croix) */}
       <div
         className={`flex-col space-y-4 ${isMenuOpen ? 'flex' : 'hidden'} md:hidden`}
       >
-        <button
-          type="button"
-          className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
-          onClick={handleOpenForm}
-        >
-          se connecter
-        </button>
-        <button
-          type="button"
-          className="p-1 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-          onClick={() => {}}
-        >
-          s'inscrire
-        </button>
+        {userName ? ( // If the user is connected we display the buttons "Mon compte" and "Se déconnecter"
+          <>
+            <button
+              type="button"
+              className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
+            >
+              Mon compte
+            </button>
+            <button
+              type="button"
+              className="p-1 border-2 shadow-lg rounded-lg bg-white border-red-400 text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-300"
+              onClick={handleLogout}
+            >
+              Se déconnecter
+            </button>
+          </> // If the user is not connected we display the buttons "Se connecter" and "S'inscrire"
+        ) : (
+          <>
+            <button
+              type="button"
+              className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
+              onClick={handleOpenForm}
+            >
+              Se connecter
+            </button>
+            <button
+              type="button"
+              className="p-1 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+            >
+              S'inscrire
+            </button>
+          </>
+        )}
       </div>
 
-      {/* Boutons d'action en desktop (cachés en mobile) */}
       <div className="hidden md:flex items-center space-x-4">
-        <button
-          type="button"
-          className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
-          onClick={handleOpenForm}
-        >
-          se connecter
-        </button>
-        <button
-          type="button"
-          className="p-1 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-          onClick={() => {}}
-        >
-          s'inscrire
-        </button>
+        {userName ? (
+          <>
+            <Link to="/profile">
+              <button
+                type="button"
+                className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
+              >
+                Mon compte
+              </button>
+            </Link>
+            <button
+              type="button"
+              className="p-1 border-2 shadow-lg rounded-lg bg-white border-red-400 text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-300"
+              onClick={handleLogout}
+            >
+              Se déconnecter
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
+              onClick={handleOpenForm}
+            >
+              Se connecter
+            </button>
+            <button
+              type="button"
+              className="p-1 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+            >
+              S'inscrire
+            </button>
+          </>
+        )}
       </div>
 
-      {/* Formulaire de connexion (affiché si isFormOpen est vrai) */}
       {isFormOpen && (
         <div className="absolute top-20 right-10 w-80 bg-white shadow-xl rounded-lg p-4 z-10">
           <FormLogin

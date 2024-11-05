@@ -18,7 +18,7 @@ function Testimony() {
       })
       .then((data) => {
         if (data && Array.isArray(data.testimonies)) {
-          console.log(data.testimonies);
+          // console.log(data.testimonies);
           setTestimonies(data.testimonies);
         } else {
           console.error(
