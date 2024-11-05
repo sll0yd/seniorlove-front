@@ -43,7 +43,7 @@ function ProfileDetail() {
 						{" "}
 						<div className="md:col-span-1">
 							<img
-								src={user.picture || "/api/placeholder/300/300"}
+								src={user.picture || "https://randomuser.me/api/portraits/men/1.jpg"}
 								alt="Profile"
 								className="w-64 h-64 object-cover rounded-lg mx-auto"
 							/>

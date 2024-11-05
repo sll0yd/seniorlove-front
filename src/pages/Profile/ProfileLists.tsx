@@ -47,7 +47,7 @@ function ProfilesLists() {
 						>
 							<div className="flex-1 flex gap-6">
 								<img
-									src={profile.picture || "/api/placeholder/100/100"}
+									src={profile.picture || "https://randomuser.me/api/portraits/men/1.jpg"}
 									alt="Avatar"
 									className="w-24 h-24 object-cover rounded-lg"
 								/>
