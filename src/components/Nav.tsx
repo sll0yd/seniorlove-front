@@ -35,7 +35,6 @@ function Nav() {
         to="/"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
-
         <img
           src={isMenuOpen ? '/icon/heart.png' : '/icon/copie_logo.png'}
           alt="logo"
@@ -74,7 +73,6 @@ function Nav() {
             to="/events"
             className="text-gray-700 hover:text-gray-900 object-center"
           >
-
             Évènements
           </Link>
         </li>
