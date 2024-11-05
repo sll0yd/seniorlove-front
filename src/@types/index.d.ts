@@ -30,7 +30,7 @@ export interface IEvent {
   title: string;
   picture?: string;
   description: string;
-  date: Date;
+  date: string;
   location: string;
   created_at: Date;
   updated_at?: Date;
