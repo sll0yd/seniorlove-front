@@ -50,6 +50,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <not necessesary >
   useEffect(() => {
     const getUser = async () => {
       const response = await AxiosInstance.get('/me');
@@ -62,8 +63,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         getUser();
       }
     }
-    //Est-ce qu'on a un token ? ->
-    //On va devoir appeler la base, et puis mettre dans le ocntext les infos users
   }, []);
 
   return (
