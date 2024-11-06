@@ -11,7 +11,7 @@ import HomePage from "./pages/Home/HomePage.tsx";
 //----------------
 import EventsLists from "./pages/Events/EventsLists.tsx";
 import EventDetail from "./pages/Events/EventDetail.tsx";
-// import EventCreate
+import EventCreate from "./pages/Events/EventCreate.tsx";
 // import EventEdit
 
 import ProfileDetail from "./pages/Profile/ProfileDetail.tsx";
@@ -39,6 +39,10 @@ const router = createBrowserRouter([
 			{
 				path: "/events/:id",
 				element: <EventDetail />,
+			},
+			{
+				path: "/events/create",
+				element: <EventCreate />,
 			},
 			{
 				path: "/profile",
