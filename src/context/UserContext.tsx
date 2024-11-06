@@ -2,7 +2,8 @@
 // It provides a UserProvider component that wraps the application and provides the user object
 // and a function to set the user object to the rest of the application.
 // The custom useUser hook is used to access the user object and the setUser function from the UserContext.
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import AxiosInstance from '../utils/axios';
 
 // Typescript stuff, feel free to remove if you are not using Typescript
 interface User {
@@ -15,12 +16,14 @@ interface User {
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
+  logout: () => void;
 }
 
 // The creation of the context with the default value
-const UserContext = createContext<UserContextType>({
+export const UserContext = createContext<UserContextType>({
   user: null,
   setUser: () => {},
+  logout: () => {},
 });
 
 // The custom hook to access the user object and the setUser function
@@ -42,8 +45,29 @@ export const useUser = () => {
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await AxiosInstance.get('/me');
+      setUser(response.data);
+    };
+    //Est-ce qu'on a quelqu'un déjà connecté ?  user ? ->
+    const token = localStorage.getItem('token');
+    if (!user) {
+      if (token) {
+        getUser();
+      }
+    }
+    //Est-ce qu'on a un token ? ->
+    //On va devoir appeler la base, et puis mettre dans le ocntext les infos users
+  }, []);
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, logout }}>
       {children}
     </UserContext.Provider>
   );
