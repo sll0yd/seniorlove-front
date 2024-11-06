@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import FormLogin from './FormLogin';
 import AxiosInstance from '../utils/axios'; // Import Axios
+import { useUser } from '../context/UserContext';
 
 function Nav() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userName, setUserName] = useState('');
-
+  const { user, logout } = useUser();
   const handleOpenForm = (): void => {
     setIsFormOpen(true); // open the form
   };
@@ -23,7 +24,7 @@ function Nav() {
   // Fonction pour la déconnexion
   const handleLogout = (): void => {
     setUserName(''); // Put the username to empty
-    AxiosInstance.defaults.headers.common.Authorization = undefined; // Delete the token JWT
+    logout();
     setIsMenuOpen(false);
   };
 
@@ -35,7 +36,6 @@ function Nav() {
         to="/"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
-
         <img
           src={isMenuOpen ? '/icon/heart.png' : '/icon/copie_logo.png'}
           alt="logo"
@@ -74,7 +74,6 @@ function Nav() {
             to="/events"
             className="text-gray-700 hover:text-gray-900 object-center"
           >
-
             Évènements
           </Link>
         </li>
@@ -88,7 +87,7 @@ function Nav() {
       <div
         className={`flex-col space-y-4 ${isMenuOpen ? 'flex' : 'hidden'} md:hidden`}
       >
-        {userName ? ( // If the user is connected we display the buttons "Mon compte" and "Se déconnecter"
+        {user ? ( // If the user is connected we display the buttons "Mon compte" and "Se déconnecter"
           <>
             <button
               type="button"
@@ -124,7 +123,7 @@ function Nav() {
       </div>
 
       <div className="hidden md:flex items-center space-x-4">
-        {userName ? (
+        {user ? (
           <>
             <Link to="/profile">
               <button

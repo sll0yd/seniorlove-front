@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from 'react';
 import AxiosInstance from '../utils/axios';
+import { useUser } from '../context/UserContext';
 
 interface FormLoginProps {
   onClose: () => void;
@@ -16,6 +17,7 @@ const FormLogin: React.FC<FormLoginProps> = ({
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false); // État pour contrôler l'affichage du message
+  const { setUser } = useUser();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -28,12 +30,12 @@ const FormLogin: React.FC<FormLoginProps> = ({
     // Appel de l'API pour se connecter
     AxiosInstance.post('/login', data)
       .then((response) => {
-        const { user, token } = response.data;
+        const { user, accessToken } = response.data;
         console.log(response.data);
 
         // Stocker le token dans localStorage pour que l'intercepteur l'ajoute automatiquement
-        localStorage.setItem('token', token);
-
+        localStorage.setItem('token', accessToken);
+        setUser(user);
         setUserName(user.userName); // Met à jour userName dans Nav
         formElm.reset(); // Réinitialise le formulaire
         setShowWelcomeMessage(true);

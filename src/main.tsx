@@ -1,15 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
 import './index.css';
 import { TagProvider } from './components/TagContext.tsx';
-import { RouterProvider } from 'react-router-dom';
-import router from './router.tsx';
+import { UserProvider } from './context/UserContext';
 
-// biome-ignore lint/style/noNonNullAssertion: <explanation>
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
-    <TagProvider>
+    <UserProvider>
+      <TagProvider>
       <RouterProvider router={router} />
-    </TagProvider>
+      </TagProvider>
+    </UserProvider>
+
   </StrictMode>,
 );
