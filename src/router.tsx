@@ -10,12 +10,12 @@ import HomePage from "./pages/Home/HomePage.tsx";
 // Pages protégées
 //----------------
 import EventsLists from "./pages/Events/EventsLists.tsx";
-// import EventDetail
+import EventDetail from "./pages/Events/EventDetail.tsx";
 // import EventCreate
 // import EventEdit
 
 import ProfileDetail from "./pages/Profile/ProfileDetail.tsx";
-// import ProfileEdit
+import ProfileEdit from "./pages/Profile/ProfileEdit.tsx";
 import ProfilesLists from "./pages/Profile/ProfileLists.tsx";
 // import UserSearch
 
@@ -37,12 +37,20 @@ const router = createBrowserRouter([
 				element: <EventsLists />,
 			},
 			{
+				path: "/events/:id",
+				element: <EventDetail />,
+			},
+			{
 				path: "/profile",
 				element: <ProfilesLists />,
 			},
 			{
 				path: "/profile/:id",
 				element: <ProfileDetail />,
+			},
+			{
+				path: "/account",
+				element: <ProfileEdit />,
 			},
 
 			// {
