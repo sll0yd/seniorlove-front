@@ -78,6 +78,14 @@ function Header() {
       );
       console.log('Form submitted successfully:', response.data);
       setErrorMessages(null);
+      // Reset the form data
+      setFormData({
+        gender: '',
+        userName: '',
+        age: '',
+        email: '',
+        password: '',
+      });
     } catch (error) {
       console.error('Error submitting form:', error);
       setErrorMessages("Une erreur s'est produite lors de l'inscription");
