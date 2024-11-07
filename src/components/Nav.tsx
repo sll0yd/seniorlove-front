@@ -8,9 +8,11 @@ function Nav() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userName, setUserName] = useState('');
-  const { user, logout } = useUser();
+  const { user, logout, authErrorMsg } = useUser();
+
   const handleOpenForm = (): void => {
     setIsFormOpen(true); // open the form
+    console.log(isFormOpen);
   };
 
   const handleCloseForm = (): void => {
@@ -160,7 +162,7 @@ function Nav() {
         )}
       </div>
 
-      {isFormOpen && (
+      {(isFormOpen || authErrorMsg) && (
         <div className="absolute top-20 right-10 w-80 bg-white shadow-xl rounded-lg p-4 z-10">
           <FormLogin
             userName={userName}

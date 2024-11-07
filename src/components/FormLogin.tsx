@@ -17,7 +17,7 @@ const FormLogin: React.FC<FormLoginProps> = ({
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false); // État pour contrôler l'affichage du message
-  const { setUser } = useUser();
+  const { setUser, authErrorMsg } = useUser();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -51,6 +51,8 @@ const FormLogin: React.FC<FormLoginProps> = ({
         setErrorMessage('Erreur lors de la connexion'); // Affiche le message d'erreur
       });
   }
+
+  console.log('userName dans le composant FormLogin:', userName);
 
   return (
     <div>
@@ -91,9 +93,12 @@ const FormLogin: React.FC<FormLoginProps> = ({
           </button>
         </form>
       )}
-      {errorMessage && (
-        <div className="text-red-500 text-sm">{errorMessage}</div>
-      )}
+      {errorMessage ||
+        (authErrorMsg && (
+          <div className="text-red-500 text-sm">
+            {errorMessage || authErrorMsg}
+          </div>
+        ))}
     </div>
   );
 };
