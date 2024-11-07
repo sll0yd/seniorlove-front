@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AxiosInstance from "../../utils/axios";
-import type { IUser } from "../../@types";
+import type { IUser, ITag } from "../../@types";
 import { useTags } from "../../context/TagContext";
 
 function ProfileEdit() {
@@ -11,8 +11,8 @@ function ProfileEdit() {
 	const [bio, setBio] = useState("");
 	const [password, setPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
-	// menu déroulant pour les tags
 	const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
+	const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
 	const { tags } = useTags();
 
 	useEffect(() => {
@@ -24,6 +24,7 @@ function ProfileEdit() {
 				setAge(response.data.age?.toString() || "");
 				setHometown(response.data.hometown || "");
 				setBio(response.data.bio || "");
+				setSelectedTags(response.data.tags || []);
 			} catch (error) {
 				console.error("Error fetching user:", error);
 			}
@@ -39,6 +40,7 @@ function ProfileEdit() {
 				hometown,
 				bio,
 				password: newPassword || password,
+				tags: selectedTags,
 			};
 			await AxiosInstance.patch("/me", updatedUser);
 			alert("Informations mises à jour avec succès");
@@ -48,17 +50,24 @@ function ProfileEdit() {
 		}
 	};
 
+	const handleAddTag = (tag: ITag) => {
+		if (!selectedTags.find((t) => t.id === tag.id)) {
+			setSelectedTags([...selectedTags, tag]);
+		}
+		setIsTagDropdownOpen(false);
+	};
+
+	const handleRemoveTag = (tagId: number) => {
+		setSelectedTags(selectedTags.filter((tag) => tag.id !== tagId));
+	};
+
 	if (!user) {
 		return <div>Chargement...</div>;
 	}
 
-	const userTags =
-		user.tags?.map((userTag) => tags.find((tag) => tag.id === userTag.id)) ||
-		[];
-
 	return (
 		<main className="pt-24">
-			<div className="relative mb-12">
+			<div className="relative mb-4">
 				<div className="absolute bg-blue-50 h-full w-[300px] left-0 rounded-r-3xl" />
 				<div className="relative max-w-[300px]">
 					<h1 className="text-2xl font-bold py-4 text-center px-8">
@@ -71,7 +80,7 @@ function ProfileEdit() {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
 					<div className="hidden md:block absolute top-[240px] h-[400px] left-1/2 w-px bg-gray-200 opacity-50" />
 
-					<div className="md:col-span-2 flex justify-center mb-12">
+					<div className="md:col-span-2 flex justify-center mb-6">
 						<div className="w-40 h-40 rounded-lg overflow-hidden">
 							<img
 								src={
@@ -162,50 +171,59 @@ function ProfileEdit() {
 								>
 									Vos centres d'intérêt :
 								</label>
-								<div id="interests" className="flex flex-wrap gap-2">
-									<div className="mt-2 text-center">
-										{userTags && userTags.length > 0 ? (
-											userTags.map((tag) =>
-												tag?.id && tag?.name && tag?.color ? (
-													<span
-														key={tag.id}
-														style={{ backgroundColor: `#${tag.color}` }}
-														className="inline-block text-white text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full"
-													>
+								<div id="interests" className="flex flex-wrap gap-3">
+									<div className="flex flex-wrap gap-2 items-center">
+										{selectedTags && selectedTags.length > 0 ? (
+											selectedTags.map((tag) => (
+												<span
+													key={tag.id}
+													style={{
+														backgroundColor: `#${tag.color}`,
+													}}
+													className="inline-flex items-center justify-center gap-1 text-sm px-3 py-1.5 rounded-full text-white"
+												>
+													<span className="leading-none flex items-center">
 														{tag.name}
 													</span>
-												) : null,
-											)
+													<button
+														type="button"
+														onClick={() => handleRemoveTag(tag.id)}
+														className="ml-1 rounded-full hover:bg-white/20 transition-colors w-4 h-4 flex items-center justify-center leading-none text-lg"
+														aria-label="Remove tag"
+													>
+														×
+													</button>
+												</span>
+											))
 										) : (
-											<p>Aucun tag associé à ce profil</p>
+											<p className="text-gray-500 italic text-sm">
+												Aucun tag associé à ce profil
+											</p>
 										)}
 									</div>
 									<div className="relative">
 										<button
 											type="button"
-											className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center"
+											className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
 											onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
 										>
-											+
+											<span className="text-gray-600 text-lg">+</span>
 										</button>
 										{isTagDropdownOpen && (
-											<div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg">
-												<div className="py-1">
+											<div className="absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden">
+												<div className="py-1 max-h-64 overflow-y-auto">
 													{tags.map((tag) => (
 														<button
 															type="button"
 															key={tag.id}
-															className="w-full text-left px-4 py-2 hover:bg-gray-100"
-															onClick={() => {
-																// Here you would add logic to add the tag to user's tags
-																setIsTagDropdownOpen(false);
-															}}
+															className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 group"
+															onClick={() => handleAddTag(tag)}
 														>
 															<span
-																className="inline-block w-3 h-3 rounded-full mr-2"
+																className="inline-block w-3 h-3 rounded-full transition-transform group-hover:scale-110"
 																style={{ backgroundColor: `#${tag.color}` }}
 															/>
-															{tag.name}
+															<span className="text-gray-700">{tag.name}</span>
 														</button>
 													))}
 												</div>
@@ -255,7 +273,7 @@ function ProfileEdit() {
 
 							<button
 								type="button"
-								className="px-4 py-2 bg-green-600 text-white rounded-md"
+								className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
 								onClick={handleSave}
 							>
 								Mettre à jour
