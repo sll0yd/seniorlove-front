@@ -36,11 +36,19 @@ const router = createBrowserRouter([
       },
       {
         path: '/events',
-        element: <EventsLists />,
+        element: (
+          <ProtectedRoute>
+            <EventsLists />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/events/:id',
-        element: <EventDetail />,
+        element: (
+          <ProtectedRoute>
+            <EventDetail />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/profile',
