@@ -32,6 +32,7 @@ export interface IEvent {
   description: string;
   date: string;
   location: string;
+  tags?: ITag[];
   created_at: Date;
   updated_at?: Date;
 }
