@@ -18,8 +18,10 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     if (!user) {
       console.log('Utilisateur non connecté');
       setShowMessage(true);
-      const timer = setTimeout(() => setShowMessage(false), 3000);
-      return () => clearTimeout(timer); // Nettoie le timer au démontage
+      const timer = setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+      return () => clearTimeout(timer);
     }
   }, []);
 
