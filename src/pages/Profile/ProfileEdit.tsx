@@ -1,4 +1,63 @@
+import { useEffect, useState } from "react";
+import AxiosInstance from "../../utils/axios";
+import type { IUser } from "../../@types";
+import { useTags } from "../../context/TagContext";
+
 function ProfileEdit() {
+	const [user, setUser] = useState<IUser | null>(null);
+	const [userName, setUserName] = useState("");
+	const [age, setAge] = useState("");
+	const [hometown, setHometown] = useState("");
+	const [bio, setBio] = useState("");
+	const [password, setPassword] = useState("");
+	const [newPassword, setNewPassword] = useState("");
+	const { tags } = useTags();
+
+	useEffect(() => {
+		const fetchProfile = async () => {
+			try {
+				// Récupérer les informations de l'utilisateur connecté
+				const response = await AxiosInstance.get<IUser>("/me");
+				setUser(response.data);
+				setUserName(response.data.userName || "");
+				setAge(response.data.age?.toString() || "");
+				setHometown(response.data.hometown || "");
+				setBio(response.data.bio || "");
+			} catch (error) {
+				console.error("Error fetching user:", error);
+			}
+		};
+		fetchProfile();
+	}, []);
+
+	// Fonction pour mettre à jour les informations de l'utilisateur
+	const handleSave = async () => {
+		try {
+			const updatedUser = {
+				userName,
+				age,
+				hometown,
+				bio,
+				password: newPassword || password,
+			};
+			// Mettre à jour les informations de l'utilisateur
+			await AxiosInstance.patch("/me", updatedUser);
+			alert("Informations mises à jour avec succès");
+		} catch (error) {
+			console.error("Erreur lors de la mise à jour:", error);
+			alert("Une erreur s'est produite");
+		}
+	};
+	// Si l'utilisateur n'est pas encore chargé, afficher un message de chargement
+	if (!user) {
+		return <div>Chargement...</div>;
+	}
+
+	// Récupérer les tags associés à l'utilisateur
+	const userTags =
+		user.tags?.map((userTag) => tags.find((tag) => tag.id === userTag.id)) ||
+		[];
+
 	return (
 		<main className="pt-24">
 			<div className="relative mb-12">
@@ -17,9 +76,12 @@ function ProfileEdit() {
 					<div className="md:col-span-2 flex justify-center mb-12">
 						<div className="w-40 h-40 rounded-lg overflow-hidden">
 							<img
-								src="https://randomuser.me/api/portraits/men/1.jpg"
+								src={
+									user.picture ||
+									"https://randomuser.me/api/portraits/men/1.jpg"
+								}
 								alt="Profile"
-								className="w-full h-full object-cover"
+								className="w-64 h-64 object-cover rounded-lg mx-auto"
 							/>
 						</div>
 					</div>
@@ -40,8 +102,27 @@ function ProfileEdit() {
 								<input
 									id="username"
 									type="text"
-									defaultValue="Harold (hidethepain)"
+									value={userName}
+									onChange={(e) => setUserName(e.target.value)}
 									className="w-full p-2 border rounded-md"
+								/>
+							</div>
+
+							<div>
+								<label
+									htmlFor="age"
+									className="block text-sm text-gray-600 mb-2"
+								>
+									Age :
+								</label>
+								<input
+									id="age"
+									type="text"
+									value={age}
+									onChange={(e) => setAge(e.target.value)}
+									className="w-full p-2 border rounded-md"
+									min="60"
+									max="120"
 								/>
 							</div>
 
@@ -55,7 +136,8 @@ function ProfileEdit() {
 								<input
 									id="location"
 									type="text"
-									defaultValue="Paris"
+									value={hometown}
+									onChange={(e) => setHometown(e.target.value)}
 									className="w-full p-2 border rounded-md"
 								/>
 							</div>
@@ -69,8 +151,9 @@ function ProfileEdit() {
 								</label>
 								<textarea
 									id="bio"
+									value={bio}
+									onChange={(e) => setBio(e.target.value)}
 									className="w-full p-2 border rounded-md h-32"
-									defaultValue="Rêveur romantique cherchant à transmettre à quelqu'un de personnel qui lui fera battre mon cœur. J'aime les balades au bord de l'eau, les couchers de soleil, et les longues discussions qui s'étirent jusqu'au petit matin. Ici pour construire quelque chose de vrai et durable."
 								/>
 							</div>
 
@@ -82,15 +165,23 @@ function ProfileEdit() {
 									Vos centres d'intérêt :
 								</label>
 								<div id="interests" className="flex flex-wrap gap-2">
-									<span className="px-3 py-1 bg-purple-600 text-white rounded-full">
-										Danse
-									</span>
-									<span className="px-3 py-1 bg-red-700 text-white rounded-full">
-										Rencontre
-									</span>
-									<span className="px-3 py-1 bg-gray-600 text-white rounded-full">
-										Sport
-									</span>
+									<div className="mt-2 text-center">
+										{userTags && userTags.length > 0 ? (
+											userTags.map((tag) =>
+												tag?.id && tag?.name && tag?.color ? (
+													<span
+														key={tag.id}
+														style={{ backgroundColor: `#${tag.color}` }}
+														className="inline-block text-white text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full"
+													>
+														{tag.name}
+													</span>
+												) : null,
+											)
+										) : (
+											<p>Aucun tag associé à ce profil</p>
+										)}
+									</div>
 									<button
 										type="button"
 										className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center"
@@ -116,7 +207,8 @@ function ProfileEdit() {
 								<input
 									id="current-password"
 									type="password"
-									defaultValue="******************"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
 									className="w-full p-2 border rounded-md"
 								/>
 							</div>
@@ -131,6 +223,8 @@ function ProfileEdit() {
 								<input
 									id="new-password"
 									type="password"
+									value={newPassword}
+									onChange={(e) => setNewPassword(e.target.value)}
 									className="w-full p-2 border rounded-md"
 								/>
 							</div>
@@ -138,6 +232,7 @@ function ProfileEdit() {
 							<button
 								type="button"
 								className="px-4 py-2 bg-green-600 text-white rounded-md"
+								onClick={handleSave}
 							>
 								Mettre à jour
 							</button>
@@ -147,6 +242,7 @@ function ProfileEdit() {
 					<div className="md:col-span-2 flex justify-center mt-12">
 						<button
 							type="button"
+							onClick={handleSave}
 							className="px-8 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
 						>
 							Sauvegarder

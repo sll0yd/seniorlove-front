@@ -4,16 +4,11 @@
 // The custom useUser hook is used to access the user object and the setUser function from the UserContext.
 import { createContext, useContext, useState, useEffect } from 'react';
 import AxiosInstance from '../utils/axios';
-
-// Typescript stuff, feel free to remove if you are not using Typescript
-interface User {
-  name: string;
-  email: string;
-  profilePicture: string;
-}
+import type { IUser } from '../@types';
 
 // Typescript stuff, feel free to remove if you are not using Typescript
 interface UserContextType {
+ protectedRoute
   user: User | null;
   authErrorMsg: string | null;
   setAuthErrorMsg: (msg: string | null) => void;
@@ -47,8 +42,10 @@ export const useUser = () => {
 // This UserProvider is need for main.tsx to wrap the entire application in it.
 // It allows the user object to be available in the entire application.
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+protectedRoute
   const [user, setUser] = useState<User | null>(null);
   const [authErrorMsg, setAuthErrorMsg] = useState<string | null>(null);
+
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
