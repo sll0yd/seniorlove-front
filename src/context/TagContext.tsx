@@ -27,7 +27,7 @@ export const TagProvider: React.FC<TagProviderProps> = ({ children }) => {
   useEffect(() => {
     AxiosInstance.get('/tags')
       .then((response) => {
-        setTags(response.data.tags);
+        setTags(response.data);
       })
       .catch((error) => {
         console.error('Erreur lors du chargement des tags:', error);
