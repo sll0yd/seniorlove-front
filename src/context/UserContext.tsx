@@ -15,6 +15,8 @@ interface User {
 // Typescript stuff, feel free to remove if you are not using Typescript
 interface UserContextType {
   user: User | null;
+  authErrorMsg: string | null;
+  setAuthErrorMsg: (msg: string | null) => void;
   setUser: (user: User | null) => void;
   logout: () => void;
 }
@@ -22,6 +24,8 @@ interface UserContextType {
 // The creation of the context with the default value
 export const UserContext = createContext<UserContextType>({
   user: null,
+  authErrorMsg: null,
+  setAuthErrorMsg: () => {},
   setUser: () => {},
   logout: () => {},
 });
@@ -44,7 +48,7 @@ export const useUser = () => {
 // It allows the user object to be available in the entire application.
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-
+  const [authErrorMsg, setAuthErrorMsg] = useState<string | null>(null);
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
@@ -67,7 +71,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider
+      value={{ user, setUser, authErrorMsg, setAuthErrorMsg, logout }}
+    >
       {children}
     </UserContext.Provider>
   );
