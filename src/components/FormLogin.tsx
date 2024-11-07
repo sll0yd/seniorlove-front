@@ -52,6 +52,8 @@ const FormLogin: React.FC<FormLoginProps> = ({
       });
   }
 
+  console.log('userName dans le composant FormLogin:', userName);
+
   return (
     <div>
       {/* Affiche "Bonjour {userName}" si l'utilisateur est connecté */}

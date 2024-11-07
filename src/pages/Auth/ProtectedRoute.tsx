@@ -6,24 +6,34 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const [showMessage, setShowMessage] = useState(false);
   const location = useLocation();
   const { user } = useUser();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
+
+    if (user !== undefined) {
+      setIsLoading(false);
+    }
     // Affiche un message temporaire si l'utilisateur n'est pas connecté
     if (!user) {
-      console.log('Utilisateur non connecté, affichage du message.');
+      console.log('Utilisateur non connecté');
       setShowMessage(true);
       const timer = setTimeout(() => setShowMessage(false), 3000);
       return () => clearTimeout(timer); // Nettoie le timer au démontage
     }
-  }, [user]);
+  }, []);
+
+  if (isLoading) {
+    return null;
+  }
 
   if (!user) {
     return (
       <>
         {showMessage && (
-          <div style={{ color: 'red' }}>
+          <p style={{ color: 'red' }}>
             Vous devez être connecté pour accéder à cette page.
-          </div>
+          </p>
         )}
         <Navigate to="/" state={{ from: location }} />
       </>

@@ -55,6 +55,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const getUser = async () => {
       const response = await AxiosInstance.get('/me');
       setUser(response.data);
+      console.log('user :', response.data);
     };
     //Est-ce qu'on a quelqu'un déjà connecté ?  user ? ->
     const token = localStorage.getItem('token');
