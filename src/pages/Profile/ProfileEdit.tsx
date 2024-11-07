@@ -11,12 +11,13 @@ function ProfileEdit() {
 	const [bio, setBio] = useState("");
 	const [password, setPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
+	// menu déroulant pour les tags
+	const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
 	const { tags } = useTags();
 
 	useEffect(() => {
 		const fetchProfile = async () => {
 			try {
-				// Récupérer les informations de l'utilisateur connecté
 				const response = await AxiosInstance.get<IUser>("/me");
 				setUser(response.data);
 				setUserName(response.data.userName || "");
@@ -30,7 +31,6 @@ function ProfileEdit() {
 		fetchProfile();
 	}, []);
 
-	// Fonction pour mettre à jour les informations de l'utilisateur
 	const handleSave = async () => {
 		try {
 			const updatedUser = {
@@ -40,7 +40,6 @@ function ProfileEdit() {
 				bio,
 				password: newPassword || password,
 			};
-			// Mettre à jour les informations de l'utilisateur
 			await AxiosInstance.patch("/me", updatedUser);
 			alert("Informations mises à jour avec succès");
 		} catch (error) {
@@ -48,12 +47,11 @@ function ProfileEdit() {
 			alert("Une erreur s'est produite");
 		}
 	};
-	// Si l'utilisateur n'est pas encore chargé, afficher un message de chargement
+
 	if (!user) {
 		return <div>Chargement...</div>;
 	}
 
-	// Récupérer les tags associés à l'utilisateur
 	const userTags =
 		user.tags?.map((userTag) => tags.find((tag) => tag.id === userTag.id)) ||
 		[];
@@ -81,7 +79,7 @@ function ProfileEdit() {
 									"https://randomuser.me/api/portraits/men/1.jpg"
 								}
 								alt="Profile"
-								className="w-64 h-64 object-cover rounded-lg mx-auto"
+								className="w-full h-full object-cover"
 							/>
 						</div>
 					</div>
@@ -157,7 +155,7 @@ function ProfileEdit() {
 								/>
 							</div>
 
-							<div>
+							<div className="relative">
 								<label
 									htmlFor="interests"
 									className="block text-sm text-gray-600 mb-2"
@@ -182,12 +180,38 @@ function ProfileEdit() {
 											<p>Aucun tag associé à ce profil</p>
 										)}
 									</div>
-									<button
-										type="button"
-										className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center"
-									>
-										+
-									</button>
+									<div className="relative">
+										<button
+											type="button"
+											className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center"
+											onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
+										>
+											+
+										</button>
+										{isTagDropdownOpen && (
+											<div className="absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg">
+												<div className="py-1">
+													{tags.map((tag) => (
+														<button
+															type="button"
+															key={tag.id}
+															className="w-full text-left px-4 py-2 hover:bg-gray-100"
+															onClick={() => {
+																// Here you would add logic to add the tag to user's tags
+																setIsTagDropdownOpen(false);
+															}}
+														>
+															<span
+																className="inline-block w-3 h-3 rounded-full mr-2"
+																style={{ backgroundColor: `#${tag.color}` }}
+															/>
+															{tag.name}
+														</button>
+													))}
+												</div>
+											</div>
+										)}
+									</div>
 								</div>
 							</div>
 						</div>

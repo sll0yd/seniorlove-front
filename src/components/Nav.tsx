@@ -125,7 +125,7 @@ function Nav() {
       <div className="hidden md:flex items-center space-x-4">
         {user ? (
           <>
-            <Link to="/profile">
+            <Link to="/account">
               <button
                 type="button"
                 className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
