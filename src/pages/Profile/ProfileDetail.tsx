@@ -65,7 +65,7 @@ function ProfileDetail() {
                         <span
                           key={tag.id}
                           style={{ backgroundColor: `#${tag.color}` }}
-                          className="inline-block text-white text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full"
+                          className="inline-block text-white text-sm font-semibold mr-2 px-4 py-1.5 rounded-full"
                         >
                           {tag.name}
                         </span>
