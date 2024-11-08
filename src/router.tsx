@@ -10,14 +10,9 @@ import HomePage from './pages/Home/HomePage.tsx';
 
 // Pages protégées
 //----------------
-protectedRoute
 import EventsLists from './pages/Events/EventsLists.tsx';
 import EventDetail from './pages/Events/EventDetail.tsx';
-// import EventCreate
-
-import EventsLists from "./pages/Events/EventsLists.tsx";
-import EventDetail from "./pages/Events/EventDetail.tsx";
-import EventCreate from "./pages/Events/EventCreate.tsx";
+import EventCreate from './pages/Events/EventCreate.tsx';
 
 // import EventEdit
 
@@ -32,7 +27,6 @@ import ProfilesLists from './pages/Profile/ProfileLists.tsx';
 
 // Routes
 const router = createBrowserRouter([
-protectedRoute
   {
     path: '/',
     element: <MainLayout />,
@@ -81,7 +75,6 @@ protectedRoute
           </ProtectedRoute>
         ),
       },
-
 
       // {
       //   path: '/recipe/:slug',

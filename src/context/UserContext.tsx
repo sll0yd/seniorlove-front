@@ -8,11 +8,10 @@ import type { IUser } from '../@types';
 
 // Typescript stuff, feel free to remove if you are not using Typescript
 interface UserContextType {
- protectedRoute
-  user: User | null;
+  user: IUser | null;
   authErrorMsg: string | null;
   setAuthErrorMsg: (msg: string | null) => void;
-  setUser: (user: User | null) => void;
+  setUser: (user: IUser | null) => void;
   logout: () => void;
 }
 
@@ -42,8 +41,7 @@ export const useUser = () => {
 // This UserProvider is need for main.tsx to wrap the entire application in it.
 // It allows the user object to be available in the entire application.
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-protectedRoute
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [authErrorMsg, setAuthErrorMsg] = useState<string | null>(null);
 
   const logout = () => {
