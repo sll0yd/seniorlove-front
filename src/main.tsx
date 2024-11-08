@@ -5,6 +5,7 @@ import router from './router';
 import './index.css';
 import { TagProvider } from './context/TagContext.tsx';
 import { UserProvider } from './context/UserContext';
+import ProtectedRoute from './pages/Auth/ProtectedRoute.tsx';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
