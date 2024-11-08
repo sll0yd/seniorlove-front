@@ -13,8 +13,24 @@ function ProfileEdit() {
 	const [newPassword, setNewPassword] = useState("");
 	const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
 	const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+	const [isUpdatingTags, setIsUpdatingTags] = useState(false);
 	const { tags } = useTags();
 
+	// Separate effect for fetching user tags
+	useEffect(() => {
+		const fetchUserTags = async () => {
+				try {
+						const response = await AxiosInstance.get<ITag[]>("/me/tags");
+						setSelectedTags(response.data);
+				} catch (error) {
+						console.error("Error fetching user tags:", error);
+				}
+		};
+
+		fetchUserTags();
+}, []);
+
+// Fetch user profile
 	useEffect(() => {
 		const fetchProfile = async () => {
 			try {
@@ -24,7 +40,7 @@ function ProfileEdit() {
 				setAge(response.data.age?.toString() || "");
 				setHometown(response.data.hometown || "");
 				setBio(response.data.bio || "");
-				setSelectedTags(response.data.tags || []);
+			//	setSelectedTags(response.data.tags || []);
 			} catch (error) {
 				console.error("Error fetching user:", error);
 			}
@@ -32,6 +48,7 @@ function ProfileEdit() {
 		fetchProfile();
 	}, []);
 
+	// Mettre à jour les informations du profil
 	const handleSave = async () => {
 		try {
 			const updatedUser = {
@@ -40,7 +57,7 @@ function ProfileEdit() {
 				hometown,
 				bio,
 				password: newPassword || password,
-				tags: selectedTags,
+			//	tags: selectedTags,
 			};
 			await AxiosInstance.patch("/me", updatedUser);
 			alert("Informations mises à jour avec succès");
@@ -50,17 +67,46 @@ function ProfileEdit() {
 		}
 	};
 
-	const handleAddTag = (tag: ITag) => {
-		if (!selectedTags.find((t) => t.id === tag.id)) {
-			setSelectedTags([...selectedTags, tag]);
+	// verif si le tag est déjà sélectionné
+	const handleAddTag = async (tag: ITag) => {
+		if (selectedTags.find((t) => t.id === tag.id)) {
+			return; // Tag already selected
 		}
-		setIsTagDropdownOpen(false);
+
+		setIsUpdatingTags(true);
+		try {
+			// Add tag to the database
+			await AxiosInstance.post(`/me/tags/${tag.id}`);
+
+			// Update local state only after successful API call
+			setSelectedTags([...selectedTags, tag]);
+			setIsTagDropdownOpen(false);
+		} catch (error) {
+			console.error("Error adding tag:", error);
+			alert("Une erreur s'est produite lors de l'ajout du tag");
+		} finally {
+			setIsUpdatingTags(false);
+		}
 	};
 
-	const handleRemoveTag = (tagId: number) => {
-		setSelectedTags(selectedTags.filter((tag) => tag.id !== tagId));
+	// Remove tag from the user profile
+	const handleRemoveTag = async (tagId: number) => {
+		setIsUpdatingTags(true);
+		try {
+			// Remove tag from the database
+			await AxiosInstance.delete(`/me/tags/${tagId}`);
+
+			// Update local state only after successful API call
+			setSelectedTags(selectedTags.filter((tag) => tag.id !== tagId));
+		} catch (error) {
+			console.error("Error removing tag:", error);
+			alert("Une erreur s'est produite lors de la suppression du tag");
+		} finally {
+			setIsUpdatingTags(false);
+		}
 	};
 
+	// Affichage du message de chargement
 	if (!user) {
 		return <div>Chargement...</div>;
 	}
@@ -188,7 +234,8 @@ function ProfileEdit() {
 													<button
 														type="button"
 														onClick={() => handleRemoveTag(tag.id)}
-														className="ml-1 rounded-full hover:bg-white/20 transition-colors w-4 h-4 flex items-center justify-center leading-none text-lg"
+														disabled={isUpdatingTags}
+														className={`ml-1 rounded-full hover:bg-white/20 transition-colors w-4 h-4 flex items-center justify-center leading-none text-lg ${isUpdatingTags ? "opacity-50 cursor-not-allowed" : ""}`}
 														aria-label="Remove tag"
 													>
 														×
@@ -204,8 +251,9 @@ function ProfileEdit() {
 									<div className="relative">
 										<button
 											type="button"
-											className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+											className={`w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors ${isUpdatingTags ? "opacity-50 cursor-not-allowed" : ""}`}
 											onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
+											disabled={isUpdatingTags}
 										>
 											<span className="text-gray-600 text-lg">+</span>
 										</button>
@@ -216,8 +264,9 @@ function ProfileEdit() {
 														<button
 															type="button"
 															key={tag.id}
-															className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 group"
+															className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 group ${isUpdatingTags ? "opacity-50 cursor-not-allowed" : ""}`}
 															onClick={() => handleAddTag(tag)}
+															disabled={isUpdatingTags}
 														>
 															<span
 																className="inline-block w-3 h-3 rounded-full transition-transform group-hover:scale-110"
