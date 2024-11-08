@@ -252,7 +252,7 @@ function ProfileEdit() {
       </div>
       <div className="py-12">
         <div className="relative">
-          <div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
+          <div className="absolute bg-blue-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
           <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
             <p className="text-center text-sm flex-1 italic mr-4 py-4">
               Présentez-vous sous votre meilleur profile !
