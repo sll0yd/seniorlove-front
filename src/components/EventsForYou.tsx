@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function EventsForYou() {
   return (
     <div className="w-full bg-gray-50 py-12">
@@ -61,12 +63,14 @@ function EventsForYou() {
       </div>
 
       <div className="flex justify-center mt-10">
-        <button
-          type="button"
-          className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-        >
-          S'inscrire
-        </button>
+        <Link to="/events">
+          <button
+            type="button"
+            className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+          >
+            Liste des événements
+          </button>
+        </Link>
       </div>
     </div>
   );

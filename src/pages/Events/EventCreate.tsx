@@ -1,3 +1,4 @@
+import FooterBanner from '../../components/FooterBanner';
 
 function EventCreate() {
   return (
@@ -15,8 +16,7 @@ function EventCreate() {
         <div className="bg-pink-50 rounded-lg p-8">
           <div className="mb-8">
             <div className="w-full h-64 bg-gray-200 rounded-lg mb-4">
-              <div className="w-full h-full flex items-center justify-center">
-              </div>
+              <div className="w-full h-full flex items-center justify-center"></div>
             </div>
             <button
               type="button"
@@ -86,7 +86,9 @@ function EventCreate() {
                 className="w-full p-2 border rounded-md bg-white"
                 defaultValue=""
               >
-                <option value="" disabled>Value</option>
+                <option value="" disabled>
+                  Value
+                </option>
                 <option value="danse">Danse</option>
                 <option value="rencontre">Rencontre</option>
                 <option value="sport">Sport</option>
@@ -102,6 +104,18 @@ function EventCreate() {
               </button>
             </div>
           </form>
+        </div>
+      </div>
+      <div className="py-12">
+        <div className="relative">
+          <div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
+            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+              Ne manquez pas cette occasion de créer un événement convivial et
+              de rencontrer des personnes prêtes à partager des moments
+              authentiques !
+            </p>
+          </div>
         </div>
       </div>
     </main>
