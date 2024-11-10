@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import AxiosInstance from "../../utils/axios";
-import type { IUser, ITag } from "../../@types";
+import type { ITag } from "../../@types";
 import { useTags } from "../../context/TagContext";
+import { useUser } from "../../context/UserContext";
 
 function ProfileEdit() {
-  // États pour gérer les informations du profil utilisateur
-  const [user, setUser] = useState<IUser | null>(null);
+  // Récupération du user et setUser depuis le context utilisateur
+  const { user, setUser } = useUser();
+  
+  // États pour gérer les champs du formulaire
   const [userName, setUserName] = useState("");
   const [age, setAge] = useState("");
   const [hometown, setHometown] = useState("");
@@ -17,43 +20,31 @@ function ProfileEdit() {
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [isUpdatingTags, setIsUpdatingTags] = useState(false);
-  const { tags } = useTags(); // Récupération de tous les tags disponibles depuis le contexte
+  const { tags } = useTags(); // Récupération de tous les tags disponibles
 
-  // Récupération des données du profil utilisateur au chargement du composant
+  // Initialisation des champs avec les données du user
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await AxiosInstance.get<IUser>("/me");
-        const userData = response.data;
-        
-        // Mise à jour des états avec les données utilisateur
-        setUser(userData);
-        setUserName(userData.userName || "");
-        setAge(userData.age?.toString() || "");
-        setHometown(userData.hometown || "");
-        setBio(userData.bio || "");
-        
-        // Traitement des tags de l'utilisateur
-        if (userData.tags && Array.isArray(userData.tags)) {
-          // Fusion des tags utilisateur avec les informations complètes des tags (notamment les couleurs)
-          const formattedTags = userData.tags.map(userTag => {
-            const fullTag = tags.find(t => t.id === userTag.id);
-            return {
-              ...userTag,
-              color: fullTag?.color || ''
-            };
-          });
-          
-          setSelectedTags(formattedTags);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
+    if (user) {
+      setUserName(user.userName || "");
+      setAge(user.age?.toString() || "");
+      setHometown(user.hometown || "");
+      setBio(user.bio || "");
+      
+      // Traitement des tags de l'utilisateur
+      if (user.tags && Array.isArray(user.tags)) {
+        const formattedTags = user.tags.map(userTag => {
+          const fullTag = tags.find(t => t.id === userTag.id);
+          return {
+            ...userTag,
+            color: fullTag?.color || ''
+          };
+        });
+        setSelectedTags(formattedTags);
       }
-    };
-    fetchProfile();
-  }, [tags]);
+    }
+  }, [user, tags]);
 
-  // Gestion de la sauvegarde du profil
+  // Mise à jour du profil avec mise à jour du context
   const handleSave = async () => {
     try {
       const updatedUser = {
@@ -63,7 +54,8 @@ function ProfileEdit() {
         bio,
         password: newPassword || password,
       };
-      await AxiosInstance.patch("/me", updatedUser);
+      const response = await AxiosInstance.patch("/me", updatedUser);
+      setUser(response.data); // Met à jour le context utilisateur
       alert("Informations mises à jour avec succès");
     } catch (error) {
       console.error("Erreur lors de la mise à jour:", error);
@@ -80,7 +72,15 @@ function ProfileEdit() {
     setIsUpdatingTags(true);
     try {
       await AxiosInstance.post(`/me/tags/${tag.id}`);
-      setSelectedTags([...selectedTags, tag]);
+      const updatedTags = [...selectedTags, tag];
+      setSelectedTags(updatedTags);
+      // Mise à jour du user context avec les nouveaux tags
+      if (user) {
+        setUser({
+          ...user,
+          tags: updatedTags
+        });
+      }
       setIsTagDropdownOpen(false);
     } catch (error) {
       console.error("Error adding tag:", error);
@@ -95,7 +95,15 @@ function ProfileEdit() {
     setIsUpdatingTags(true);
     try {
       await AxiosInstance.delete(`/me/tags/${tagId}`);
-      setSelectedTags(selectedTags.filter((tag) => tag.id !== tagId));
+      const updatedTags = selectedTags.filter((tag) => tag.id !== tagId);
+      setSelectedTags(updatedTags);
+      // Mise à jour du user context avec les tags mis à jour
+      if (user) {
+        setUser({
+          ...user,
+          tags: updatedTags
+        });
+      }
     } catch (error) {
       console.error("Error removing tag:", error);
       alert("Une erreur s'est produite lors de la suppression du tag");
@@ -104,14 +112,14 @@ function ProfileEdit() {
     }
   };
 
-  // Affichage d'un message de chargement si les données ne sont pas encore disponibles
+  // Affichage d'un message de chargement si l'utilisateur n'est pas encore chargé
   if (!user) {
     return <div>Chargement...</div>;
   }
 
   return (
     <main className="pt-24">
-      {/* En-tête de la page avec fond bleu */}
+      {/* En-tête de la page */}
       <div className="relative mb-4">
         <div className="absolute bg-blue-50 h-full w-[300px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[300px]">
@@ -123,10 +131,10 @@ function ProfileEdit() {
 
       <div className="max-w-6xl mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
-          {/* Ligne verticale de séparation entre les colonnes */}
+          {/* Ligne de séparation verticale */}
           <div className="hidden md:block absolute top-[240px] h-[400px] left-1/2 w-px bg-gray-200 opacity-50" />
 
-          {/* Section photo de profil */}
+          {/* Image de profil */}
           <div className="md:col-span-2 flex justify-center mb-6">
             <div className="w-40 h-40 rounded-lg overflow-hidden">
               <img
@@ -140,14 +148,14 @@ function ProfileEdit() {
             </div>
           </div>
 
-          {/* Colonne gauche - Informations publiques */}
+          {/* Colonne des informations publiques */}
           <div className="space-y-4 md:pr-12">
             <h2 className="text-xl font-semibold">
               VOS INFORMATIONS PUBLIQUES
             </h2>
 
             <div className="space-y-4">
-              {/* Champ Nom */}
+              {/* Nom d'utilisateur */}
               <div>
                 <label
                   htmlFor="username"
@@ -164,7 +172,7 @@ function ProfileEdit() {
                 />
               </div>
 
-              {/* Champ Age */}
+              {/* Âge */}
               <div>
                 <label
                   htmlFor="age"
@@ -183,7 +191,7 @@ function ProfileEdit() {
                 />
               </div>
 
-              {/* Champ Localisation */}
+              {/* Localisation */}
               <div>
                 <label
                   htmlFor="location"
@@ -200,7 +208,7 @@ function ProfileEdit() {
                 />
               </div>
 
-              {/* Champ Bio */}
+              {/* Biographie */}
               <div>
                 <label
                   htmlFor="bio"
@@ -216,7 +224,7 @@ function ProfileEdit() {
                 />
               </div>
 
-              {/* Section des tags (centres d'intérêt) */}
+              {/* Section des tags */}
               <div className="relative">
                 <label
                   htmlFor="interests"
@@ -225,7 +233,6 @@ function ProfileEdit() {
                   Vos centres d'intérêt :
                 </label>
                 <div id="interests" className="flex flex-wrap gap-3">
-                  {/* Affichage des tags sélectionnés */}
                   <div className="flex flex-wrap gap-2 items-center">
                     {selectedTags && selectedTags.length > 0 ? (
                       selectedTags.map((tag) => (
@@ -239,7 +246,6 @@ function ProfileEdit() {
                           <span className="leading-none flex items-center">
                             {tag.name}
                           </span>
-                          {/* Bouton de suppression du tag */}
                           <button
                             type="button"
                             onClick={() => handleRemoveTag(tag.id)}
@@ -259,8 +265,8 @@ function ProfileEdit() {
                       </p>
                     )}
                   </div>
-
-                  {/* Bouton et menu déroulant pour ajouter des tags */}
+                  
+                  {/* Menu déroulant des tags */}
                   <div className="relative">
                     <button
                       type="button"
@@ -272,7 +278,6 @@ function ProfileEdit() {
                     >
                       <span className="text-gray-600 text-lg">+</span>
                     </button>
-                    {/* Menu déroulant des tags disponibles */}
                     {isTagDropdownOpen && (
                       <div className="absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden">
                         <div className="py-1 max-h-64 overflow-y-auto">
@@ -304,12 +309,12 @@ function ProfileEdit() {
             </div>
           </div>
 
-          {/* Colonne droite - Informations privées */}
+          {/* Colonne des informations privées */}
           <div className="space-y-4 md:pl-12">
             <h2 className="text-xl font-semibold">VOS INFORMATIONS PRIVÉES</h2>
 
             <div className="space-y-4">
-              {/* Champ mot de passe actuel */}
+              {/* Mot de passe actuel */}
               <div>
                 <label
                   htmlFor="current-password"
@@ -326,7 +331,7 @@ function ProfileEdit() {
                 />
               </div>
 
-              {/* Champ nouveau mot de passe */}
+              {/* Nouveau mot de passe */}
               <div>
                 <label
                   htmlFor="new-password"
@@ -343,7 +348,7 @@ function ProfileEdit() {
                 />
               </div>
 
-              {/* Bouton de mise à jour du mot de passe */}
+              {/* Bouton de mise à jour */}
               <button
                 type="button"
                 className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
@@ -354,7 +359,7 @@ function ProfileEdit() {
             </div>
           </div>
 
-          {/* Bouton de sauvegarde global */}
+          {/* Bouton de sauvegarde général */}
           <div className="md:col-span-2 flex justify-center mt-6">
             <button
               type="button"
