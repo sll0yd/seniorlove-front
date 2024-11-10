@@ -22,7 +22,7 @@ import ProfilesLists from './pages/Profile/ProfileLists.tsx';
 
 // import UserSearch
 
-// import Messages
+import Messages from './pages/Messaging/Messages.tsx';
 // import Conversation
 
 // Routes
@@ -73,6 +73,14 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <ProfileEdit />
           </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/messages',
+        element: (
+          //<ProtectedRoute>
+            <Messages />
+          //</ProtectedRoute>
         ),
       },
 
