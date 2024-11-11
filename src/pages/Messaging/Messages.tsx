@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import AxiosInstance from '../../utils/axios';
+import { IMessage, IUser } from '../../@types';
+import { useUser } from '../context/UserContext';
 
 function Messages() {
+  const { useUser } = useUser();
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [newMessage, setNewMessage] = useState('');
+
 
 
   return (
