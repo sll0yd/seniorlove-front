@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AxiosInstance from '../../utils/axios';
 import type { IUser } from '../../@types';
 import { useTags } from '../../context/TagContext';
+import { Link } from 'react-router-dom';
 
 function ProfileEdit() {
   const [user, setUser] = useState<IUser | null>(null);
@@ -257,12 +258,14 @@ function ProfileEdit() {
             <p className="text-center text-sm flex-1 italic mr-4 py-4">
               Présentez-vous sous votre meilleur profile !
             </p>
-            <button
-              type="button"
-              className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-            >
-              Retour à la liste des profils
-            </button>
+            <Link to="/profile">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Retour à la liste des profils
+              </button>
+            </Link>
           </div>
         </div>
       </div>

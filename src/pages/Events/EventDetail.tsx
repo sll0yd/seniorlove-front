@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import type { IEvent } from '../../@types';
 import AxiosInstance from '../../utils/axios';
 import { useTags } from '../../context/TagContext'; // Importer useTags
-import FooterBanner from '../../components/FooterBanner';
 
 const EventDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -105,12 +104,14 @@ const EventDetail = () => {
               et de rencontrer des personnes prêtes à partager des moments
               authentiques !
             </p>
-            <button
-              type="button"
-              className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-            >
-              Retour à la liste des évènements
-            </button>
+            <Link to="/events">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Retour à la liste des évènements
+              </button>
+            </Link>
           </div>
         </div>
       </div>

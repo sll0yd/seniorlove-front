@@ -80,12 +80,14 @@ function ProfilesLists() {
               Élargissez votre cercle et partez à la rencontre de nouvelles
               personnes prêtes à vivre des expériences enrichissantes !
             </p>
-            <button
-              type="button"
-              className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-            >
-              Retour à la liste des évènements
-            </button>
+            <Link to="/events">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Retour à la liste des évènements
+              </button>
+            </Link>
           </div>
         </div>
       </div>
