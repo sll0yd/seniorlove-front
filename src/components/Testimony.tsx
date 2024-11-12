@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { ITestimony } from '../@types';
 
-interface TestimonyProps {
-  testimony: ITestimony;
-}
-
 function Testimony() {
   const [testimonies, setTestimonies] = useState<ITestimony[]>([]);
 
@@ -33,6 +29,7 @@ function Testimony() {
 
   return (
     <div
+      id="testimony"
       className="relative min-h-screen"
       style={{
         backgroundImage: "url('/images/coupletestimony.jpg')",

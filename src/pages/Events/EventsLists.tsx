@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { IEvent } from '../../@types';
 import AxiosInstance from '../../utils/axios';
-import FooterBanner from '../../components/FooterBanner';
 
 function Eventlists() {
   const [events, setEvents] = useState<IEvent[]>([]);
@@ -76,7 +75,7 @@ function Eventlists() {
               rencontrer de nouvelle connaissances prêtes à partager dees
               moments uniques.
             </p>
-            <Link to="/events/create">
+            <Link to="/event/create">
               <button
                 type="button"
                 className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
