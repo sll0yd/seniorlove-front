@@ -19,83 +19,80 @@ import EventCreate from './pages/Events/EventCreate.tsx';
 import ProfileDetail from './pages/Profile/ProfileDetail.tsx';
 import ProfileEdit from './pages/Profile/ProfileEdit.tsx';
 import ProfilesLists from './pages/Profile/ProfileLists.tsx';
-import Testimony from './components/Testimony.tsx';
 
 // import UserSearch
 
-// import Messages
+import Messages from './pages/Messaging/Messages.tsx';
 // import Conversation
-
-//function for scrolling to testimony
 
 // Routes
 const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <MainLayout />,
-		children: [
-			{
-				path: "/",
-				element: <HomePage />,
-			},
-			{
-				path: "/events",
-				element: (
-					<ProtectedRoute>
-						<EventsLists />
-					</ProtectedRoute>
-				),
-			},
-			{
-				path: "/events/:id",
-				element: (
-					<ProtectedRoute>
-						<EventDetail />
-					</ProtectedRoute>
-				),
-			},
-			{
-				path: "/event/create",
-				element: (
-					<ProtectedRoute>
-						<EventCreate />
-					</ProtectedRoute>
-				),
-			},
-			{
-				path: "/profile",
-				element: (
-					<ProtectedRoute>
-						<ProfilesLists />
-					</ProtectedRoute>
-				),
-			},
-			{
-				path: "/profile/:id",
-				element: (
-					<ProtectedRoute>
-						<ProfileDetail />
-					</ProtectedRoute>
-				),
-			},
-			{
-				path: "/account",
-				element: (
-					<ProtectedRoute>
-						<ProfileEdit />
-					</ProtectedRoute>
-				),
-			},
-			{
-				path: "/messages",
-				element: (
-					//<ProtectedRoute>
-						<Messages />
-					//</ProtectedRoute>
-				),
-			},
-		],
-	},
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
+      {
+        path: '/events',
+        element: (
+          <ProtectedRoute>
+            <EventsLists />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/events/:id',
+        element: (
+          <ProtectedRoute>
+            <EventDetail />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/event/create',
+        element: (
+          <ProtectedRoute>
+            <EventCreate />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/profile',
+        element: (
+          <ProtectedRoute>
+            <ProfilesLists />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/profile/:id',
+        element: (
+          <ProtectedRoute>
+            <ProfileDetail />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/account',
+        element: (
+          <ProtectedRoute>
+            <ProfileEdit />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/messages',
+        element: (
+          //<ProtectedRoute>
+          <Messages />
+          //</ProtectedRoute>
+        ),
+      },
+    ],
+  },
 ]);
 
-
+export default router;
