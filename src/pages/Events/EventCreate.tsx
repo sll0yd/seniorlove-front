@@ -1,8 +1,38 @@
+import { useState } from 'react';
+import AxiosInstance from '../../utils/axios';
+import type { IEvent } from '../../@types';
+import { useNavigate } from 'react-router-dom';
 
 function EventCreate() {
+  const [event, setEvent] = useState<IEvent | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    try {
+      const eventData = {
+        title: event?.title,
+        location: event?.location,
+        date: event?.date,
+        description: event?.description,
+      };
+      console.log(eventData);
+      await AxiosInstance.post('/me/events', eventData);
+
+      // Réinitialise ou gère l'état après succès
+      setEvent(null);
+      navigate('/events');
+    } catch (err) {
+      setError("Une erreur est survenue lors de la création de l'événement.");
+    }
+  };
+
   return (
     <main className="pt-24">
-      <div className="relative mb-12">
+      <div className="relative">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
           <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap">
@@ -13,10 +43,13 @@ function EventCreate() {
 
       <div className="max-w-4xl mx-auto px-8">
         <div className="bg-pink-50 rounded-lg p-8">
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <div className="w-full h-64 bg-gray-200 rounded-lg mb-4">
-              <div className="w-full h-full flex items-center justify-center">
-              </div>
+              <img
+                src={event?.picture || '/api/placeholder/1200/600'}
+                alt={event?.title}
+                className="w-full h-[400px] object-cover"
+              />
             </div>
             <button
               type="button"
@@ -24,18 +57,27 @@ function EventCreate() {
             >
               Choisissez une photo de couverture
             </button>
-          </div>
+          </div> */}
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="event-name" className="block text-gray-700 mb-2">
-                Le nom de votre évènement :
+              <label htmlFor="title" className="block text-gray-700 mb-2">
+                Le titre de votre évènement :
               </label>
               <input
                 type="text"
-                id="event-name"
-                placeholder="Soirée Salsa"
+                id="title"
+                placeholder="Votre titre ici..."
                 className="w-full p-2 border rounded-md"
+                onChange={(event) =>
+                  setEvent(
+                    (prev) =>
+                      ({
+                        ...prev,
+                        title: event.target.value,
+                      }) as IEvent,
+                  )
+                }
               />
             </div>
 
@@ -47,8 +89,17 @@ function EventCreate() {
                 <input
                   type="text"
                   id="location"
-                  placeholder="Paris"
+                  placeholder="Votre localisation ici..."
                   className="w-full p-2 border rounded-md"
+                  onChange={(event) =>
+                    setEvent(
+                      (prev) =>
+                        ({
+                          ...prev,
+                          location: event.target.value,
+                        }) as IEvent,
+                    )
+                  }
                 />
               </div>
 
@@ -61,6 +112,15 @@ function EventCreate() {
                   id="date"
                   placeholder="22 / 10 /2024"
                   className="w-full p-2 border rounded-md"
+                  onChange={(event) =>
+                    setEvent(
+                      (prev) =>
+                        ({
+                          ...prev,
+                          date: event.target.value,
+                        }) as IEvent,
+                    )
+                  }
                 />
               </div>
             </div>
@@ -73,35 +133,33 @@ function EventCreate() {
                 id="description"
                 rows={4}
                 className="w-full p-2 border rounded-md"
-                placeholder="Dansez, riez et laissez-vous emporter par le rythme lors d'une soirée conviviale entre amteurs de dans de tout âge."
+                placeholder="Dansez, riez et laissez-vous emporter par le rythme lors d'une soirée conviviale entre amateurs de danse de tout âge."
+                onChange={(event) =>
+                  setEvent(
+                    (prev) =>
+                      ({
+                        ...prev,
+                        description: event.target.value,
+                      }) as IEvent,
+                  )
+                }
               />
             </div>
-
-            <div>
-              <label htmlFor="categories" className="block text-gray-700 mb-2">
-                Catégories de l'évènement :
-              </label>
-              <select
-                id="categories"
-                className="w-full p-2 border rounded-md bg-white"
-                defaultValue=""
-              >
-                <option value="" disabled>Value</option>
-                <option value="danse">Danse</option>
-                <option value="rencontre">Rencontre</option>
-                <option value="sport">Sport</option>
-              </select>
-            </div>
-
-            <div className="flex justify-center">
+            <div className="flex justify-end">
               <button
                 type="submit"
                 className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
               >
-                Publier l'évènement
+                Créer l'évènement
               </button>
             </div>
           </form>
+
+          {error && (
+            <div className="mt-4 text-red-500">
+              <p>{error}</p>
+            </div>
+          )}
         </div>
       </div>
     </main>

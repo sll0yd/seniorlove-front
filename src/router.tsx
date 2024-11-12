@@ -75,6 +75,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: '/events/create',
+        element: (
+          <ProtectedRoute>
+            <EventCreate />
+          </ProtectedRoute>
+        ),
+      },
 
       // {
       //   path: '/recipe/:slug',
