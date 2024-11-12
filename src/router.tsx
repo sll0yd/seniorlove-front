@@ -27,6 +27,7 @@ import Messages from "./pages/Messaging/Messages.tsx";
 
 // Routes
 const router = createBrowserRouter([
+
 	{
 		path: "/",
 		element: <MainLayout />,
@@ -83,6 +84,7 @@ const router = createBrowserRouter([
 					</ProtectedRoute>
 				),
 			},
+
 
 			// {
 			//   path: '/recipe/:slug',

@@ -26,14 +26,14 @@ export interface ITag {
 }
 
 export interface IEvent {
-  id: number;
+  id?: number;
   title: string;
   picture?: string;
   description: string;
   date: string;
   location: string;
   tags?: ITag[];
-  created_at: Date;
+  created_at?: Date;
   updated_at?: Date;
 }
 
