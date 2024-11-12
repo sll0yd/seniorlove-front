@@ -3,6 +3,7 @@ import AxiosInstance from '../../utils/axios';
 import type { IEvent } from '../../@types';
 import { useNavigate } from 'react-router-dom';
 
+
 function EventCreate() {
   const [event, setEvent] = useState<IEvent | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -47,11 +48,13 @@ function EventCreate() {
         <div className="bg-pink-50 rounded-lg p-8">
           {/* <div className="mb-8">
             <div className="w-full h-64 bg-gray-200 rounded-lg mb-4">
+
               <img
                 src={event?.picture || '/api/placeholder/1200/600'}
                 alt={event?.title}
                 className="w-full h-[400px] object-cover"
               />
+
             </div>
             <button
               type="button"
@@ -147,7 +150,7 @@ function EventCreate() {
                 }
               />
             </div>
-            <div className="flex justify-end">
+
               <button
                 type="submit"
                 className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
@@ -162,6 +165,18 @@ function EventCreate() {
               <p>{error}</p>
             </div>
           )}
+        </div>
+      </div>
+      <div className="py-12">
+        <div className="relative">
+          <div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
+            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+              Ne manquez pas cette occasion de créer un événement convivial et
+              de rencontrer des personnes prêtes à partager des moments
+              authentiques !
+            </p>
+          </div>
         </div>
       </div>
     </main>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import type { IEvent } from '../../@types';
 import AxiosInstance from '../../utils/axios';
 import { useTags } from '../../context/TagContext'; // Importer useTags
@@ -92,6 +92,26 @@ const EventDetail = () => {
             >
               Participer à l'événement
             </button>
+          </div>
+        </div>
+      </div>
+      <div className="py-12">
+        <div className="relative">
+          <div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
+            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+              Ne manquez pas cette occasion de rejoindre un événement convivial
+              et de rencontrer des personnes prêtes à partager des moments
+              authentiques !
+            </p>
+            <Link to="/events">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Retour à la liste des évènements
+              </button>
+            </Link>
           </div>
         </div>
       </div>

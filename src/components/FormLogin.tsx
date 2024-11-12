@@ -51,7 +51,6 @@ const FormLogin: React.FC<FormLoginProps> = ({
         setErrorMessage('Erreur lors de la connexion'); // Affiche le message d'erreur
       });
   }
-
   console.log('userName dans le composant FormLogin:', userName);
 
   return (
