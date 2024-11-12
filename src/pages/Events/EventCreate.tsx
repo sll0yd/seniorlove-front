@@ -20,11 +20,16 @@ function EventCreate() {
         description: event?.description,
       };
       console.log(eventData);
-      await AxiosInstance.post('/me/events', eventData);
+      const response = await AxiosInstance.post('/me/events', eventData);
+
+      // je veux rediriger l'utilisateur vers la page de l'événement
+      // avec l'id de l'évenement qui vient d'être créé
+      // récupérer l'ID de l'événement fraichement créé mais comment qu'on fait ça ?
+      const createdEventId = response.data.id;
+      navigate(`/events/${createdEventId}`);
 
       // Réinitialise ou gère l'état après succès
       setEvent(null);
-      navigate('/events');
     } catch (err) {
       setError("Une erreur est survenue lors de la création de l'événement.");
     }
@@ -145,6 +150,7 @@ function EventCreate() {
                 }
               />
             </div>
+
             <div className="flex justify-end">
               <button
                 type="submit"

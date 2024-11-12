@@ -76,12 +76,14 @@ function Eventlists() {
               rencontrer de nouvelle connaissances prêtes à partager dees
               moments uniques.
             </p>
-            <button
-              type="button"
-              className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-            >
-              Creer un evenement
-            </button>
+            <Link to="/events/create">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Creer un evenement
+              </button>
+            </Link>
           </div>
         </div>
       </div>
