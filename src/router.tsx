@@ -27,7 +27,6 @@ import Messages from "./pages/Messaging/Messages.tsx";
 
 // Routes
 const router = createBrowserRouter([
-
 	{
 		path: "/",
 		element: <MainLayout />,
@@ -53,11 +52,19 @@ const router = createBrowserRouter([
 				),
 			},
 			{
+				path: "/events/create",
+				element: (
+					<ProtectedRoute>
+						<EventCreate />
+					</ProtectedRoute>
+				),
+			},
+			{
 				path: "/profile",
 				element: (
-					//<ProtectedRoute>
-					<ProfilesLists />
-					//</ProtectedRoute>
+					<ProtectedRoute>
+						<ProfilesLists />
+					</ProtectedRoute>
 				),
 			},
 			{
@@ -84,16 +91,6 @@ const router = createBrowserRouter([
 					</ProtectedRoute>
 				),
 			},
-
-
-			// {
-			//   path: '/recipe/:slug',
-			//   element: <RecipeDetailPage />,
-			// },
-			// {
-			//   path: '/favorites',
-			//   element: <FavoritesPage />,
-			// },
 		],
 	},
 ]);
