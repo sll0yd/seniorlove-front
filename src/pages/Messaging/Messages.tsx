@@ -30,7 +30,7 @@ function Messages() {
 			if (!selectedUser || !user) return;
 			try {
 				const response = await AxiosInstance.get(
-					`/messages/${user.id}/${selectedUser.id}`,
+					`/me/messages/${user.id}/${selectedUser.id}`,
 				);
 				setMessages(response.data);
 			} catch (error) {
@@ -51,7 +51,7 @@ function Messages() {
 		};
 
 		try {
-			const response = await AxiosInstance.post("/messages", messageData);
+			const response = await AxiosInstance.post("/me/messages", messageData);
 			setMessages((prevMessages) => [...prevMessages, response.data]);
 			setNewMessage("");
 		} catch (error) {
