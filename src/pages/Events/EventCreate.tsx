@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AxiosInstance from '../../utils/axios';
 import type { IEvent } from '../../@types';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function EventCreate() {
   const [event, setEvent] = useState<IEvent | null>(null);
@@ -20,11 +20,16 @@ function EventCreate() {
         description: event?.description,
       };
       console.log(eventData);
-      await AxiosInstance.post('/me/events', eventData);
+      const response = await AxiosInstance.post('/me/events', eventData);
+
+      // je veux rediriger l'utilisateur vers la page de l'événement
+      // avec l'id de l'évenement qui vient d'être créé
+      // récupérer l'ID de l'événement fraichement créé mais comment qu'on fait ça ?
+      const createdEventId = response.data.id;
+      navigate(`/events/${createdEventId}`);
 
       // Réinitialise ou gère l'état après succès
       setEvent(null);
-      navigate('/events');
     } catch (err) {
       setError("Une erreur est survenue lors de la création de l'événement.");
     }
@@ -145,6 +150,7 @@ function EventCreate() {
                 }
               />
             </div>
+
             <div className="flex justify-end">
               <button
                 type="submit"
@@ -160,6 +166,26 @@ function EventCreate() {
               <p>{error}</p>
             </div>
           )}
+        </div>
+      </div>
+      <div className="py-12">
+        <div className="relative">
+          <div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
+            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+              Créez des événements et partagez-les avec la communauté,
+              rencontrer de nouvelle connaissances prêtes à partager dees
+              moments uniques.
+            </p>
+            <Link to="/events">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Retour à la liste des événements
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </main>

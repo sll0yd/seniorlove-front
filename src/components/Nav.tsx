@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import FormLogin from './FormLogin';
-import AxiosInstance from '../utils/axios'; // Import Axios
 import { useUser } from '../context/UserContext';
 
 function Nav() {
@@ -80,7 +79,7 @@ function Nav() {
           </Link>
         </li>
         <li>
-          <Link to="/" className="text-gray-700 hover:text-gray-900">
+          <Link to="/#Testimony" className="text-gray-700 hover:text-gray-900">
             Témoignages
           </Link>
         </li>

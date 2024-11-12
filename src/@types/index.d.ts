@@ -35,6 +35,7 @@ export interface IEvent {
   tags?: ITag[];
   created_at?: Date;
   updated_at?: Date;
+  creator: ICreator;
 }
 
 export interface IMessage {
@@ -53,4 +54,10 @@ export interface ITestimony {
   created_at: Date;
   updated_at?: Date;
   user: IUser;
+}
+
+export interface ICreator {
+  id: number;
+  userName: string;
+  picture: string;
 }

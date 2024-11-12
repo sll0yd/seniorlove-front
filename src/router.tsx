@@ -1,29 +1,32 @@
-import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout.tsx";
-import ProtectedRoute from "./pages/Auth/ProtectedRoute.tsx";
+import { createBrowserRouter } from 'react-router-dom';
+import MainLayout from './layouts/MainLayout.tsx';
+import ProtectedRoute from './pages/Auth/ProtectedRoute.tsx';
 
 // Pages publiques
 //----------------
-import HomePage from "./pages/Home/HomePage.tsx";
+import HomePage from './pages/Home/HomePage.tsx';
 // import Login
 // import Register
 
 // Pages protégées
 //----------------
-import EventsLists from "./pages/Events/EventsLists.tsx";
-import EventDetail from "./pages/Events/EventDetail.tsx";
-import EventCreate from "./pages/Events/EventCreate.tsx";
+import EventsLists from './pages/Events/EventsLists.tsx';
+import EventDetail from './pages/Events/EventDetail.tsx';
+import EventCreate from './pages/Events/EventCreate.tsx';
 
 // import EventEdit
 
-import ProfileDetail from "./pages/Profile/ProfileDetail.tsx";
-import ProfileEdit from "./pages/Profile/ProfileEdit.tsx";
-import ProfilesLists from "./pages/Profile/ProfileLists.tsx";
+import ProfileDetail from './pages/Profile/ProfileDetail.tsx';
+import ProfileEdit from './pages/Profile/ProfileEdit.tsx';
+import ProfilesLists from './pages/Profile/ProfileLists.tsx';
+import Testimony from './components/Testimony.tsx';
 
 // import UserSearch
 
-import Messages from "./pages/Messaging/Messages.tsx";
+// import Messages
 // import Conversation
+
+//function for scrolling to testimony
 
 // Routes
 const router = createBrowserRouter([
@@ -52,7 +55,7 @@ const router = createBrowserRouter([
 				),
 			},
 			{
-				path: "/events/create",
+				path: "/event/create",
 				element: (
 					<ProtectedRoute>
 						<EventCreate />
@@ -95,4 +98,4 @@ const router = createBrowserRouter([
 	},
 ]);
 
-export default router;
+

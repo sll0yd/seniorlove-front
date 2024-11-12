@@ -55,7 +55,8 @@ const EventDetail = () => {
 
         <div className="bg-pink-50 p-6">
           <div className="text-sm text-gray-600 mb-4 text-center">
-            Proposé par · H. Burger · Le · {event.date} · À · {event.location}
+            Proposé par · {event.creator.userName} · Le · {event.date} · À ·{' '}
+            {event.location}
           </div>
 
           <div className="flex flex-col items-center gap-4 mb-4">
