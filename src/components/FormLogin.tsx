@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useEffect, useRef, useState } from 'react';
 import AxiosInstance from '../utils/axios';
 import { useUser } from '../context/UserContext';
 
@@ -17,7 +17,25 @@ const FormLogin: React.FC<FormLoginProps> = ({
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false); // État pour contrôler l'affichage du message
-  const { setUser, authErrorMsg } = useUser();
+  const { setUser, authErrorMsg, setAuthErrorMsg } = useUser();
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [onClose]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -31,7 +49,6 @@ const FormLogin: React.FC<FormLoginProps> = ({
     AxiosInstance.post('/login', data)
       .then((response) => {
         const { user, accessToken } = response.data;
-        console.log(response.data);
 
         // Stocker le token dans localStorage pour que l'intercepteur l'ajoute automatiquement
         localStorage.setItem('token', accessToken);
@@ -39,7 +56,8 @@ const FormLogin: React.FC<FormLoginProps> = ({
         setUserName(user.userName); // Met à jour userName dans Nav
         formElm.reset(); // Réinitialise le formulaire
         setShowWelcomeMessage(true);
-        setErrorMessage(undefined); // Affiche le message de bienvenue
+        setErrorMessage(undefined);
+        setAuthErrorMsg(null);
 
         // Timer pour masquer le message et fermer le formulaire après 5 secondes
         setTimeout(() => {
@@ -51,53 +69,54 @@ const FormLogin: React.FC<FormLoginProps> = ({
         setErrorMessage('Erreur lors de la connexion'); // Affiche le message d'erreur
       });
   }
-  console.log('userName dans le composant FormLogin:', userName);
 
   return (
     <div>
-      {/* Affiche "Bonjour {userName}" si l'utilisateur est connecté */}
-      {showWelcomeMessage && userName ? (
-        <div>Bonjour {userName}</div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Email:
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Entrez votre email"
-              required
-            />
-          </label>
-          <label>
-            Mot de passe:
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Entrez votre mot de passe"
-              required
-            />
-          </label>
-          <button
-            className="bg-blue-400 text-white p-2 rounded mt-4"
-            type="submit"
-          >
-            Connexion
-          </button>
-        </form>
-      )}
-      {errorMessage ||
-        (authErrorMsg && (
-          <div className="text-red-500 text-sm">
-            {errorMessage || authErrorMsg}
-          </div>
-        ))}
+      <div ref={modalRef} className="modal-content">
+        {/* Affiche "Bonjour {userName}" si l'utilisateur est connecté */}
+        {showWelcomeMessage && userName ? (
+          <div>Bonjour {userName}</div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                placeholder="Entrez votre email"
+                required
+              />
+            </label>
+            <label>
+              Mot de passe:
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                placeholder="Entrez votre mot de passe"
+                required
+              />
+            </label>
+            <button
+              className="bg-blue-400 text-white p-2 rounded mt-4"
+              type="submit"
+            >
+              Connexion
+            </button>
+          </form>
+        )}
+        {errorMessage ||
+          (authErrorMsg && (
+            <div className="text-red-500 text-sm">
+              {errorMessage || authErrorMsg}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
