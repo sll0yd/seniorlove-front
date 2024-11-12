@@ -1,4 +1,10 @@
-import { type FormEvent, useEffect, useRef, useState } from 'react';
+import {
+  type FormEvent,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
 import AxiosInstance from '../utils/axios';
 import { useUser } from '../context/UserContext';
 
@@ -16,26 +22,9 @@ const FormLogin: React.FC<FormLoginProps> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false); // État pour contrôler l'affichage du message
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
   const { setUser, authErrorMsg, setAuthErrorMsg } = useUser();
   const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleOutsideClick);
-
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [onClose]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -61,7 +50,8 @@ const FormLogin: React.FC<FormLoginProps> = ({
 
         // Timer pour masquer le message et fermer le formulaire après 5 secondes
         setTimeout(() => {
-          setShowWelcomeMessage(false); // Cache le message après 5 secondes
+          setShowWelcomeMessage(false); // Cache le message après 4 secondes
+          handleCloseModal();
           onClose();
         }, 4000);
       })
@@ -69,10 +59,29 @@ const FormLogin: React.FC<FormLoginProps> = ({
         setErrorMessage('Erreur lors de la connexion'); // Affiche le message d'erreur
       });
   }
+  const handleCloseModal = useCallback(() => {
+    setAuthErrorMsg(null);
+    onClose();
+  }, [onClose, setAuthErrorMsg]);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        handleCloseModal();
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [handleCloseModal]);
 
   return (
     <div>
-      <div ref={modalRef} className="modal-content">
+      <div ref={modalRef} className="">
         {/* Affiche "Bonjour {userName}" si l'utilisateur est connecté */}
         {showWelcomeMessage && userName ? (
           <div>Bonjour {userName}</div>
@@ -110,12 +119,11 @@ const FormLogin: React.FC<FormLoginProps> = ({
             </button>
           </form>
         )}
-        {errorMessage ||
-          (authErrorMsg && (
-            <div className="text-red-500 text-sm">
-              {errorMessage || authErrorMsg}
-            </div>
-          ))}
+        {(errorMessage || authErrorMsg) && (
+          <div className="text-red-500 text-sm">
+            {errorMessage || authErrorMsg}
+          </div>
+        )}
       </div>
     </div>
   );
