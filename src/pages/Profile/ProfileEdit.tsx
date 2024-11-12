@@ -3,6 +3,7 @@ import AxiosInstance from "../../utils/axios";
 import type { ITag } from "../../@types";
 import { useTags } from "../../context/TagContext";
 import { useUser } from "../../context/UserContext";
+import { Link } from 'react-router-dom';
 
 function ProfileEdit() {
   // Récupération du user et setUser depuis le context utilisateur
@@ -371,6 +372,27 @@ function ProfileEdit() {
           </div>
         </div>
       </div>
+
+      <div className="py-12">
+        <div className="relative">
+          <div className="absolute bg-blue-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
+            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+              Présentez-vous sous votre meilleur profile !
+            </p>
+            <Link to="/profile">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Retour à la liste des profils
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+
     </main>
   );
 }
