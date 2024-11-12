@@ -53,6 +53,7 @@ export interface ITestimony {
   user_id: number;
   created_at: Date;
   updated_at?: Date;
+  user: IUser;
 }
 
 export interface ICreator {

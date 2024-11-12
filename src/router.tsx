@@ -30,85 +30,72 @@ import Testimony from './components/Testimony.tsx';
 
 // Routes
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/',
-        element: <HomePage />,
-      },
-      {
-        path: '/events',
-        element: (
-          <ProtectedRoute>
-            <EventsLists />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/events/:id',
-        element: (
-          <ProtectedRoute>
-            <EventDetail />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/profile',
-        element: (
-          <ProtectedRoute>
-            <ProfilesLists />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/profile/:id',
-        element: (
-          <ProtectedRoute>
-            <ProfileDetail />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/account',
-        element: (
-          <ProtectedRoute>
-            <ProfileEdit />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: '/event/create',
-        element: (
-          <ProtectedRoute>
-            <EventCreate />
-          </ProtectedRoute>
-        ),
-      },
-
-      {
-        path: '/testimony',
-        element: <Testimony />,
-      },
-
-      // {
-      //   path: '/recipe/:slug',
-      //   element: <RecipeDetailPage />,
-      // },
-      // {
-      //   path: '/favorites',
-      //   element: <FavoritesPage />,
-      // },
-    ],
-  },
+	{
+		path: "/",
+		element: <MainLayout />,
+		children: [
+			{
+				path: "/",
+				element: <HomePage />,
+			},
+			{
+				path: "/events",
+				element: (
+					<ProtectedRoute>
+						<EventsLists />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/events/:id",
+				element: (
+					<ProtectedRoute>
+						<EventDetail />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/event/create",
+				element: (
+					<ProtectedRoute>
+						<EventCreate />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/profile",
+				element: (
+					<ProtectedRoute>
+						<ProfilesLists />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/profile/:id",
+				element: (
+					<ProtectedRoute>
+						<ProfileDetail />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/account",
+				element: (
+					<ProtectedRoute>
+						<ProfileEdit />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: "/messages",
+				element: (
+					//<ProtectedRoute>
+						<Messages />
+					//</ProtectedRoute>
+				),
+			},
+		],
+	},
 ]);
 
-export default router;
-// Function for scrolling to testimony
-export const scrollToTestimony = () => {
-  const testimonyElement = document.getElementById('testimony');
-  if (testimonyElement) {
-    testimonyElement.scrollIntoView({ behavior: 'smooth' });
-  }
-};
+
