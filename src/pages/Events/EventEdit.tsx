@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import AxiosInstance from '../../utils/axios';
 import type { IEvent } from '../../@types';
 import { useTags } from '../../context/TagContext';
-import { ITag } from '../../@types';
+import type { ITag } from '../../@types';
 
 function EventEdit() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +16,7 @@ function EventEdit() {
   const [date, setDate] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [picture, setPicture] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   // Etat pour gérer les tags
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
@@ -69,6 +70,23 @@ function EventEdit() {
     }
   }, [event, tags]);
 
+  // Update the preview of the picture
+  useEffect(() => {
+    if (picture) {
+      const formData = new FormData();
+      formData.append('event_picture', picture);
+      AxiosInstance.patch(`me/events/${id}/event_picture`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    }
+  }, [picture]);
+
+  // Function to handle the picture
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setPicture(file);
+  };
+
   // Function to update the event only string fields
   const handleEditSubmit = async (e) => {
     e.preventDefault();
@@ -118,7 +136,7 @@ function EventEdit() {
     }
   };
 
-  // Suppression d'un tag d'un event
+  // Function to remove a tag from the event list
   const handleRemoveTag = async (tagId: number) => {
     setIsUpdatingTags(true);
     try {
@@ -150,195 +168,197 @@ function EventEdit() {
           </h1>
         </div>
       </div>
+      <div className="bg-pink-50 rounded-lg p-8">
+        <div className="mb-8">
+          <div className="w-full max-w-[600px] h-64 bg-gray-200 rounded-lg overflow-hidden">
+            <img
+              src={preview || event?.picture || '/api/placeholder/1200/600'}
+              alt={event?.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
 
-      <div className="max-w-4xl mx-auto px-8">
-        <div className="bg-pink-50 rounded-lg p-8">
-          <div className="mb-8">
-            <div className="w-full h-64 bg-gray-200 rounded-lg mb-4">
-              <img
-                src={event?.picture || '/api/placeholder/1200/600'}
-                alt={event?.title}
-                className="w-full h-[400px] object-cover"
-              />
-            </div>
-            <button
-              type="button"
-              className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block"
-            >
-              Choisissez une photo de couverture
-            </button>
+        <label
+          htmlFor="upload-picture"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block cursor-pointer"
+        >
+          Choisissez une photo de couverture
+        </label>
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handlePictureChange}
+          className="hidden"
+          id="upload-picture"
+        />
+        <form className="space-y-6" onSubmit={handleEditSubmit}>
+          <div>
+            <label htmlFor="title" className="block text-gray-700 mb-2">
+              Le titre de votre évènement :
+            </label>
+            <input
+              type="text"
+              id="title"
+              placeholder="Votre titre ici..."
+              className="w-full p-2 border rounded-md"
+              value={event?.title || ''}
+              onChange={(e) =>
+                setEvent(
+                  (prev) => ({ ...prev, title: e.target.value }) as IEvent,
+                )
+              }
+            />
           </div>
 
-          <form className="space-y-6" onSubmit={handleEditSubmit}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="title" className="block text-gray-700 mb-2">
-                Le titre de votre évènement :
+              <label htmlFor="location" className="block text-gray-700 mb-2">
+                Localisation de l'évènement :
               </label>
               <input
                 type="text"
-                id="title"
-                placeholder="Votre titre ici..."
+                id="location"
+                placeholder="Votre localisation ici..."
                 className="w-full p-2 border rounded-md"
-                value={event?.title || ''}
+                value={event?.location || ''}
                 onChange={(e) =>
                   setEvent(
-                    (prev) => ({ ...prev, title: e.target.value }) as IEvent,
+                    (prev) => ({ ...prev, location: e.target.value }) as IEvent,
                   )
                 }
               />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="location" className="block text-gray-700 mb-2">
-                  Localisation de l'évènement :
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  placeholder="Votre localisation ici..."
-                  className="w-full p-2 border rounded-md"
-                  value={event?.location || ''}
-                  onChange={(e) =>
-                    setEvent(
-                      (prev) =>
-                        ({ ...prev, location: e.target.value }) as IEvent,
-                    )
-                  }
-                />
-              </div>
-
-              <div>
-                <label htmlFor="date" className="block text-gray-700 mb-2">
-                  Date de l'évènement :
-                </label>
-                <input
-                  type="text"
-                  id="date"
-                  placeholder="22 / 10 /2024"
-                  className="w-full p-2 border rounded-md"
-                  value={event?.date || ''}
-                  onChange={(e) =>
-                    setEvent(
-                      (prev) => ({ ...prev, date: e.target.value }) as IEvent,
-                    )
-                  }
-                />
-              </div>
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-gray-700 mb-2">
-                Quelques mots sur l'évènement :
+              <label htmlFor="date" className="block text-gray-700 mb-2">
+                Date de l'évènement :
               </label>
-              <textarea
-                id="description"
-                rows={4}
+              <input
+                type="text"
+                id="date"
+                placeholder="22 / 10 /2024"
                 className="w-full p-2 border rounded-md"
-                placeholder="Description de l'évènement..."
-                value={event?.description || ''}
+                value={event?.date || ''}
                 onChange={(e) =>
                   setEvent(
-                    (prev) =>
-                      ({ ...prev, description: e.target.value }) as IEvent,
+                    (prev) => ({ ...prev, date: e.target.value }) as IEvent,
                   )
                 }
               />
             </div>
-            <label htmlFor="interests" className="block text-gray-700 mb-2">
-              Catégorie de l'évenement :
+          </div>
+
+          <div>
+            <label htmlFor="description" className="block text-gray-700 mb-2">
+              Quelques mots sur l'évènement :
             </label>
-            <div id="interests" className="flex flex-wrap gap-3">
-              <div className="flex flex-wrap gap-2 items-center">
-                {selectedTags && selectedTags.length > 0 ? (
-                  selectedTags.map((tag) => (
-                    <span
-                      key={tag.id}
-                      style={{
-                        backgroundColor: `#${tag.color}`,
-                      }}
-                      className="inline-flex items-center justify-center gap-1 text-sm px-3 py-1.5 rounded-full text-white"
+            <textarea
+              id="description"
+              rows={4}
+              className="w-full p-2 border rounded-md"
+              placeholder="Description de l'évènement..."
+              value={event?.description || ''}
+              onChange={(e) =>
+                setEvent(
+                  (prev) =>
+                    ({ ...prev, description: e.target.value }) as IEvent,
+                )
+              }
+            />
+          </div>
+          <label htmlFor="interests" className="block text-gray-700 mb-2">
+            Catégorie de l'évenement :
+          </label>
+          <div id="interests" className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2 items-center">
+              {selectedTags && selectedTags.length > 0 ? (
+                selectedTags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    style={{
+                      backgroundColor: `#${tag.color}`,
+                    }}
+                    className="inline-flex items-center justify-center gap-1 text-sm px-3 py-1.5 rounded-full text-white"
+                  >
+                    <span className="leading-none flex items-center">
+                      {tag.name}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTag(tag.id)}
+                      disabled={isUpdatingTags}
+                      className={`ml-1 rounded-full hover:bg-white/20 transition-colors w-4 h-4 flex items-center justify-center leading-none text-lg ${
+                        isUpdatingTags ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                      aria-label="Remove tag"
                     >
-                      <span className="leading-none flex items-center">
-                        {tag.name}
-                      </span>
+                      ×
+                    </button>
+                  </span>
+                ))
+              ) : (
+                <p className="text-gray-500 italic text-sm">
+                  Aucun tag associé à ce profil
+                </p>
+              )}
+            </div>
+            {/* Menu déroulant des tags */}
+            <div className="relative">
+              <button
+                type="button"
+                className={`w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors ${
+                  isUpdatingTags ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
+                disabled={isUpdatingTags}
+              >
+                <span className="text-gray-600 text-lg">+</span>
+              </button>
+              {isTagDropdownOpen && (
+                <div className="absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden">
+                  <div className="py-1 max-h-64 overflow-y-auto">
+                    {tags.map((tag) => (
                       <button
                         type="button"
-                        onClick={() => handleRemoveTag(tag.id)}
-                        disabled={isUpdatingTags}
-                        className={`ml-1 rounded-full hover:bg-white/20 transition-colors w-4 h-4 flex items-center justify-center leading-none text-lg ${
+                        key={tag.id}
+                        className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 group ${
                           isUpdatingTags ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
-                        aria-label="Remove tag"
+                        onClick={() => handleAddTag(tag)}
+                        disabled={isUpdatingTags}
                       >
-                        ×
+                        <span
+                          className="inline-block w-3 h-3 rounded-full transition-transform group-hover:scale-110"
+                          style={{
+                            backgroundColor: `#${tag.color}`,
+                          }}
+                        />
+                        <span className="text-gray-700">{tag.name}</span>
                       </button>
-                    </span>
-                  ))
-                ) : (
-                  <p className="text-gray-500 italic text-sm">
-                    Aucun tag associé à ce profil
-                  </p>
-                )}
-              </div>
-              {/* Menu déroulant des tags */}
-              <div className="relative">
-                <button
-                  type="button"
-                  className={`w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors ${
-                    isUpdatingTags ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                  onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
-                  disabled={isUpdatingTags}
-                >
-                  <span className="text-gray-600 text-lg">+</span>
-                </button>
-                {isTagDropdownOpen && (
-                  <div className="absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden">
-                    <div className="py-1 max-h-64 overflow-y-auto">
-                      {tags.map((tag) => (
-                        <button
-                          type="button"
-                          key={tag.id}
-                          className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 group ${
-                            isUpdatingTags
-                              ? 'opacity-50 cursor-not-allowed'
-                              : ''
-                          }`}
-                          onClick={() => handleAddTag(tag)}
-                          disabled={isUpdatingTags}
-                        >
-                          <span
-                            className="inline-block w-3 h-3 rounded-full transition-transform group-hover:scale-110"
-                            style={{
-                              backgroundColor: `#${tag.color}`,
-                            }}
-                          />
-                          <span className="text-gray-700">{tag.name}</span>
-                        </button>
-                      ))}
-                    </div>
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
+          </div>
 
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-              >
-                Mettre à jour l'évènement
-              </button>
-            </div>
-          </form>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            >
+              Mettre à jour l'évènement
+            </button>
+          </div>
+        </form>
 
-          {error && (
-            <div className="mt-4 text-red-500">
-              <p>{error}</p>
-            </div>
-          )}
-        </div>
+        {error && (
+          <div className="mt-4 text-red-500">
+            <p>{error}</p>
+          </div>
+        )}
       </div>
       <div className="py-12">
         <div className="relative">
