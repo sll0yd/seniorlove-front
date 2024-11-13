@@ -3,11 +3,23 @@ import { Link, useParams } from 'react-router-dom';
 import type { IEvent } from '../../@types';
 import AxiosInstance from '../../utils/axios';
 import { useTags } from '../../context/TagContext'; // Importer useTags
+import { useUser } from '../../context/UserContext'; // Importer useUserContext
 
 const EventDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [event, setEvent] = useState<IEvent | null>(null);
   const { tags } = useTags(); // Récupérer les tags depuis le contexte
+  const { user } = useUser();
+  const currentUserId = user?.id;
+
+  //Use effect for checking if the user is the creator of the event
+  useEffect(() => {
+    if (event) {
+      console.log('Event details:', event);
+      // console.log(currentUserId); demander pourquoi il m'affiche 13  systématiquement celui là
+      console.log('Is user the creator:', event.creator.id === currentUserId); // Remplacez 'currentUserName' par le nom d'utilisateur actuel
+    }
+  }, [event, currentUserId]);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -87,12 +99,23 @@ const EventDetail = () => {
           </blockquote>
 
           <div className="flex justify-center">
-            <button
-              type="button"
-              className="px-6 py-2 bg-red-400 text-white rounded-full hover:bg-red-500 transition-colors"
-            >
-              Participer à l'événement
-            </button>
+            {event.creator.id === currentUserId ? ( // if the user is the creator of the event we display the button "Modifier l'événement"
+              <Link to={`/event/${event.id}/edit`}>
+                <button
+                  type="button"
+                  className="px-6 py-2 bg-rose-400 text-white rounded-full hover:bg-rose-500 transition-colors"
+                >
+                  Modifier l'événement
+                </button>
+              </Link> // if the user is not the creator of the event we display the button "Participer à l'événement"
+            ) : (
+              <button
+                type="button"
+                className="px-6 py-2 bg-red-400 text-white rounded-full hover:bg-red-500 transition-colors"
+              >
+                Participer à l'événement
+              </button>
+            )}
           </div>
         </div>
       </div>

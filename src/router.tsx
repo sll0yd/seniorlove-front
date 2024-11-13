@@ -23,6 +23,7 @@ import ProfilesLists from './pages/Profile/ProfileLists.tsx';
 // import UserSearch
 
 import Messages from './pages/Messaging/Messages.tsx';
+import EventEdit from './pages/Events/EventEdit.tsx';
 // import Conversation
 
 // Routes
@@ -56,6 +57,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <EventCreate />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/event/:id/edit',
+        element: (
+          <ProtectedRoute>
+            <EventEdit />
           </ProtectedRoute>
         ),
       },
