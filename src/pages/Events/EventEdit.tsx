@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AxiosInstance from '../../utils/axios';
 import type { IEvent } from '../../@types';
@@ -151,6 +151,9 @@ function EventEdit() {
 
   // Function to remove a tag from the event list
   const handleRemoveTag = async (tagId: number) => {
+    if (!event || !event.id) {
+      return;
+    }
     setIsUpdatingTags(true);
     try {
       await AxiosInstance.delete(`/me/events/${event.id}/tags/${tagId}`);
@@ -168,6 +171,30 @@ function EventEdit() {
       alert("Une erreur s'est produite lors de la suppression du tag");
     } finally {
       setIsUpdatingTags(false);
+    }
+  };
+
+  const handleDeleteEvent = async () => {
+    if (!event || !event.id) {
+      return;
+    }
+    try {
+      await AxiosInstance.delete(`/me/events/${event.id}`);
+      navigate('/events');
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      alert("Une erreur s'est produite lors de la suppression de l'événement");
+    }
+  };
+
+  const confirmAndDeleteEvent = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    const isConfirmed = window.confirm(
+      'Êtes-vous sûr de vouloir supprimer cet événement ?',
+    );
+    if (isConfirmed) {
+      handleDeleteEvent();
     }
   };
 
@@ -388,6 +415,13 @@ function EventEdit() {
               onClick={() => navigate('/events')}
             >
               Retour à la liste des événements
+            </button>
+            <button
+              type="button"
+              className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              onClick={{ confirmAndDeleteEvent }}
+            >
+              supprimer l'évènement
             </button>
           </div>
         </div>
