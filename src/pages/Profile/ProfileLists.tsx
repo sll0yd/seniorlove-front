@@ -2,15 +2,19 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { IUser } from '../../@types';
 import AxiosInstance from '../../utils/axios';
+import Fuse from 'fuse.js';
 
 function ProfilesLists() {
   const [profiles, setProfiles] = useState<IUser[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProfiles, setFilteredProfiles] = useState<IUser[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await AxiosInstance.get<IUser[]>('/users');
         setProfiles(response.data);
+        setFilteredProfiles(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -18,6 +22,21 @@ function ProfilesLists() {
 
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    // Configure Fuse.js for fuzzy search on userName, bio, and hometown fields
+    const fuse = new Fuse(profiles, {
+      keys: ['userName', 'bio', 'hometown'],
+      threshold: 0.3,
+    });
+
+    if (searchQuery.trim()) {
+      const results = fuse.search(searchQuery).map((result) => result.item);
+      setFilteredProfiles(results);
+    } else {
+      setFilteredProfiles(profiles); // Show all if no search query
+    }
+  }, [searchQuery, profiles]);
 
   return (
     <div className="min-h-screen  pt-24">
@@ -34,13 +53,15 @@ function ProfilesLists() {
         <div className="mb-8">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Recherchez des profils..."
             className="w-full p-3 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
           />
         </div>
 
         <div className="space-y-4">
-          {profiles.map((profile) => (
+          {filteredProfiles.map((profile) => (
             <div
               key={profile.id}
               className="bg-blue-50 rounded-lg p-6 flex items-center"

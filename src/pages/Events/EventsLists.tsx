@@ -2,15 +2,19 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { IEvent } from '../../@types';
 import AxiosInstance from '../../utils/axios';
+import Fuse from 'fuse.js';
 
 function Eventlists() {
   const [events, setEvents] = useState<IEvent[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredEvents, setFilteredEvents] = useState<IEvent[]>([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await AxiosInstance.get<IEvent[]>('/events');
         setEvents(response.data);
+        setFilteredEvents(response.data);
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -18,6 +22,21 @@ function Eventlists() {
 
     fetchEvents();
   }, []);
+
+  useEffect(() => {
+    // Configure Fuse.js for fuzzy search on title and description fields
+    const fuse = new Fuse(events, {
+      keys: ['title', 'description', 'tags'],
+      threshold: 0.3, // Adjust for sensitivity
+    });
+
+    if (searchQuery.trim()) {
+      const results = fuse.search(searchQuery).map((result) => result.item);
+      setFilteredEvents(results);
+    } else {
+      setFilteredEvents(events); // Show all if no search query
+    }
+  }, [searchQuery, events]);
 
   return (
     <main className="pt-24">
@@ -35,13 +54,15 @@ function Eventlists() {
         <div className="mb-12">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Recherche d'un évenement..."
             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <Link
               key={event.id}
               to={`/events/${event.id}`}
