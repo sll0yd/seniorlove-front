@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AxiosInstance from '../../utils/axios';
 import type { IEvent } from '../../@types';
@@ -15,18 +15,14 @@ function EventEdit() {
   const [location, setLocation] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  // Etats pour gérer l'image
   const [picture, setPicture] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   // Etat pour gérer les tags
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [isUpdatingTags, setIsUpdatingTags] = useState(false);
-  const { tags } = useTags(); // Récupération de tous les tags disponibles
-
-  // la route pour patch titre,description,location,date  est 'me/events/:iddelevent'
-  // la route pour patch les tags est 'me/events/:iddelevent/tags/iddutag'
-  // la route pour delete un tag est 'me/events/:iddelevent/tags/iddutag'
-  // la route pour la photo est 'me/events/:iddelevent/event_picture'
+  const { tags } = useTags();
 
   // Init of the event with the id
   useEffect(() => {
@@ -190,6 +186,7 @@ function EventEdit() {
   const confirmAndDeleteEvent = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
+    event.preventDefault();
     const isConfirmed = window.confirm(
       'Êtes-vous sûr de vouloir supprimer cet événement ?',
     );
@@ -200,7 +197,7 @@ function EventEdit() {
 
   return (
     <main className="pt-24">
-      <div className="relative">
+      <div className="relative  mb-8">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
           <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap">
@@ -209,8 +206,8 @@ function EventEdit() {
         </div>
       </div>
       <div className="bg-pink-50 rounded-lg p-8">
-        <div className="mb-8">
-          <div className="w-full max-w-[600px] h-64 bg-gray-200 rounded-lg overflow-hidden">
+        <div className="mb-8 flex justify-center">
+          <div className="w-full max-w-[600px] h-64 bg-gray-200 rounded-lg overflow-hidden ">
             <img
               src={preview || event?.picture || '/api/placeholder/1200/600'}
               alt={event?.title}
@@ -221,7 +218,7 @@ function EventEdit() {
 
         <label
           htmlFor="upload-picture"
-          className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block cursor-pointer"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block cursor-pointer w-96 text-center"
         >
           Choisissez une photo de couverture
         </label>
@@ -387,6 +384,13 @@ function EventEdit() {
 
           <div className="flex justify-end">
             <button
+              type="button"
+              className="px-8 py-3 bg-red-500 border-2 border-white text-white rounded-lg shadow-md hover:bg-red-500 hover:scale-105 hover:shadow-lg hover:text-white-300 transition-all duration-300 mr-4"
+              onClick={(e) => confirmAndDeleteEvent(e)}
+            >
+              Supprimer l'évènement
+            </button>
+            <button
               type="submit"
               className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
@@ -415,13 +419,6 @@ function EventEdit() {
               onClick={() => navigate('/events')}
             >
               Retour à la liste des événements
-            </button>
-            <button
-              type="button"
-              className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-              onClick={{ confirmAndDeleteEvent }}
-            >
-              supprimer l'évènement
             </button>
           </div>
         </div>
