@@ -170,7 +170,7 @@ function Header() {
                           id="gender-homme"
                           type="radio"
                           name="gender"
-                          value="H"
+                          value="M"
                           checked={formData.gender === "H"}
                           onChange={handleChange}
                           className="w-4 h-4"
