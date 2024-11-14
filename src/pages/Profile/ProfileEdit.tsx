@@ -16,7 +16,9 @@ function ProfileEdit() {
   const [bio, setBio] = useState('');
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-
+  // Etats pour gérer l'image
+  const [picture, setPicture] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   // États pour gérer les tags (centres d'intérêt)
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
@@ -24,6 +26,7 @@ function ProfileEdit() {
   const { tags } = useTags(); // Récupération de tous les tags disponibles
 
   // Init of the user data and refresh the user data when changes is applied
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -126,6 +129,41 @@ function ProfileEdit() {
     }
   };
 
+  // Gestion de l'aperçu de l'image
+  useEffect(() => {
+    if (picture) {
+      const objectUrl = URL.createObjectURL(picture);
+      setPreview(objectUrl);
+    } else {
+      setPreview(null);
+    }
+  }, [picture]);
+
+  // Gestion du changement d'image
+  const handlePictureChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setPicture(file);
+    const formData = new FormData();
+    formData.append('picture', file);
+
+    try {
+      await AxiosInstance.post('/me/profile_picture', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      const response = await AxiosInstance.get<IUser>('/me');
+      setUser(response.data); // Met à jour le context utilisateur
+      alert('Image de profil mise à jour avec succès');
+    } catch (error) {
+      console.error('Error updating picture:', error);
+    }
+  };
+
   // Affichage d'un message de chargement si l'utilisateur n'est pas encore chargé
   if (!user) {
     return <div>Chargement...</div>;
@@ -146,20 +184,37 @@ function ProfileEdit() {
       <div className="max-w-6xl mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
           {/* Ligne de séparation verticale */}
-          <div className="hidden md:block absolute top-[240px] h-[400px] left-1/2 w-px bg-gray-200 opacity-50" />
+          <div className="hidden md:block absolute top-[320px] h-[300px] left-1/2 w-px bg-gray-200 opacity-50 " />
 
           {/* Image de profil */}
-          <div className="md:col-span-2 flex justify-center mb-6">
-            <div className="w-40 h-40 rounded-lg overflow-hidden">
+
+          {/* Section de l'image de profil et du formulaire pour télécharger une image */}
+          <div className="md:col-span-2 flex flex-col items-center mb-6">
+            {/* Image de profil */}
+            <div className="w-full max-w-[200px] h-[200px] bg-gray-200 rounded-lg overflow-hidden m-5">
               <img
-                src={
-                  user.picture ||
-                  'https://randomuser.me/api/portraits/men/1.jpg'
-                }
-                alt="Profile"
+                src={preview || user?.picture || '/api/placeholder/1200/600'}
+                alt={user?.userName}
                 className="w-full h-full object-cover"
               />
             </div>
+
+            {/* Formulaire pour télécharger une image */}
+            <form action="/uploads" method="POST" className="mt-2">
+              <label
+                htmlFor="upload-picture"
+                className="px-4 py-2 bg-gray-800 text-white rounded-lg cursor-pointer block text-center"
+              >
+                Choisissez une photo de couverture
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handlePictureChange}
+                className="hidden"
+                id="upload-picture"
+              />
+            </form>
           </div>
 
           {/* Colonne des informations publiques */}
@@ -393,8 +448,8 @@ function ProfileEdit() {
       <div className="py-12">
         <div className="relative">
           <div className="absolute bg-blue-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
-            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-5">
+            <p className="text-center text-lg flex-1 italic mr-4 py-4">
               Présentez-vous sous votre meilleur profile !
             </p>
             <Link to="/profile">

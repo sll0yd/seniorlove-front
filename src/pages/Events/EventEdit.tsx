@@ -207,7 +207,7 @@ function EventEdit() {
       </div>
       <div className="bg-pink-50 rounded-lg p-8">
         <div className="mb-8 flex justify-center">
-          <div className="w-full max-w-[600px] h-64 bg-gray-200 rounded-lg overflow-hidden ">
+          <div className="w-full max-w-[900px] h-[400px] bg-gray-200 rounded-lg overflow-hidden ">
             <img
               src={preview || event?.picture || '/api/placeholder/1200/600'}
               alt={event?.title}
