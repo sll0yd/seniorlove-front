@@ -1,49 +1,65 @@
-import { useEffect, useState } from "react";
-import AxiosInstance from "../../utils/axios";
-import type { ITag } from "../../@types";
-import { useTags } from "../../context/TagContext";
-import { useUser } from "../../context/UserContext";
+import { useEffect, useState } from 'react';
+import AxiosInstance from '../../utils/axios';
+import type { ITag, IUser } from '../../@types';
+import { useTags } from '../../context/TagContext';
+import { useUser } from '../../context/UserContext';
 import { Link } from 'react-router-dom';
 
 function ProfileEdit() {
   // Récupération du user et setUser depuis le context utilisateur
   const { user, setUser } = useUser();
-  
+
   // États pour gérer les champs du formulaire
-  const [userName, setUserName] = useState("");
-  const [age, setAge] = useState("");
-  const [hometown, setHometown] = useState("");
-  const [bio, setBio] = useState("");
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  
+  const [userName, setUserName] = useState('');
+  const [age, setAge] = useState('');
+  const [hometown, setHometown] = useState('');
+  const [bio, setBio] = useState('');
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  // Etats pour gérer l'image
+  const [picture, setPicture] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   // États pour gérer les tags (centres d'intérêt)
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [isUpdatingTags, setIsUpdatingTags] = useState(false);
   const { tags } = useTags(); // Récupération de tous les tags disponibles
 
+  // Init of the user data and refresh the user data when changes is applied
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await AxiosInstance.get<IUser>('/me');
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching tags:', error);
+      }
+    };
+    fetchUser();
+  }, []);
+
   // Initialisation des champs avec les données du user
   useEffect(() => {
     if (user) {
-      setUserName(user.userName || "");
-      setAge(user.age?.toString() || "");
-      setHometown(user.hometown || "");
-      setBio(user.bio || "");
-      
+      setUserName(user.userName || '');
+      setAge(user.age?.toString() || '');
+      setHometown(user.hometown || '');
+      setBio(user.bio || '');
+
       // Traitement des tags de l'utilisateur
       if (user.tags && Array.isArray(user.tags)) {
-        const formattedTags = user.tags.map(userTag => {
-          const fullTag = tags.find(t => t.id === userTag.id);
+        const formattedTags = user.tags.map((userTag) => {
+          const fullTag = tags.find((t) => t.id === userTag.id);
           return {
             ...userTag,
-            color: fullTag?.color || ''
+            color: fullTag?.color || '',
           };
         });
         setSelectedTags(formattedTags);
       }
     }
-  }, [user, tags]);
+  }, [user?.tags, user, tags]);
 
   // Mise à jour du profil avec mise à jour du context
   const handleSave = async () => {
@@ -55,11 +71,11 @@ function ProfileEdit() {
         bio,
         password: newPassword || password,
       };
-      const response = await AxiosInstance.patch("/me", updatedUser);
+      const response = await AxiosInstance.patch('/me', updatedUser);
       setUser(response.data); // Met à jour le context utilisateur
-      alert("Informations mises à jour avec succès");
+      alert('Informations mises à jour avec succès');
     } catch (error) {
-      console.error("Erreur lors de la mise à jour:", error);
+      console.error('Erreur lors de la mise à jour:', error);
       alert("Une erreur s'est produite");
     }
   };
@@ -79,12 +95,12 @@ function ProfileEdit() {
       if (user) {
         setUser({
           ...user,
-          tags: updatedTags
+          tags: updatedTags,
         });
       }
       setIsTagDropdownOpen(false);
     } catch (error) {
-      console.error("Error adding tag:", error);
+      console.error('Error adding tag:', error);
       alert("Une erreur s'est produite lors de l'ajout du tag");
     } finally {
       setIsUpdatingTags(false);
@@ -102,14 +118,49 @@ function ProfileEdit() {
       if (user) {
         setUser({
           ...user,
-          tags: updatedTags
+          tags: updatedTags,
         });
       }
     } catch (error) {
-      console.error("Error removing tag:", error);
+      console.error('Error removing tag:', error);
       alert("Une erreur s'est produite lors de la suppression du tag");
     } finally {
       setIsUpdatingTags(false);
+    }
+  };
+
+  // Gestion de l'aperçu de l'image
+  useEffect(() => {
+    if (picture) {
+      const objectUrl = URL.createObjectURL(picture);
+      setPreview(objectUrl);
+    } else {
+      setPreview(null);
+    }
+  }, [picture]);
+
+  // Gestion du changement d'image
+  const handlePictureChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setPicture(file);
+    const formData = new FormData();
+    formData.append('picture', file);
+
+    try {
+      await AxiosInstance.post('/me/profile_picture', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      const response = await AxiosInstance.get<IUser>('/me');
+      setUser(response.data); // Met à jour le context utilisateur
+      alert('Image de profil mise à jour avec succès');
+    } catch (error) {
+      console.error('Error updating picture:', error);
     }
   };
 
@@ -119,7 +170,7 @@ function ProfileEdit() {
   }
 
   return (
-    <main className="pt-24">
+    <main className="pt-24" key={user.id}>
       {/* En-tête de la page */}
       <div className="relative mb-4">
         <div className="absolute bg-blue-50 h-full w-[300px] left-0 rounded-r-3xl" />
@@ -133,20 +184,37 @@ function ProfileEdit() {
       <div className="max-w-6xl mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
           {/* Ligne de séparation verticale */}
-          <div className="hidden md:block absolute top-[240px] h-[400px] left-1/2 w-px bg-gray-200 opacity-50" />
+          <div className="hidden md:block absolute top-[320px] h-[300px] left-1/2 w-px bg-gray-200 opacity-50 " />
 
           {/* Image de profil */}
-          <div className="md:col-span-2 flex justify-center mb-6">
-            <div className="w-40 h-40 rounded-lg overflow-hidden">
+
+          {/* Section de l'image de profil et du formulaire pour télécharger une image */}
+          <div className="md:col-span-2 flex flex-col items-center mb-6">
+            {/* Image de profil */}
+            <div className="w-full max-w-[200px] h-[200px] bg-gray-200 rounded-lg overflow-hidden m-5">
               <img
-                src={
-                  user.picture ||
-                  "https://randomuser.me/api/portraits/men/1.jpg"
-                }
-                alt="Profile"
+                src={preview || user?.picture || '/api/placeholder/1200/600'}
+                alt={user?.userName}
                 className="w-full h-full object-cover"
               />
             </div>
+
+            {/* Formulaire pour télécharger une image */}
+            <form action="/uploads" method="POST" className="mt-2">
+              <label
+                htmlFor="upload-picture"
+                className="px-4 py-2 bg-gray-800 text-white rounded-lg cursor-pointer block text-center"
+              >
+                Choisissez une photo de couverture
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handlePictureChange}
+                className="hidden"
+                id="upload-picture"
+              />
+            </form>
           </div>
 
           {/* Colonne des informations publiques */}
@@ -240,7 +308,7 @@ function ProfileEdit() {
                         <span
                           key={tag.id}
                           style={{
-                            backgroundColor: `#${tag.color}`
+                            backgroundColor: `#${tag.color}`,
                           }}
                           className="inline-flex items-center justify-center gap-1 text-sm px-3 py-1.5 rounded-full text-white"
                         >
@@ -252,7 +320,9 @@ function ProfileEdit() {
                             onClick={() => handleRemoveTag(tag.id)}
                             disabled={isUpdatingTags}
                             className={`ml-1 rounded-full hover:bg-white/20 transition-colors w-4 h-4 flex items-center justify-center leading-none text-lg ${
-                              isUpdatingTags ? "opacity-50 cursor-not-allowed" : ""
+                              isUpdatingTags
+                                ? 'opacity-50 cursor-not-allowed'
+                                : ''
                             }`}
                             aria-label="Remove tag"
                           >
@@ -266,13 +336,13 @@ function ProfileEdit() {
                       </p>
                     )}
                   </div>
-                  
+
                   {/* Menu déroulant des tags */}
                   <div className="relative">
                     <button
                       type="button"
                       className={`w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors ${
-                        isUpdatingTags ? "opacity-50 cursor-not-allowed" : ""
+                        isUpdatingTags ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                       onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
                       disabled={isUpdatingTags}
@@ -287,15 +357,17 @@ function ProfileEdit() {
                               type="button"
                               key={tag.id}
                               className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 group ${
-                                isUpdatingTags ? "opacity-50 cursor-not-allowed" : ""
+                                isUpdatingTags
+                                  ? 'opacity-50 cursor-not-allowed'
+                                  : ''
                               }`}
                               onClick={() => handleAddTag(tag)}
                               disabled={isUpdatingTags}
                             >
                               <span
                                 className="inline-block w-3 h-3 rounded-full transition-transform group-hover:scale-110"
-                                style={{ 
-                                  backgroundColor: `#${tag.color}`
+                                style={{
+                                  backgroundColor: `#${tag.color}`,
                                 }}
                               />
                               <span className="text-gray-700">{tag.name}</span>
@@ -376,8 +448,8 @@ function ProfileEdit() {
       <div className="py-12">
         <div className="relative">
           <div className="absolute bg-blue-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
-            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-5">
+            <p className="text-center text-lg flex-1 italic mr-4 py-4">
               Présentez-vous sous votre meilleur profile !
             </p>
             <Link to="/profile">
@@ -391,8 +463,6 @@ function ProfileEdit() {
           </div>
         </div>
       </div>
-
-
     </main>
   );
 }

@@ -26,7 +26,7 @@ function EventCreate() {
       // avec l'id de l'évenement qui vient d'être créé
       // récupérer l'ID de l'événement fraichement créé mais comment qu'on fait ça ?
       const createdEventId = response.data.id;
-      navigate(`/events/${createdEventId}`);
+      navigate(`/event/${createdEventId}/edit`);
 
       // Réinitialise ou gère l'état après succès
       setEvent(null);
