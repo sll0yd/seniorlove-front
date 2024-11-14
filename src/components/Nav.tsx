@@ -91,7 +91,7 @@ function Nav() {
         {user ? (
           <>
             <li>
-              <Link to="/profiles" className="text-gray-700 hover:text-gray-900">
+              <Link to="/profile" className="text-gray-700 hover:text-gray-900">
                 Trouver des profils
               </Link>
             </li>
