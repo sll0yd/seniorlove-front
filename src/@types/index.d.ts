@@ -40,11 +40,13 @@ export interface IEvent {
 
 export interface IMessage {
   id: number;
+  content: string;
   sender_id: number;
   receiver_id: number;
-  content: string;
-  created_at: Date;
-  updated_at?: Date;
+  sender: IUser;
+  receiver: IUser;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ITestimony {
@@ -60,4 +62,10 @@ export interface ICreator {
   id: number;
   userName: string;
   picture: string;
+}
+
+export interface ApiError {
+  message: string;
+  status: number;
+  error: string;
 }
