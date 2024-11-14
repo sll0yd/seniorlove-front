@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import AxiosInstance from '../../utils/axios';
 import type { IEvent } from '../../@types';
 import { useTags } from '../../context/TagContext';
@@ -17,17 +17,11 @@ function EventEdit() {
   const [description, setDescription] = useState<string>('');
   const [picture, setPicture] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-
   // Etat pour gérer les tags
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [isUpdatingTags, setIsUpdatingTags] = useState(false);
   const { tags } = useTags(); // Récupération de tous les tags disponibles
-
-  // la route pour patch titre,description,location,date  est 'me/events/:iddelevent'
-  // la route pour patch les tags est 'me/events/:iddelevent/tags/iddutag'
-  // la route pour delete un tag est 'me/events/:iddelevent/tags/iddutag'
-  // la route pour la photo est 'me/events/:iddelevent/event_picture'
 
   // la route pour patch titre,description,location,date  est 'me/events/:iddelevent'
   // la route pour patch les tags est 'me/events/:iddelevent/tags/iddutag'
@@ -73,22 +67,41 @@ function EventEdit() {
   // Update the preview of the picture
   useEffect(() => {
     if (picture) {
-      const formData = new FormData();
-      formData.append('event_picture', picture);
-      AxiosInstance.patch(`me/events/${id}/event_picture`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const objectUrl = URL.createObjectURL(picture);
+      setPreview(objectUrl);
+    } else {
+      setPreview(null);
     }
   }, [picture]);
 
   // Function to handle the picture
-  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setPicture(file);
+  const handlePictureChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setPicture(file); // Set the picture state for preview
+
+    const formData = new FormData();
+    formData.append('picture', file);
+
+    try {
+      const response = await AxiosInstance.post(
+        `me/events/${id}/event_picture`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        },
+      );
+      console.log(response); // Response for the uploaded picture
+    } catch (error) {
+      console.error('Error uploading picture:', error);
+    }
   };
 
   // Function to update the event only string fields
-  const handleEditSubmit = async (e) => {
+  const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     try {
@@ -185,14 +198,15 @@ function EventEdit() {
         >
           Choisissez une photo de couverture
         </label>
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handlePictureChange}
-          className="hidden"
-          id="upload-picture"
-        />
+        <form action="/uploads" method="POST">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handlePictureChange}
+            className="hidden"
+            id="upload-picture"
+          />
+        </form>
         <form className="space-y-6" onSubmit={handleEditSubmit}>
           <div>
             <label htmlFor="title" className="block text-gray-700 mb-2">
