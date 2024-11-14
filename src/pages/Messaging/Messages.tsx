@@ -3,24 +3,32 @@ import AxiosInstance from "../../utils/axios";
 import type { IUser, IMessage } from "../../@types";
 import { useUser } from "../../context/UserContext";
 
+/**
+ * Composant Messages - Gère l'interface de messagerie entre utilisateurs
+ * Fonctionnalités principales:
+ * - Affichage des conversations existantes
+ * - Création de nouvelles conversations
+ * - Envoi de messages
+ * - Mise à jour en temps réel de la liste des utilisateurs
+ */
 function Messages() {
   // --- États du composant ---
-  const { user } = useUser(); // Utilisateur connecté
+  const { user } = useUser(); // Utilisateur connecté actuel
   const [messages, setMessages] = useState<IMessage[]>([]); // Messages de la conversation active
   const [users, setUsers] = useState<IUser[]>([]); // Liste des utilisateurs avec conversations
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null); // ID utilisateur sélectionné
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null); // ID de l'utilisateur sélectionné
   const [newMessage, setNewMessage] = useState(""); // Contenu du nouveau message
   const [newUserId, setNewUserId] = useState(""); // ID pour nouvelle conversation
-  const [showNewMessageInput, setShowNewMessageInput] = useState(false); // Affichage form nouvelle conversation
+  const [showNewMessageInput, setShowNewMessageInput] = useState(false); // Affichage du formulaire de nouvelle conversation
   const [isLoading, setIsLoading] = useState(false); // État de chargement
-  const [error, setError] = useState<string | null>(null); // Message d'erreur
 
-  // --- Chargement des messages pour un utilisateur spécifique ---
+  /**
+   * Charge les messages pour un utilisateur spécifique
+   * @param targetUserId ID de l'utilisateur cible
+   */
   const loadMessagesForUser = async (targetUserId: number) => {
     if (!user) return;
-    
     setIsLoading(true);
-    setError(null);
     
     try {
       const response = await AxiosInstance.get<IMessage[]>(`/me/messages/${targetUserId}`);
@@ -29,20 +37,25 @@ function Messages() {
         setSelectedUserId(targetUserId);
       }
     } catch (error) {
-      setError('Erreur lors du chargement des messages');
-      console.error('Erreur de chargement des messages:', error);
+      console.error('Erreur lors du chargement des messages:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // --- Gestion de la sélection d'un utilisateur ---
+  /**
+   * Gère la sélection d'un utilisateur dans la liste
+   * @param userId ID de l'utilisateur sélectionné
+   */
   const handleUserSelection = (userId: number) => {
     if (userId === selectedUserId) return;
     loadMessagesForUser(userId);
   };
 
-  // --- Démarrage d'une nouvelle conversation ---
+  /**
+   * Démarre une nouvelle conversation avec un utilisateur
+   * Récupère d'abord les informations de l'utilisateur avant d'envoyer le message
+   */
   const handleStartNewConversation = async () => {
     const userId = Number(newUserId);
     
@@ -53,39 +66,41 @@ function Messages() {
     }
 
     setIsLoading(true);
+
     try {
+      // Récupération des informations de l'utilisateur
+      const userResponse = await AxiosInstance.get<IUser>(`/users/${userId}`);
+      const otherUser = userResponse.data;
+
+      // Ajout de l'utilisateur à la liste avec les informations correctes
+      setUsers(prev => prev.some(u => u.id === otherUser.id) 
+        ? prev 
+        : [...prev, otherUser]
+      );
+
+      // Envoi du message
       const response = await AxiosInstance.post<IMessage>(`/me/messages/${userId}`, {
         content: newMessage
       });
 
       if (response.data) {
-        const otherUser = response.data.sender_id === user.id 
-          ? response.data.receiver 
-          : response.data.sender;
-
-        if (otherUser) {
-          setUsers(prev => prev.some(u => u.id === otherUser.id) 
-            ? prev 
-            : [...prev, otherUser]
-          );
-          setSelectedUserId(userId);
-          setMessages([response.data]);
-        }
-        
+        setSelectedUserId(userId);
+        setMessages([response.data]);
         setNewMessage("");
         setNewUserId("");
         setShowNewMessageInput(false);
       }
     } catch (error) {
-      const errorMessage = "Une erreur est survenue lors de l'envoi du message";
-      setError(errorMessage);
-      alert(errorMessage);
+      setUsers(prev => prev.filter(u => u.id !== userId));
+      alert("Une erreur est survenue lors de l'envoi du message");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // --- Envoi d'un message dans une conversation existante ---
+  /**
+   * Envoie un message dans la conversation active
+   */
   const handleSendMessage = async () => {
     if (!selectedUserId || !newMessage.trim() || !user) return;
 
@@ -99,19 +114,18 @@ function Messages() {
         setNewMessage("");
       }
     } catch (error) {
-      const errorMessage = "Une erreur est survenue lors de l'envoi du message";
-      setError(errorMessage);
-      alert(errorMessage);
+      alert("Une erreur est survenue lors de l'envoi du message");
     }
   };
 
-  // --- Chargement initial des conversations ---
+  /**
+   * Effet pour charger les conversations initiales
+   * Vérifie les 20 premiers utilisateurs pour trouver les conversations existantes
+   */
   useEffect(() => {
     async function loadAllConversations() {
       if (!user) return;
-
       setIsLoading(true);
-      setError(null);
 
       try {
         const uniqueUsers = new Map<number, IUser>();
@@ -119,6 +133,7 @@ function Messages() {
         let firstMessages: IMessage[] = [];
         let firstUserId: number | null = null;
 
+        // Parcours des utilisateurs potentiels
         for (const id of userIdsToCheck) {
           if (id === user.id) continue;
 
@@ -141,6 +156,7 @@ function Messages() {
           }
         }
 
+        // Mise à jour de l'état avec les utilisateurs trouvés
         setUsers(Array.from(uniqueUsers.values()));
         
         if (firstUserId && firstMessages.length) {
@@ -148,7 +164,7 @@ function Messages() {
           setMessages(firstMessages);
         }
       } catch (error) {
-        setError('Erreur lors du chargement des conversations');
+        console.error('Erreur lors du chargement des conversations:', error);
       } finally {
         setIsLoading(false);
       }
@@ -157,7 +173,7 @@ function Messages() {
     loadAllConversations();
   }, [user]);
 
-  // --- Affichage du chargement si pas d'utilisateur ---
+  // Affichage du chargement si pas d'utilisateur connecté
   if (!user) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -166,20 +182,20 @@ function Messages() {
     );
   }
 
-  // --- Rendu principal de l'interface ---
+  // Rendu principal de l'interface
   return (
     <main className="pt-16">
       <div className="flex flex-col h-[calc(100vh-4rem)]">
-        {/* En-tête */}
+        {/* En-tête de la messagerie */}
         <div className="h-14 my-4 flex-shrink-0">
           <div className="bg-blue-50 h-full w-[300px] rounded-r-3xl flex items-center justify-center shadow-sm">
-            <h1 className="text-2xl font-bold">Messagerie</h1>
+            <h1 className="text-2xl font-bold">Messages</h1>
           </div>
         </div>
 
-        {/* Contenu principal */}
+        {/* Conteneur principal */}
         <div className="flex flex-1 mx-10 h-[calc(100vh-8rem)] overflow-hidden">
-          {/* Liste des conversations (gauche) */}
+          {/* Barre latérale avec la liste des conversations */}
           <div className="w-64 bg-pink-50 rounded-l-3xl shadow-md flex flex-col">
             <div className="p-4 flex flex-col h-full overflow-hidden">
               {/* Bouton nouvelle conversation */}
@@ -191,7 +207,7 @@ function Messages() {
                 Nouveau message
               </button>
 
-              {/* Formulaire nouvelle conversation */}
+              {/* Formulaire de nouvelle conversation */}
               {showNewMessageInput && (
                 <div className="space-y-2 p-2 mt-2 bg-white rounded-lg">
                   <input
@@ -208,7 +224,8 @@ function Messages() {
                     placeholder="Votre message"
                     className="w-full p-2 rounded-lg border border-gray-200"
                   />
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={handleStartNewConversation}
                     disabled={!newUserId || !newMessage || Number(newUserId) === user.id || isLoading}
                     className="w-full p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors disabled:opacity-50"
@@ -218,7 +235,7 @@ function Messages() {
                 </div>
               )}
 
-              {/* Liste des utilisateurs */}
+              {/* Liste des conversations */}
               <div className="mt-4 flex-1 overflow-y-auto">
                 <div className="space-y-2">
                   {isLoading && !users.length ? (
@@ -231,10 +248,11 @@ function Messages() {
                     </div>
                   ) : (
                     users.map(chatUser => (
-                      <button type="button"
+                      <button
+                        type="button"
                         key={chatUser.id}
                         onClick={() => handleUserSelection(chatUser.id)}
-                        className={`flex items-center space-x-3 p-2 rounded-full hover:bg-gray-100 w-full transition-colors ${
+                        className={`flex items-center space-x-3 p-2 rounded-full hover:bg-gray-100 w-full ${
                           selectedUserId === chatUser.id ? 'bg-gray-100' : ''
                         }`}
                         disabled={isLoading}
@@ -255,15 +273,8 @@ function Messages() {
             </div>
           </div>
 
-          {/* Zone des messages (droite) */}
+          {/* Zone des messages */}
           <div className="flex-1 flex flex-col shadow-md border-y border-r border-gray-100 rounded-r-3xl bg-white">
-            {/* Affichage des erreurs */}
-            {error && (
-              <div className="p-3 bg-red-50 text-red-600">
-                {error}
-              </div>
-            )}
-            
             {/* Liste des messages */}
             <div className="flex-1 overflow-y-auto p-3 space-y-3">
               {isLoading && !messages.length ? (
@@ -313,7 +324,7 @@ function Messages() {
               )}
             </div>
 
-            {/* Zone de saisie de message */}
+            {/* Zone de saisie des messages */}
             {selectedUserId && (
               <div className="p-3 bg-gray-100 flex-shrink-0">
                 <div className="flex items-center space-x-2">
@@ -336,7 +347,8 @@ function Messages() {
                         }
                       }}
                     />
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={handleSendMessage}
                       disabled={!newMessage.trim() || isLoading}
                       className="p-2 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50 flex-shrink-0"
@@ -350,7 +362,6 @@ function Messages() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        role="img"
                         aria-labelledby="sendIconTitle"
                       >
                         <title id="sendIconTitle">Envoyer le message</title>
