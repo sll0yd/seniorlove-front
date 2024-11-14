@@ -1,10 +1,4 @@
-import {
-  type FormEvent,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
+import { type FormEvent, useState } from 'react';
 import AxiosInstance from '../utils/axios';
 import { useUser } from '../context/UserContext';
 
@@ -22,9 +16,7 @@ const FormLogin: React.FC<FormLoginProps> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
   const { setUser, authErrorMsg, setAuthErrorMsg } = useUser();
-  const modalRef = useRef<HTMLDivElement>(null);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -44,87 +36,54 @@ const FormLogin: React.FC<FormLoginProps> = ({
         setUser(user);
         setUserName(user.userName); // Met à jour userName dans Nav
         formElm.reset(); // Réinitialise le formulaire
-        setShowWelcomeMessage(true);
         setErrorMessage(undefined);
         setAuthErrorMsg(null);
-
-        // Timer pour masquer le message et fermer le formulaire après 5 secondes
-        setTimeout(() => {
-          setShowWelcomeMessage(false); // Cache le message après 4 secondes
-          handleCloseModal();
-          onClose();
-        }, 4000);
+        onClose(); // Ferme directement le formulaire
       })
       .catch(() => {
         setErrorMessage('Erreur lors de la connexion'); // Affiche le message d'erreur
       });
   }
-  const handleCloseModal = useCallback(() => {
-    setAuthErrorMsg(null);
-    onClose();
-  }, [onClose, setAuthErrorMsg]);
-
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        handleCloseModal();
-      }
-    };
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [handleCloseModal]);
 
   return (
     <div>
-      <div ref={modalRef} className="">
-        {/* Affiche "Bonjour {userName}" si l'utilisateur est connecté */}
-        {showWelcomeMessage && userName ? (
-          <div>Bonjour {userName}</div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <label>
-              Email:
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Entrez votre email"
-                required
-              />
-            </label>
-            <label>
-              Mot de passe:
-              <input
-                type="password"
-                name="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Entrez votre mot de passe"
-                required
-              />
-            </label>
-            <button
-              className="bg-blue-400 text-white p-2 rounded mt-4"
-              type="submit"
-            >
-              Connexion
-            </button>
-          </form>
-        )}
-        {(errorMessage || authErrorMsg) && (
-          <div className="text-red-500 text-sm">
-            {errorMessage || authErrorMsg}
-          </div>
-        )}
-      </div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            placeholder="Entrez votre email"
+            required
+          />
+        </label>
+        <label>
+          Mot de passe:
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            placeholder="Entrez votre mot de passe"
+            required
+          />
+        </label>
+        <button
+          className="bg-blue-400 text-white p-2 rounded mt-4"
+          type="submit"
+        >
+          Connexion
+        </button>
+      </form>
+      {(errorMessage || authErrorMsg) && (
+        <div className="text-red-500 text-sm">
+          {errorMessage || authErrorMsg}
+        </div>
+      )}
     </div>
   );
 };
