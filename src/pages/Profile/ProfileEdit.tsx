@@ -169,11 +169,12 @@ function ProfileEdit() {
 		return <div>Chargement...</div>;
 	}
 
-	const getDefaultProfilePicture = (gender: string) => {
-		return gender === "F"
-			? "https://avatar.iran.liara.run/public/52"
-			: "https://avatar.iran.liara.run/public/45";
-	};
+  const getDefaultProfilePicture = (gender:string) => {
+    if (gender === 'F') {
+        return 'https://avatar.iran.liara.run/public/52';
+    }
+    return 'https://avatar.iran.liara.run/public/45';
+};
 
 	return (
 		<main className="pt-24" key={user.id}>

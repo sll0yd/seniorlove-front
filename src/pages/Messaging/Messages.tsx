@@ -181,6 +181,17 @@ function Messages() {
       </div>
     );
   }
+// Affichage de la photo de profil par défaut en fonction du genre
+const getDefaultProfilePicture = (gender: string | undefined) => {  
+  if (gender === 'F') {
+    return 'https://avatar.iran.liara.run/public/52';
+  }
+  if (gender === 'M') {
+    return 'https://avatar.iran.liara.run/public/45';
+  }
+  // Par défaut, on affiche une silhouette
+  return 'https://avatar.iran.liara.run/public/45';
+};
 
   // Rendu principal de l'interface
   return (
@@ -258,8 +269,8 @@ function Messages() {
                         disabled={isLoading}
                       >
                         <img
-                          src={chatUser.picture || "/default-avatar.png"}
-                          alt={chatUser.userName}
+  src={chatUser.picture || getDefaultProfilePicture(chatUser.gender)}
+  alt={chatUser.userName}
                           className="w-8 h-8 rounded-full flex-shrink-0"
                         />
                         <span className="bg-white px-4 py-1 rounded-full shadow-sm truncate">
@@ -298,8 +309,8 @@ function Messages() {
                     <div className="flex items-start space-x-2 max-w-md">
                       {message.sender_id !== user.id && (
                         <img
-                          src={message.sender.picture || "/default-avatar.png"}
-                          alt={message.sender.userName}
+                        src={message.sender.picture || getDefaultProfilePicture(message.sender.gender)}
+                        alt={message.sender.userName}
                           className="w-8 h-8 rounded-full flex-shrink-0"
                         />
                       )}
@@ -313,8 +324,8 @@ function Messages() {
                       </div>
                       {message.sender_id === user.id && (
                         <img
-                          src={user.picture || "/default-avatar.png"}
-                          alt="Vous"
+                        src={user.picture || getDefaultProfilePicture(user.gender)}
+                        alt="Vous"
                           className="w-8 h-8 rounded-full flex-shrink-0"
                         />
                       )}
@@ -329,8 +340,8 @@ function Messages() {
               <div className="p-3 bg-gray-100 flex-shrink-0">
                 <div className="flex items-center space-x-2">
                   <img
-                    src={user.picture || "/default-avatar.png"}
-                    alt="Vous"
+  src={user.picture || getDefaultProfilePicture(user.gender)}
+  alt="Vous"
                     className="w-8 h-8 rounded-full flex-shrink-0"
                   />
                   <div className="flex-1 flex items-center space-x-2 bg-white rounded-full border border-gray-200 pr-2">
