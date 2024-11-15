@@ -12,6 +12,9 @@ const EventDetail = () => {
   const { user } = useUser();
   const currentUserId = user?.id;
 
+  // States for checking if the user is participating in the event
+  const [isParticipating, setIsParticipating] = useState(false);
+
   //Use effect for checking if the user is the creator of the event
   useEffect(() => {
     if (event) {
@@ -109,11 +112,27 @@ const EventDetail = () => {
                 </button>
               </Link> // if the user is not the creator of the event we display the button "Participer à l'événement"
             ) : (
-              <button
+              <button // if the user is already participating in the event we display the button "Annuler la participation"
                 type="button"
-                className="px-6 py-2 bg-red-400 text-white rounded-full hover:bg-red-500 transition-colors"
+                className={`px-6 py-2 ${isParticipating ? 'bg-gray-400' : 'bg-red-400'} text-white rounded-full hover:${isParticipating ? 'bg-gray-500' : 'bg-red-500'} transition-colors`}
+                onClick={async () => {
+                  // logical condition to check if the user is participating in the event we set
+                  try {
+                    if (isParticipating) {
+                      await AxiosInstance.delete(`/me/events/join/${event.id}`);
+                      setIsParticipating(false);
+                    } else {
+                      await AxiosInstance.post(`/me/events/join/${event.id}`);
+                      setIsParticipating(true);
+                    }
+                  } catch (error) {
+                    console.error('Error updating participation:', error);
+                  }
+                }}
               >
-                Participer à l'événement
+                {isParticipating
+                  ? 'Annuler la participation'
+                  : "Participer à l'événement"}
               </button>
             )}
           </div>
