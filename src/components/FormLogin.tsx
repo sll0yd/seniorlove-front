@@ -8,11 +8,7 @@ interface FormLoginProps {
   setUserName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const FormLogin: React.FC<FormLoginProps> = ({
-  onClose,
-  userName,
-  setUserName,
-}) => {
+const FormLogin: React.FC<FormLoginProps> = ({ onClose, setUserName }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
