@@ -1,7 +1,7 @@
 # Senior Love 💘
 
 ## Description
-Senior Love is a dating and meet up application.
+Senior Love is a dating and meet up application for seniors.
 
 ## Tech Stack
 * React
