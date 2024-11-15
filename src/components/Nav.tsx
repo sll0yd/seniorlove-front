@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import FormLogin from './FormLogin';
 import { useUser } from '../context/UserContext';
@@ -7,15 +7,43 @@ function Nav() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userName, setUserName] = useState('');
-  const { user, logout, authErrorMsg } = useUser();
+  const { user, logout, authErrorMsg, setAuthErrorMsg } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (user) setIsFormOpen(false);
+  }, [user]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setIsFormOpen(false);
+        setAuthErrorMsg(null);
+      }
+    };
+
+    if (isFormOpen || authErrorMsg) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFormOpen, authErrorMsg, setAuthErrorMsg]);
 
   const handleOpenForm = (): void => {
-    setIsFormOpen(true);
+    if (!user) {
+      setIsFormOpen(true);
+    }
   };
 
   const handleCloseForm = (): void => {
+    setAuthErrorMsg(null);
     setIsFormOpen(false);
   };
 
@@ -27,21 +55,18 @@ function Nav() {
     setUserName('');
     logout();
     setIsMenuOpen(false);
+    setIsFormOpen(false); // Ferme la modale de connexion
   };
 
   const handleNavigation = (section: string): void => {
-    setIsMenuOpen(false); // Close mobile menu if open
-    
+    setIsMenuOpen(false); // Ferme le menu mobile s’il est ouvert
+
     if (location.pathname === '/') {
-      // If on homepage, dispatch scroll event
-      window.dispatchEvent(new CustomEvent('scrollToSection', { 
-        detail: section 
-      }));
+      window.dispatchEvent(
+        new CustomEvent('scrollToSection', { detail: section }),
+      );
     } else {
-      // If on another page, navigate to home with scroll state
-      navigate('/', { 
-        state: { scrollTo: section }
-      });
+      navigate('/', { state: { scrollTo: section } });
     }
   };
 
@@ -101,7 +126,10 @@ function Nav() {
               </Link>
             </li>
             <li>
-              <Link to="/messages" className="text-gray-700 hover:text-gray-900">
+              <Link
+                to="/messages"
+                className="text-gray-700 hover:text-gray-900"
+              >
                 Messagerie
               </Link>
             </li>
@@ -219,8 +247,11 @@ function Nav() {
         )}
       </div>
 
-      {(isFormOpen || authErrorMsg) && (
-        <div className="absolute top-20 right-10 w-80 bg-white shadow-xl rounded-lg p-4 z-10">
+      {(isFormOpen || authErrorMsg) && !user && (
+        <div
+          ref={modalRef}
+          className="absolute top-20 right-10 w-80 bg-white shadow-xl rounded-lg p-4 z-10"
+        >
           <FormLogin
             userName={userName}
             setUserName={setUserName}
