@@ -46,7 +46,7 @@ const EventDetail = () => {
     if (event) {
       checkParticipation();
     }
-  }, [event]);
+  }, [event, currentUserId, id]);
 
   //Use effect for checking if the user is the creator of the event
   // useEffect(() => {
@@ -181,8 +181,8 @@ const EventDetail = () => {
         ·
         <div className="relative">
           <div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between  p-4">
-            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-6">
+            <p className="text-center text-lg flex-1 italic mr-4 py-4 ">
               Ne manquez pas cette occasion de rejoindre un événement convivial
               et de rencontrer des personnes prêtes à partager des moments
               authentiques !

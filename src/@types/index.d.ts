@@ -32,6 +32,7 @@ export interface IEvent {
   description: string;
   date: string;
   location: string;
+  attendees: IAttendee[];
   tags?: ITag[];
   created_at?: Date;
   updated_at?: Date;
@@ -68,4 +69,9 @@ export interface ApiError {
   message: string;
   status: number;
   error: string;
+}
+
+export interface IAttendee {
+  id: number;
+  name: string;
 }

@@ -197,7 +197,7 @@ function EventEdit() {
 
   return (
     <main className="pt-24">
-      <div className="relative  mb-8">
+      <div className="relative  mb-8 ">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
           <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap">
@@ -205,7 +205,7 @@ function EventEdit() {
           </h1>
         </div>
       </div>
-      <div className="bg-pink-50 rounded-lg p-8">
+      <div className="bg-pink-50 rounded-lg p-8 m-16">
         <div className="mb-8 flex justify-center">
           <div className="w-full max-w-[900px] h-[400px] bg-gray-200 rounded-lg overflow-hidden ">
             <img
@@ -408,8 +408,8 @@ function EventEdit() {
       <div className="py-12">
         <div className="relative">
           <div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
-            <p className="text-center text-sm flex-1 italic mr-4 py-4">
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-5">
+            <p className="text-center text-lg flex-1 italic mr-4 py-3">
               Modifiez les détails de l'évènement et partagez-les avec la
               communauté pour créer des moments uniques.
             </p>
