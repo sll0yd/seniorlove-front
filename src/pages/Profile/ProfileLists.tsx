@@ -95,7 +95,7 @@ function ProfilesLists() {
               </div>
               <Link
                 to={`/profile/${profile.id}`}
-                className="ml-4 px-6 py-1.5 border border-red-400 text-red-400 rounded-full text-sm hover:bg-red-50 transition-colors whitespace-nowrap self-center"
+                className="ml-4 px-6 py-1.5 border border-red-400 text-red-400 rounded-full text-sm hover:bg-rose-400 hover:text-white transition-colors duration-300 whitespace-nowrap self-end "
               >
                 Voir le Profil
               </Link>
