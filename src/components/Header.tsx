@@ -122,11 +122,11 @@ function Header() {
 
   return (
     <header>
-      <div className="relative w-full min-h-[720px]">
+      <div className="relative w-full min-h-[800px]">
         {/* Image de fond */}
         <div className="absolute inset-0">
           <img
-            src="/images/coupleheureux.JPG"
+            src="/images/couplehappy.jpg"
             alt="Couple heureux"
             className="w-full h-full object-cover"
           />
