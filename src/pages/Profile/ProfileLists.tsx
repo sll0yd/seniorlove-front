@@ -8,6 +8,7 @@ function ProfilesLists() {
 	const [profiles, setProfiles] = useState<IUser[]>([]);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [filteredProfiles, setFilteredProfiles] = useState<IUser[]>([]);
+	const [genderFilter, setGenderFilter] = useState<"all" | "F" | "M">("all");
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -24,15 +25,21 @@ function ProfilesLists() {
 	}, []);
 
 	useEffect(() => {
-		// Configure Fuse.js for fuzzy search on userName, bio, and hometown fields
-		const fuse = new Fuse(profiles, {
+		// First, filter by gender
+		const genderFiltered =
+			genderFilter === "all"
+				? profiles
+				: profiles.filter((profile) => profile.gender === genderFilter);
+
+		// Then apply Fuse search if there's a query
+		const fuse = new Fuse(genderFiltered, {
 			keys: [
 				"userName",
 				"bio",
 				"hometown",
 				{
 					name: "age",
-					weight: 0.5, // Age has less importance in the search
+					weight: 0.5,
 				},
 			],
 			threshold: 0.3,
@@ -42,9 +49,9 @@ function ProfilesLists() {
 			const results = fuse.search(searchQuery).map((result) => result.item);
 			setFilteredProfiles(results);
 		} else {
-			setFilteredProfiles(profiles); // Show all if no search query
+			setFilteredProfiles(genderFiltered);
 		}
-	}, [searchQuery, profiles]);
+	}, [searchQuery, profiles, genderFilter]);
 
 	const getDefaultProfilePicture = (gender: string) => {
 		if (gender === "F") {
@@ -69,69 +76,83 @@ function ProfilesLists() {
 			</div>
 
 			<div className="max-w-6xl mx-auto px-8">
-				<div className="mb-8">
+				<div className="flex gap-4 mb-8">
 					<input
 						type="text"
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						placeholder="Recherchez des profils..."
-						className="w-full p-3 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
+						className="flex-1 p-3 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
 					/>
+					<div className="flex items-center gap-2">
+						<span className="text-gray-600">Filtre:</span>
+						<select
+							value={genderFilter}
+							onChange={(e) =>
+								setGenderFilter(e.target.value as "all" | "F" | "M")
+							}
+							className="p-3 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
+						>
+							<option value="all">Tous</option>
+							<option value="F">Femmes</option>
+							<option value="M">Hommes</option>
+						</select>
+					</div>
 				</div>
-        
-        <div className="space-y-4">
-          {filteredProfiles.map((profile) => (
-            <div
-              key={profile.id}
-              className={`${getBackgroundColor(profile.gender)} rounded-lg p-6 flex items-center`}
-            >
-              <div className="flex-1 flex gap-6">
-                <img
-                  src={
-                    profile.picture || getDefaultProfilePicture(profile.gender)
-                  }
-                  alt="Avatar"
-                  className="w-24 h-24 object-cover rounded-lg"
-                />
-                <div className="flex-1">
-                  <div className="font-semibold mb-1">{profile.userName}</div>
-                  <div className="text-sm text-gray-600 mb-2">
-                    {profile.age} ans, {profile.hometown}
-                  </div>
-                  <div className="text-gray-700">{profile.bio}</div>
-                </div>
-              </div>
-              <Link
-                to={`/profile/${profile.id}`}
-                className="ml-4 px-6 py-1.5 border border-red-400 text-red-400 rounded-full text-sm hover:bg-rose-400 hover:text-white transition-colors duration-300 whitespace-nowrap self-end "
-              >
-                Voir le Profil
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="py-12">
-        <div className="relative">
-          <div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-6">
-            <p className="text-center text-lg flex-1 italic mr-4 py-3">
-              Élargissez votre cercle et partez à la rencontre de nouvelles
-              personnes prêtes à vivre des expériences enrichissantes !
-            </p>
-            <Link to="/events">
-              <button
-                type="button"
-                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-              >
-                Retour à la liste des évènements
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+
+				<div className="space-y-4">
+					{filteredProfiles.map((profile) => (
+						<div
+							key={profile.id}
+							className={`${getBackgroundColor(profile.gender)} rounded-lg p-6 flex items-center`}
+						>
+							<div className="flex-1 flex gap-6">
+								<img
+									src={
+										profile.picture || getDefaultProfilePicture(profile.gender)
+									}
+									alt="Avatar"
+									className="w-24 h-24 object-cover rounded-lg"
+								/>
+								<div className="flex-1">
+									<div className="font-semibold mb-1">{profile.userName}</div>
+									<div className="text-sm text-gray-600 mb-2">
+										{profile.age} ans, {profile.hometown}
+									</div>
+									<div className="text-gray-700">{profile.bio}</div>
+								</div>
+							</div>
+							<Link
+								to={`/profile/${profile.id}`}
+								className="ml-4 px-6 py-1.5 border border-red-400 text-red-400 rounded-full text-sm hover:bg-rose-400 hover:text-white transition-colors duration-300 whitespace-nowrap self-end "
+							>
+								Voir le Profil
+							</Link>
+						</div>
+					))}
+				</div>
+			</div>
+			<div className="py-12">
+				<div className="relative">
+					<div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl" />
+					<div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-6">
+						<p className="text-center text-lg flex-1 italic mr-4 py-3">
+							Élargissez votre cercle et partez à la rencontre de nouvelles
+							personnes prêtes à vivre des expériences enrichissantes !
+						</p>
+						<Link to="/events">
+							<button
+								type="button"
+								className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+							>
+								Retour à la liste des évènements
+							</button>
+						</Link>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default ProfilesLists;
