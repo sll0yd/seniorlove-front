@@ -14,8 +14,8 @@ function ProfileEdit() {
 	const [age, setAge] = useState("");
 	const [hometown, setHometown] = useState("");
 	const [bio, setBio] = useState("");
-	const [password, setPassword] = useState("");
-	const [newPassword, setNewPassword] = useState("");
+	// const [password, setPassword] = useState("");
+	// const [newPassword, setNewPassword] = useState("");
 	// Etats pour gérer l'image
 	const [picture, setPicture] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string | null>(null);
