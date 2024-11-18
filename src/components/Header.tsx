@@ -273,7 +273,7 @@ function Header() {
             </div>
           ) : (
             // Si l'utilisateur est connecté, on affiche un message de bienvenue
-            <div className="mr-24 md:mr-32 ml-auto w-fit max-w-[320px] mt-4">
+            <div className="mr-24 md:mr-32 ml-auto w-fit max-w-[320px] mt-10">
               <div className="bg-white/10 backdrop-blur-sm rounded-3xl px-8 py-6 shadow-lg">
                 <h2 className="text-2xl font-bold text-center truncate">
                   Bienvenue {user.userName}
