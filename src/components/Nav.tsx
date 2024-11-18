@@ -71,7 +71,7 @@ function Nav() {
   };
 
   return (
-    <nav className="fixed z-50 flex justify-evenly items-center bg-white shadow-lg w-full pt-5 pl-6 pr-16 pb-5">
+    <nav className="fixed z-50 flex justify-evenly items-center bg-white shadow-lg w-full pt-4 pl-6 pr-16 pb-4">
       <Link
         className="max-h-8"
         to="/"
