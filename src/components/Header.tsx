@@ -122,7 +122,7 @@ function Header() {
 
   return (
     <header>
-      <div className="relative w-full min-h-[800px]">
+      <div className="relative w-full min-h-[720px]">
         {/* Image de fond */}
         <div className="absolute inset-0">
           <img
@@ -132,7 +132,7 @@ function Header() {
           />
         </div>
 
-        <div className="relative w-full h-full flex items-center justify-start pt-20">
+        <div className="relative w-full h-full flex items-center justify-start pt-32">
           {/* Condition : si pas d'utilisateur connecté, on affiche le formulaire */}
           {!user ? (
             <div className="ml-8 md:ml-12 w-full max-w-sm">
