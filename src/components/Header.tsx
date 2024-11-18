@@ -7,7 +7,7 @@ import { useUser } from "../context/UserContext";
 // Définition du type pour les données du formulaire d'inscription
 // Cette interface définit la structure exacte des données que nous allons gérer
 type SignUpFormData = {
-  gender: string; // Genre de l'utilisateur ('H' ou 'F')
+  gender: string; // Genre de l'utilisateur ('M' ou 'F')
   userName: string; // Nom d'utilisateur
   age: number | ""; // Âge (peut être un nombre ou une chaîne vide pour le placeholder)
   email: string; // Adresse email
@@ -18,7 +18,7 @@ type SignUpFormData = {
 // Zod nous permet de définir des règles de validation précises pour chaque champ
 const signUpSchema = z.object({
   // Le genre doit être soit 'H' soit 'F'
-  gender: z.enum(["H", "F"], {
+  gender: z.enum(["M", "F"], {
     required_error: "Le genre est requis",
   }),
   // Le nom d'utilisateur doit avoir au moins 1 caractère
