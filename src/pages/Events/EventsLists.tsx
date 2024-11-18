@@ -80,7 +80,7 @@ function Eventlists() {
                   {event.title}
                 </h3>
                 <div className="flex justify-center gap-2">
-                {event.tags?.map((tag) => (
+                {event.tags?.slice(0, 3).map((tag) => (
                   <span
                     key={tag.id}
                     style={{ backgroundColor: `#${tag.color}` }}
