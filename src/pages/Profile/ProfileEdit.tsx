@@ -14,8 +14,8 @@ function ProfileEdit() {
 	const [age, setAge] = useState("");
 	const [hometown, setHometown] = useState("");
 	const [bio, setBio] = useState("");
-	const [password, setPassword] = useState("");
-	const [newPassword, setNewPassword] = useState("");
+	// const [password, setPassword] = useState("");
+	// const [newPassword, setNewPassword] = useState("");
 	// Etats pour gérer l'image
 	const [picture, setPicture] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string | null>(null);
@@ -400,19 +400,20 @@ function ProfileEdit() {
 									htmlFor="current-password"
 									className="block text-sm text-gray-600 mb-2"
 								>
-									Mot de passe actuel :
+									Adresse email de connexion :
 								</label>
 								<input
-									id="current-password"
-									type="password"
-									value={password}
-									onChange={(e) => setPassword(e.target.value)}
+									id="current-email"
+									type="text"
+									value={user.email}
+									disabled
 									className="w-full p-2 border rounded-md"
 								/>
+								<p className="text-sm text-gray-500 mt-1 italic">Ces informations ne sont pas communiquées ni partagées aux autres utilisateurs.</p>
 							</div>
 
 							{/* Nouveau mot de passe */}
-							<div>
+							{/* <div>
 								<label
 									htmlFor="new-password"
 									className="block text-sm text-gray-600 mb-2"
@@ -426,16 +427,16 @@ function ProfileEdit() {
 									onChange={(e) => setNewPassword(e.target.value)}
 									className="w-full p-2 border rounded-md"
 								/>
-							</div>
+							</div> */}
 
 							{/* Bouton de mise à jour */}
-							<button
+							{/* <button
 								type="button"
 								className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
 								onClick={handleSave}
 							>
 								Mettre à jour
-							</button>
+							</button> */}
 						</div>
 					</div>
 

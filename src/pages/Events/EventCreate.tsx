@@ -72,7 +72,7 @@ function EventCreate() {
               <input
                 type="text"
                 id="title"
-                placeholder="Votre titre ici..."
+                placeholder="Titre de l'évènement"
                 className="w-full p-2 border rounded-md"
                 onChange={(event) =>
                   setEvent(
@@ -83,6 +83,7 @@ function EventCreate() {
                       }) as IEvent,
                   )
                 }
+                required
               />
             </div>
 
@@ -94,7 +95,7 @@ function EventCreate() {
                 <input
                   type="text"
                   id="location"
-                  placeholder="Votre localisation ici..."
+                  placeholder="Indiquez le lieu de l'évènement"
                   className="w-full p-2 border rounded-md"
                   onChange={(event) =>
                     setEvent(
@@ -105,6 +106,7 @@ function EventCreate() {
                         }) as IEvent,
                     )
                   }
+                  required
                 />
               </div>
 
@@ -113,9 +115,9 @@ function EventCreate() {
                   Date de l'évènement :
                 </label>
                 <input
-                  type="text"
+                  type="date"
                   id="date"
-                  placeholder="22 / 10 /2024"
+                  placeholder="Indiquez la date de l'évènement"
                   className="w-full p-2 border rounded-md"
                   onChange={(event) =>
                     setEvent(
@@ -126,6 +128,7 @@ function EventCreate() {
                         }) as IEvent,
                     )
                   }
+                  required
                 />
               </div>
             </div>
@@ -138,7 +141,7 @@ function EventCreate() {
                 id="description"
                 rows={4}
                 className="w-full p-2 border rounded-md"
-                placeholder="Dansez, riez et laissez-vous emporter par le rythme lors d'une soirée conviviale entre amateurs de danse de tout âge."
+                placeholder="Indiquez quelques mots sur l'évènement que vous organisez..."
                 onChange={(event) =>
                   setEvent(
                     (prev) =>
@@ -148,6 +151,7 @@ function EventCreate() {
                       }) as IEvent,
                   )
                 }
+                required
               />
             </div>
 

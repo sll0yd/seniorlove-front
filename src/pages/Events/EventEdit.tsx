@@ -307,7 +307,7 @@ function EventEdit() {
             />
           </div>
           <label htmlFor="interests" className="block text-gray-700 mb-2">
-            Catégorie de l'évenement :
+            Catégorie(s) de l'évènement :
           </label>
           <div id="interests" className="flex flex-wrap gap-3">
             <div className="flex flex-wrap gap-2 items-center">
@@ -338,7 +338,7 @@ function EventEdit() {
                 ))
               ) : (
                 <p className="text-gray-500 italic text-sm">
-                  Aucun tag associé à ce profil
+                  Aucun tag associé à cet évènement
                 </p>
               )}
             </div>
@@ -418,7 +418,7 @@ function EventEdit() {
               className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
               onClick={() => navigate('/events')}
             >
-              Retour à la liste des événements
+              Retour à la liste des évènements
             </button>
           </div>
         </div>
