@@ -3,6 +3,7 @@ import type { IUser } from "../../@types";
 import { useParams } from "react-router-dom";
 import AxiosInstance from "../../utils/axios";
 import { useTags } from "../../context/TagContext";
+import { Link } from "react-router-dom";
 
 function ProfileDetail() {
 	const { id } = useParams<{ id: string }>();
@@ -31,12 +32,12 @@ function ProfileDetail() {
 			(userTag) => tags.find((tag) => tag.id === userTag.id), // Trouver les tags correspondant à ceux de l'utilisateur
 		) || [];
 
-    const getDefaultProfilePicture = (gender:string) => {
-      if (gender === 'F') {
-          return 'https://avatar.iran.liara.run/public/52';
-      }
-      return 'https://avatar.iran.liara.run/public/45';
-  };
+	const getDefaultProfilePicture = (gender: string) => {
+		if (gender === "F") {
+			return "https://avatar.iran.liara.run/public/52";
+		}
+		return "https://avatar.iran.liara.run/public/45";
+	};
 
 	const getBackgroundColor = (gender: string) => {
 		return gender === "F" ? "bg-pink-50" : "bg-blue-50";
@@ -84,12 +85,12 @@ function ProfileDetail() {
 								)}
 							</div>
 							<div className="mt-6 text-center">
-								<button
-									type="button"
-									className="px-8 py-2 text-red-400 border border-red-400 rounded-full hover:bg-red-50"
+								<Link
+									to="/messages"
+									className="inline-block px-8 py-2 text-red-400 border border-red-400 rounded-full hover:bg-red-50"
 								>
 									Lui Écrire
-								</button>
+								</Link>
 							</div>
 						</div>
 						<div className="md:col-span-2">

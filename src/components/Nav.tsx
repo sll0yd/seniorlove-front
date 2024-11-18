@@ -71,7 +71,7 @@ function Nav() {
   };
 
   return (
-    <nav className="fixed z-50 flex justify-evenly items-center bg-white shadow-lg w-full pt-3 pl-6 pr-16 pb-3">
+    <nav className="fixed z-50 flex justify-evenly items-center bg-white shadow-lg w-full pt-4 pl-6 pr-16 pb-4">
       <Link
         className="max-h-8"
         to="/"
@@ -116,19 +116,19 @@ function Nav() {
         {user ? (
           <>
             <li>
-              <Link to="/profile" className="text-gray-700 hover:text-gray-900">
+              <Link to="/profile" className="text-gray-700 hover:text-gray-900 font-bold">
                 Trouver des profils
               </Link>
             </li>
             <li>
-              <Link to="/events" className="text-gray-700 hover:text-gray-900">
+              <Link to="/events" className="text-gray-700 hover:text-gray-900 font-bold">
                 Évènements
               </Link>
             </li>
             <li>
               <Link
                 to="/messages"
-                className="text-gray-700 hover:text-gray-900"
+                className="text-gray-700 hover:text-gray-900 font-bold"
               >
                 Messagerie
               </Link>
@@ -140,13 +140,13 @@ function Nav() {
               <button
                 type="button"
                 onClick={() => handleNavigation('DiscoverSeniorLove')}
-                className="text-gray-700 hover:text-gray-900"
+                className="text-gray-700 hover:text-gray-900 font-bold"
               >
                 Qui sommes-nous ?
               </button>
             </li>
             <li>
-              <Link to="/events" className="text-gray-700 hover:text-gray-900">
+              <Link to="/events" className="text-gray-700 hover:text-gray-900 font-bold">
                 Évènements
               </Link>
             </li>
@@ -154,7 +154,7 @@ function Nav() {
               <button
                 type="button"
                 onClick={() => handleNavigation('Testimony')}
-                className="text-gray-700 hover:text-gray-900"
+                className="text-gray-700 hover:text-gray-900 font-bold"
               >
                 Témoignages
               </button>

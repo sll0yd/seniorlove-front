@@ -1,76 +1,84 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import type { IUser } from '../../@types';
-import AxiosInstance from '../../utils/axios';
-import Fuse from 'fuse.js';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import type { IUser } from "../../@types";
+import AxiosInstance from "../../utils/axios";
+import Fuse from "fuse.js";
 
 function ProfilesLists() {
-  const [profiles, setProfiles] = useState<IUser[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredProfiles, setFilteredProfiles] = useState<IUser[]>([]);
+	const [profiles, setProfiles] = useState<IUser[]>([]);
+	const [searchQuery, setSearchQuery] = useState("");
+	const [filteredProfiles, setFilteredProfiles] = useState<IUser[]>([]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await AxiosInstance.get<IUser[]>('/users');
-        setProfiles(response.data);
-        setFilteredProfiles(response.data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
+	useEffect(() => {
+		const fetchUsers = async () => {
+			try {
+				const response = await AxiosInstance.get<IUser[]>("/users");
+				setProfiles(response.data);
+				setFilteredProfiles(response.data);
+			} catch (error) {
+				console.error("Error fetching users:", error);
+			}
+		};
 
-    fetchUsers();
-  }, []);
+		fetchUsers();
+	}, []);
 
-  useEffect(() => {
-    // Configure Fuse.js for fuzzy search on userName, bio, and hometown fields
-    const fuse = new Fuse(profiles, {
-      keys: ['userName', 'bio', 'hometown'],
-      threshold: 0.3,
-    });
+	useEffect(() => {
+		// Configure Fuse.js for fuzzy search on userName, bio, and hometown fields
+		const fuse = new Fuse(profiles, {
+			keys: [
+				"userName",
+				"bio",
+				"hometown",
+				{
+					name: "age",
+					weight: 0.5, // Age has less importance in the search
+				},
+			],
+			threshold: 0.3,
+		});
 
-    if (searchQuery.trim()) {
-      const results = fuse.search(searchQuery).map((result) => result.item);
-      setFilteredProfiles(results);
-    } else {
-      setFilteredProfiles(profiles); // Show all if no search query
-    }
-  }, [searchQuery, profiles]);
+		if (searchQuery.trim()) {
+			const results = fuse.search(searchQuery).map((result) => result.item);
+			setFilteredProfiles(results);
+		} else {
+			setFilteredProfiles(profiles); // Show all if no search query
+		}
+	}, [searchQuery, profiles]);
 
-  const getDefaultProfilePicture = (gender: string) => {
-    if (gender === 'F') {
-      return 'https://avatar.iran.liara.run/public/52';
-    }
-    return 'https://avatar.iran.liara.run/public/45';
-  };
+	const getDefaultProfilePicture = (gender: string) => {
+		if (gender === "F") {
+			return "https://avatar.iran.liara.run/public/52";
+		}
+		return "https://avatar.iran.liara.run/public/45";
+	};
 
-  const getBackgroundColor = (gender: string) => {
-    return gender === 'F' ? 'bg-pink-50' : 'bg-blue-50';
-  };
+	const getBackgroundColor = (gender: string) => {
+		return gender === "F" ? "bg-pink-50" : "bg-blue-50";
+	};
 
-  return (
-    <div className="min-h-screen  pt-24">
-      <div className="relative mb-12">
-        <div className="absolute bg-blue-50 h-full w-[300px] left-0 rounded-r-3xl" />
-        <div className="relative max-w-[300px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8">
-            Liste des profils
-          </h1>
-        </div>
-      </div>
+	return (
+		<div className="min-h-screen  pt-24">
+			<div className="relative mb-12">
+				<div className="absolute bg-blue-50 h-full w-[300px] left-0 rounded-r-3xl" />
+				<div className="relative max-w-[300px]">
+					<h1 className="text-2xl font-bold py-4 text-center px-8">
+						Liste des profils
+					</h1>
+				</div>
+			</div>
 
-      <div className="max-w-6xl mx-auto px-8">
-        <div className="mb-8">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Recherchez des profils..."
-            className="w-full p-3 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
-          />
-        </div>
-
+			<div className="max-w-6xl mx-auto px-8">
+				<div className="mb-8">
+					<input
+						type="text"
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						placeholder="Recherchez des profils..."
+						className="w-full p-3 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
+					/>
+				</div>
+        
         <div className="space-y-4">
           {filteredProfiles.map((profile) => (
             <div

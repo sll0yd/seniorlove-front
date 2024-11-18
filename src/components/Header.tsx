@@ -7,7 +7,7 @@ import { useUser } from "../context/UserContext";
 // Définition du type pour les données du formulaire d'inscription
 // Cette interface définit la structure exacte des données que nous allons gérer
 type SignUpFormData = {
-  gender: string; // Genre de l'utilisateur ('H' ou 'F')
+  gender: string; // Genre de l'utilisateur ('M' ou 'F')
   userName: string; // Nom d'utilisateur
   age: number | ""; // Âge (peut être un nombre ou une chaîne vide pour le placeholder)
   email: string; // Adresse email
@@ -18,7 +18,7 @@ type SignUpFormData = {
 // Zod nous permet de définir des règles de validation précises pour chaque champ
 const signUpSchema = z.object({
   // Le genre doit être soit 'H' soit 'F'
-  gender: z.enum(["H", "F"], {
+  gender: z.enum(["M", "F"], {
     required_error: "Le genre est requis",
   }),
   // Le nom d'utilisateur doit avoir au moins 1 caractère
@@ -126,13 +126,13 @@ function Header() {
         {/* Image de fond */}
         <div className="absolute inset-0">
           <img
-            src="/images/coupleheureux.JPG"
+            src="/images/couplehappy.jpg"
             alt="Couple heureux"
             className="w-full h-full object-cover"
           />
         </div>
 
-        <div className="relative w-full h-full flex items-center justify-start pt-20">
+        <div className="relative w-full h-full flex items-center justify-start pt-32">
           {/* Condition : si pas d'utilisateur connecté, on affiche le formulaire */}
           {!user ? (
             <div className="ml-4 mr-4 md:ml-12 w-full max-w-sm">
@@ -273,7 +273,7 @@ function Header() {
             </div>
           ) : (
             // Si l'utilisateur est connecté, on affiche un message de bienvenue
-            <div className="mr-24 md:mr-32 ml-auto w-fit max-w-[320px] mt-4">
+            <div className="mr-24 md:mr-32 ml-auto w-fit max-w-[320px] mt-1">
               <div className="bg-white/10 backdrop-blur-sm rounded-3xl px-8 py-6 shadow-lg">
                 <h2 className="text-2xl font-bold text-center truncate">
                   Bienvenue {user.userName}
