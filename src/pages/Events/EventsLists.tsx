@@ -26,7 +26,7 @@ function Eventlists() {
   useEffect(() => {
     // Configure Fuse.js for fuzzy search on title and description fields
     const fuse = new Fuse(events, {
-      keys: ['title', 'description', 'tags'],
+      keys: [{name: 'title', weight: 0.7 }, { name : 'description', weight: 0.4 }, { name: 'tags.name', weight: 0.3 }],
       threshold: 0.3, // Adjust for sensitivity
     });
 
@@ -56,7 +56,7 @@ function Eventlists() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Recherche d'un évenement..."
+            placeholder="Recherche d'un évènement..."
             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -66,7 +66,7 @@ function Eventlists() {
             <Link
               key={event.id}
               to={`/events/${event.id}`}
-              className="rounded-lg bg-white shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className="rounded-lg bg-white shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300"
             >
               <div className="relative h-64">
                 <img
@@ -76,10 +76,23 @@ function Eventlists() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-800 text-center">
+                <h3 className="text-xl bg-blue-100 rounded-xl py-2 font-semibold text-gray-800 text-center">
                   {event.title}
                 </h3>
-                <p className="text-center text-gray-800 italic">
+                <div className="flex justify-center gap-2">
+                {event.tags?.map((tag) => (
+                  <span
+                    key={tag.id}
+                    style={{ backgroundColor: `#${tag.color}` }}
+                    className="inline-block text-sm font-semibold text-white rounded-full px-2 py-0.5 mt-2"
+                  >
+                    {tag.name}
+                  </span>
+                ))}
+                </div>
+                <p className="text-center text-sm py-3 text-gray-800">Proposé par : {event.creator.userName} à {event.location}</p>
+                <span className="block text-center font-bold">Description de l'évènement:</span>
+                <p className="text-center text-gray-800">
                   {event.description}
                 </p>
               </div>
