@@ -54,6 +54,7 @@ export interface ITestimony {
   id: number;
   content: string;
   user_id: number;
+  title: string;
   created_at: Date;
   updated_at?: Date;
   user: IUser;

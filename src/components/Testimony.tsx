@@ -45,7 +45,6 @@ function Testimony() {
                 <h3 className="font-bold text-lg md:text-xl mb-4 md:mb-6 line-clamp-2">
                   {testimony.content}
                 </h3>
-
                 {/* Reviewer info */}
                 <div className="flex items-center gap-4 mb-6 md:mb-8">
                   {testimony.user.picture ? (
@@ -73,11 +72,10 @@ function Testimony() {
                     </p>
                   </div>
                 </div>
-
                 {/* Review text */}
                 <div className="flex-grow">
                   <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                    {testimony.content}
+                    {testimony.title}
                   </p>
                 </div>
               </div>
