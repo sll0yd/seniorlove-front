@@ -88,7 +88,7 @@ const EventDetail = () => {
       <div className="relative mb-12">
         <div className="absolute bg-pink-50 h-full w-[300px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[300px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8">
+          <h1 className="text-2xl font-bold py-4 text-center">
             Détails de l'événement
           </h1>
         </div>
@@ -134,9 +134,12 @@ const EventDetail = () => {
             </div>
           </div>
 
-          <blockquote className="text-gray-700 italic text-lg text-center my-8">
-            "{event.description}"
-          </blockquote>
+          <div className=" text-gray-600 mb-4 text-center">
+            <span className="font-bold">Description de l'événement:</span>
+            <blockquote className="text-gray-700 text-lg text-center">
+              "{event.description}"
+            </blockquote>
+          </div>
 
           <div className="flex justify-center">
             {event.creator.id === currentUserId ? ( // if the user is the creator of the event we display the button "Modifier l'événement"
