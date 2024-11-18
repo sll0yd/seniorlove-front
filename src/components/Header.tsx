@@ -135,7 +135,7 @@ function Header() {
         <div className="relative w-full h-full flex items-center justify-start pt-32">
           {/* Condition : si pas d'utilisateur connecté, on affiche le formulaire */}
           {!user ? (
-            <div className="ml-8 md:ml-12 w-full max-w-sm">
+            <div className="ml-4 mr-4 md:ml-12 w-full max-w-sm">
               <div className="bg-white/30 backdrop-blur-sm rounded-3xl p-8 shadow-lg">
                 <h2 className="text-2xl font-bold text-center mb-6">
                   INSCRIVEZ-VOUS

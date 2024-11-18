@@ -78,60 +78,60 @@ function ProfilesLists() {
 						className="w-full p-3 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
 					/>
 				</div>
-
-				<div className="space-y-4">
-					{filteredProfiles.map((profile) => (
-						<div
-							key={profile.id}
-							className={`${getBackgroundColor(profile.gender)} rounded-lg p-6 flex items-center`}
-						>
-							<div className="flex-1 flex gap-6">
-								<img
-									src={
-										profile.picture || getDefaultProfilePicture(profile.gender)
-									}
-									alt="Avatar"
-									className="w-24 h-24 object-cover rounded-lg"
-								/>
-								<div className="flex-1">
-									<div className="font-semibold mb-1">{profile.userName}</div>
-									<div className="text-sm text-gray-600 mb-2">
-										{profile.age} ans, {profile.hometown}
-									</div>
-									<div className="text-gray-700">{profile.bio}</div>
-								</div>
-							</div>
-							<Link
-								to={`/profile/${profile.id}`}
-								className="ml-4 px-6 py-1.5 border border-red-400 text-red-400 rounded-full text-sm hover:bg-red-50 transition-colors whitespace-nowrap self-center"
-							>
-								Voir le Profil
-							</Link>
-						</div>
-					))}
-				</div>
-			</div>
-			<div className="py-12">
-				<div className="relative">
-					<div className="absolute bg-pink-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
-					<div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-6">
-						<p className="text-center text-lg flex-1 italic mr-4 py-3">
-							Élargissez votre cercle et partez à la rencontre de nouvelles
-							personnes prêtes à vivre des expériences enrichissantes !
-						</p>
-						<Link to="/events">
-							<button
-								type="button"
-								className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-							>
-								Retour à la liste des évènements
-							</button>
-						</Link>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+        
+        <div className="space-y-4">
+          {filteredProfiles.map((profile) => (
+            <div
+              key={profile.id}
+              className={`${getBackgroundColor(profile.gender)} rounded-lg p-6 flex items-center`}
+            >
+              <div className="flex-1 flex gap-6">
+                <img
+                  src={
+                    profile.picture || getDefaultProfilePicture(profile.gender)
+                  }
+                  alt="Avatar"
+                  className="w-24 h-24 object-cover rounded-lg"
+                />
+                <div className="flex-1">
+                  <div className="font-semibold mb-1">{profile.userName}</div>
+                  <div className="text-sm text-gray-600 mb-2">
+                    {profile.age} ans, {profile.hometown}
+                  </div>
+                  <div className="text-gray-700">{profile.bio}</div>
+                </div>
+              </div>
+              <Link
+                to={`/profile/${profile.id}`}
+                className="ml-4 px-6 py-1.5 border border-red-400 text-red-400 rounded-full text-sm hover:bg-rose-400 hover:text-white transition-colors duration-300 whitespace-nowrap self-end "
+              >
+                Voir le Profil
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="py-12">
+        <div className="relative">
+          <div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl" />
+          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-6">
+            <p className="text-center text-lg flex-1 italic mr-4 py-3">
+              Élargissez votre cercle et partez à la rencontre de nouvelles
+              personnes prêtes à vivre des expériences enrichissantes !
+            </p>
+            <Link to="/events">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Retour à la liste des évènements
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default ProfilesLists;
