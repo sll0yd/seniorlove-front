@@ -89,7 +89,7 @@ const EventDetail = () => {
         <div className="absolute bg-pink-50 h-full w-[300px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[300px]">
           <h1 className="text-2xl font-bold py-4 text-center px-8">
-            Détail de l'événement
+            Détails de l'événement
           </h1>
         </div>
       </div>
@@ -108,7 +108,7 @@ const EventDetail = () => {
             Proposé par {event.creator.userName}
           </div>
           <div className="text-sm text-gray-600 mb-4 text-center">
-            Ou : {event.location} · Le · {event.date} · {participants}{' '}
+            Où : {event.location} · Le · {event.date} · {participants}{' '}
             participants actuellement
           </div>
           <div className="flex flex-col items-center gap-4 mb-4">
