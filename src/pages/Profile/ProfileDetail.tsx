@@ -115,12 +115,6 @@ function ProfileDetail() {
                 )}
               </div>
               <div className="mt-6 text-center">
-                {/* <Link
-									to="/messages"
-									className="inline-block px-8 py-2 text-red-400 border border-red-400 rounded-full hover:bg-red-50"
-								>
-									Lui Écrire
-								</Link> */}
                 <button
                   type="button"
                   className="inline-block px-8 py-2 text-red-400 border border-red-400 rounded-full hover:bg-red-50"
