@@ -25,13 +25,11 @@ function ProfilesLists() {
 	}, []);
 
 	useEffect(() => {
-		// First, filter by gender
 		const genderFiltered =
 			genderFilter === "all"
 				? profiles
 				: profiles.filter((profile) => profile.gender === genderFilter);
 
-		// Then apply Fuse search if there's a query
 		const fuse = new Fuse(genderFiltered, {
 			keys: [
 				"userName",
@@ -54,10 +52,9 @@ function ProfilesLists() {
 	}, [searchQuery, profiles, genderFilter]);
 
 	const getDefaultProfilePicture = (gender: string) => {
-		if (gender === "F") {
-			return "https://avatar.iran.liara.run/public/52";
-		}
-		return "https://avatar.iran.liara.run/public/45";
+		return gender === "F"
+			? "https://avatar.iran.liara.run/public/52"
+			: "https://avatar.iran.liara.run/public/45";
 	};
 
 	const getBackgroundColor = (gender: string) => {
@@ -65,7 +62,7 @@ function ProfilesLists() {
 	};
 
 	return (
-		<div className="min-h-screen  pt-24">
+		<div className="min-h-screen pt-24">
 			<div className="relative mb-12">
 				<div className="absolute bg-blue-50 h-full w-[300px] left-0 rounded-r-3xl" />
 				<div className="relative max-w-[300px]">
@@ -75,7 +72,7 @@ function ProfilesLists() {
 				</div>
 			</div>
 
-			<div className="max-w-6xl mx-auto px-8">
+			<div className="max-w-7xl mx-auto px-8">
 				<div className="flex gap-4 mb-8">
 					<input
 						type="text"
@@ -100,38 +97,43 @@ function ProfilesLists() {
 					</div>
 				</div>
 
-				<div className="space-y-4">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 					{filteredProfiles.map((profile) => (
 						<div
 							key={profile.id}
-							className={`${getBackgroundColor(profile.gender)} rounded-lg p-6 flex items-center`}
+							className={`${getBackgroundColor(profile.gender)} rounded-2xl overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl`}
 						>
-							<div className="flex-1 flex gap-6">
+							<div className="relative">
 								<img
 									src={
 										profile.picture || getDefaultProfilePicture(profile.gender)
 									}
 									alt="Avatar"
-									className="w-24 h-24 object-cover rounded-lg"
+									className="w-full h-64 object-cover transition-transform duration-300 hover:scale-110"
 								/>
-								<div className="flex-1">
-									<div className="font-semibold mb-1">{profile.userName}</div>
-									<div className="text-sm text-gray-600 mb-2">
+								<div className="p-4">
+									<div className="text-xl font-semibold">
+										{profile.userName}
+									</div>
+									<div className="text-gray-600">
 										{profile.age} ans, {profile.hometown}
 									</div>
-									<div className="text-gray-700">{profile.bio}</div>
+									<p className="text-gray-700 line-clamp-3 mt-2">
+										{profile.bio}
+									</p>
+									<Link
+										to={`/profile/${profile.id}`}
+										className="block mt-4 text-center px-6 py-2 bg-white border-2 border-rose-400 text-rose-400 rounded-full text-sm hover:bg-rose-400 hover:text-white transition-all duration-300 hover:-translate-y-1"
+									>
+										Voir le Profil
+									</Link>
 								</div>
 							</div>
-							<Link
-								to={`/profile/${profile.id}`}
-								className="ml-4 px-6 py-1.5 border border-red-400 text-red-400 rounded-full text-sm hover:bg-rose-400 hover:text-white transition-colors duration-300 whitespace-nowrap self-end "
-							>
-								Voir le Profil
-							</Link>
 						</div>
 					))}
 				</div>
 			</div>
+
 			<div className="py-12">
 				<div className="relative">
 					<div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl" />
@@ -143,7 +145,7 @@ function ProfilesLists() {
 						<Link to="/events">
 							<button
 								type="button"
-								className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+								className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-all duration-300 hover:-translate-y-1"
 							>
 								Retour à la liste des évènements
 							</button>
