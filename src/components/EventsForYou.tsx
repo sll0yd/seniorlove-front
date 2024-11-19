@@ -4,7 +4,7 @@ function EventsForYou() {
   return (
     <div className="w-full bg-gray-50 py-12">
       <div className="relative mb-12">
-        <div className="absolute bg-blue-50 h-full right-[calc(50%-220px)] left-0 rounded-r-3xl" />
+        <div className="absolute bg-blue-50 h-full right-[calc(50%-200px)] left-0 rounded-r-3xl" />
         <div className="relative">
           <h1 className="text-3xl font-bold text-center py-4">
             Des événements pour vous...{' '}

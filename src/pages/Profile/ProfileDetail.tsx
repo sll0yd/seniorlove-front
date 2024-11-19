@@ -5,6 +5,7 @@ import AxiosInstance from "../../utils/axios";
 import { useTags } from "../../context/TagContext";
 
 function ProfileDetail() {
+
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<IUser | null>(null);
   const { tags } = useTags();
@@ -191,6 +192,7 @@ function ProfileDetail() {
       )}
     </main>
   );
+
 }
 
 export default ProfileDetail;
