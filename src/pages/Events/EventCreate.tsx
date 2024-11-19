@@ -40,7 +40,7 @@ function EventCreate() {
       <div className="relative">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap sm: mb-6 md: mt-1">
+          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap sm: mb-6 md: mt-5">
             Créez votre évènement
           </h1>
         </div>
@@ -158,17 +158,17 @@ function EventCreate() {
       </div>
       <div className="py-12">
         <div className="relative">
-          <div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
+          <div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl " />
+          <div className="relative max-w-[950px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
             <p className="text-center text-sm flex-1 italic mr-4 py-4">
               Créez des événements et partagez-les avec la communauté,
               rencontrer de nouvelle connaissances prêtes à partager dees
               moments uniques.
             </p>
-            <Link to="/events">
+            <Link to="/events" className="m-3">
               <button
                 type="button"
-                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300 sm: mb-6"
               >
                 Retour à la liste des événements
               </button>

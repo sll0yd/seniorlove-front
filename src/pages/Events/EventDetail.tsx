@@ -189,7 +189,7 @@ const EventDetail = () => {
         ·
         <div className="relative">
           <div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-6">
+          <div className="relative max-w-[950px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between p-6">
             <p className="text-center text-lg flex-1 italic mr-4 py-4 ">
               Ne manquez pas cette occasion de rejoindre un événement convivial
               et de rencontrer des personnes prêtes à partager des moments
@@ -198,7 +198,7 @@ const EventDetail = () => {
             <Link to="/events">
               <button
                 type="button"
-                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300 mt-4 md:mt-0"
               >
                 Retour à la liste des évènements
               </button>

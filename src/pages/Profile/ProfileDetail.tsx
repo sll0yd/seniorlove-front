@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
-import type { IUser } from "../../@types";
-import { useParams } from "react-router-dom";
-import AxiosInstance from "../../utils/axios";
-import { useTags } from "../../context/TagContext";
+import { useEffect, useState } from 'react';
+import type { IUser } from '../../@types';
+import { Link, useParams } from 'react-router-dom';
+import AxiosInstance from '../../utils/axios';
+import { useTags } from '../../context/TagContext';
 
 function ProfileDetail() {
-
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<IUser | null>(null);
   const { tags } = useTags();
   // Définir la modale de chat comme ouverte ou fermée
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
-  const [msgContent, setMsgContent] = useState("");
+  const [msgContent, setMsgContent] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -19,7 +18,7 @@ function ProfileDetail() {
         const response = await AxiosInstance.get<IUser>(`/users/${id}`);
         setUser(response.data);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error('Error fetching user:', error);
       }
     };
 
@@ -32,18 +31,18 @@ function ProfileDetail() {
 
   const userTags =
     user.tags?.map(
-      (userTag) => tags.find((tag) => tag.id === userTag.id) // Trouver les tags correspondant à ceux de l'utilisateur
+      (userTag) => tags.find((tag) => tag.id === userTag.id), // Trouver les tags correspondant à ceux de l'utilisateur
     ) || [];
 
   const getDefaultProfilePicture = (gender: string) => {
-    if (gender === "F") {
-      return "https://avatar.iran.liara.run/public/52";
+    if (gender === 'F') {
+      return 'https://avatar.iran.liara.run/public/52';
     }
-    return "https://avatar.iran.liara.run/public/45";
+    return 'https://avatar.iran.liara.run/public/45';
   };
 
   const getBackgroundColor = (gender: string) => {
-    return gender === "F" ? "bg-pink-50" : "bg-blue-50";
+    return gender === 'F' ? 'bg-pink-50' : 'bg-blue-50';
   };
 
   // Ouvrir une modale de chat au clique sur le bouton "Lui Écrire"
@@ -59,14 +58,14 @@ function ProfileDetail() {
   // Logique pour envoyer un message par le bakc via la route /messages/:receiver_id
   const sendMessage = async (event) => {
     event.preventDefault();
-    console.log("msgContent :>> ", msgContent);
+    console.log('msgContent :>> ', msgContent);
     try {
       await AxiosInstance.post(`/me/messages/${user.id}`, {
         content: msgContent,
       });
-      alert("Message envoyé avec succès !");
+      alert('Message envoyé avec succès !');
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error('Error sending message:', error);
     }
   };
 
@@ -86,11 +85,11 @@ function ProfileDetail() {
       </div>
 
       <div className="max-w-6xl mx-auto px-8">
-        {" "}
+        {' '}
         <div className={`${getBackgroundColor(user.gender)} rounded-lg p-12`}>
-          {" "}
+          {' '}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-            {" "}
+            {' '}
             <div className="md:col-span-1">
               <img
                 src={user.picture || getDefaultProfilePicture(user.gender)}
@@ -109,7 +108,7 @@ function ProfileDetail() {
                         >
                           {tag.name}
                         </span>
-                      ) : null // Si le tag n'a pas toutes les propriétés nécessaires, il n'est pas affiché
+                      ) : null, // Si le tag n'a pas toutes les propriétés nécessaires, il n'est pas affiché
                   )
                 ) : (
                   <p>Aucun tag associé à ce profil</p>
@@ -132,9 +131,7 @@ function ProfileDetail() {
               </p>
 
               <p className="text-gray-700 text-lg leading-relaxed italic">
-                "
-                {user.bio ? user.bio : "Aucune bio n'a été trouvé."}
-                "
+                "{user.bio ? user.bio : "Aucune bio n'a été trouvé."}"
               </p>
             </div>
           </div>
@@ -143,17 +140,19 @@ function ProfileDetail() {
       <div className="py-12">
         <div className="relative">
           <div className="absolute bg-blue-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between">
+          <div className="relative max-w-[950px] mx-auto px-4 flex flex-col items-center justify-between md:flex-row">
             <p className="text-center text-sm flex-1 italic mr-4 py-4">
               Commencez dès aujourd'hui à rencontrer des personnes prêtes à
               partager de beaux moments et à construire une relation sincère
             </p>
-            <button
-              type="button"
-              className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
-            >
-              S'inscrire
-            </button>
+            <Link to="/profile" className="mt-4 md:mt-0">
+              <button
+                type="button"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              >
+                Retourner à la liste des profils
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -191,7 +190,6 @@ function ProfileDetail() {
       )}
     </main>
   );
-
 }
 
 export default ProfileDetail;
