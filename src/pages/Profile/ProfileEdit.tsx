@@ -69,7 +69,6 @@ function ProfileEdit() {
 				age,
 				hometown,
 				bio,
-				password: newPassword || password,
 			};
 			const response = await AxiosInstance.patch("/me", updatedUser);
 			setUser(response.data); // Met à jour le context utilisateur

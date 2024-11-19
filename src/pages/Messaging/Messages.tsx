@@ -29,15 +29,17 @@ function Messages() {
   const loadMessagesForUser = async (targetUserId: number) => {
     if (!user) return;
     setIsLoading(true);
-    
+    console.log("dedans ! ");
     try {
-      const response = await AxiosInstance.get<IMessage[]>(`/me/messages/${targetUserId}`);
+      const response = await AxiosInstance.get<IMessage[]>(
+        `/me/messages/${targetUserId}`
+      );
       if (response.data) {
         setMessages(response.data);
         setSelectedUserId(targetUserId);
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des messages:', error);
+      console.error("Erreur lors du chargement des messages:", error);
     } finally {
       setIsLoading(false);
     }
@@ -48,6 +50,7 @@ function Messages() {
    * @param userId ID de l'utilisateur sélectionné
    */
   const handleUserSelection = (userId: number) => {
+    console.log("dans le handler");
     if (userId === selectedUserId) return;
     loadMessagesForUser(userId);
   };
@@ -58,9 +61,14 @@ function Messages() {
    */
   const handleStartNewConversation = async () => {
     const userId = Number(newUserId);
-    
-    if (!newUserId.trim() || !newMessage.trim() || !user || 
-        Number.isNaN(userId) || userId === user.id) {
+
+    if (
+      !newUserId.trim() ||
+      !newMessage.trim() ||
+      !user ||
+      Number.isNaN(userId) ||
+      userId === user.id
+    ) {
       alert("Veuillez vérifier l'ID utilisateur et le message");
       return;
     }
@@ -73,15 +81,17 @@ function Messages() {
       const otherUser = userResponse.data;
 
       // Ajout de l'utilisateur à la liste avec les informations correctes
-      setUsers(prev => prev.some(u => u.id === otherUser.id) 
-        ? prev 
-        : [...prev, otherUser]
+      setUsers((prev) =>
+        prev.some((u) => u.id === otherUser.id) ? prev : [...prev, otherUser]
       );
 
       // Envoi du message
-      const response = await AxiosInstance.post<IMessage>(`/me/messages/${userId}`, {
-        content: newMessage
-      });
+      const response = await AxiosInstance.post<IMessage>(
+        `/me/messages/${userId}`,
+        {
+          content: newMessage,
+        }
+      );
 
       if (response.data) {
         setSelectedUserId(userId);
@@ -91,7 +101,7 @@ function Messages() {
         setShowNewMessageInput(false);
       }
     } catch (error) {
-      setUsers(prev => prev.filter(u => u.id !== userId));
+      setUsers((prev) => prev.filter((u) => u.id !== userId));
       alert("Une erreur est survenue lors de l'envoi du message");
     } finally {
       setIsLoading(false);
@@ -105,12 +115,15 @@ function Messages() {
     if (!selectedUserId || !newMessage.trim() || !user) return;
 
     try {
-      const response = await AxiosInstance.post<IMessage>(`/me/messages/${selectedUserId}`, {
-        content: newMessage
-      });
+      const response = await AxiosInstance.post<IMessage>(
+        `/me/messages/${selectedUserId}`,
+        {
+          content: newMessage,
+        }
+      );
 
       if (response.data) {
-        setMessages(prev => [...prev, response.data]);
+        setMessages((prev) => [...prev, response.data]);
         setNewMessage("");
       }
     } catch (error) {
@@ -124,54 +137,18 @@ function Messages() {
    */
   useEffect(() => {
     async function loadAllConversations() {
-      if (!user) return;
       setIsLoading(true);
-
       try {
-        const uniqueUsers = new Map<number, IUser>();
-        const userIdsToCheck = Array.from({ length: 20 }, (_, i) => i + 1);
-        let firstMessages: IMessage[] = [];
-        let firstUserId: number | null = null;
-
-        // Parcours des utilisateurs potentiels
-        for (const id of userIdsToCheck) {
-          if (id === user.id) continue;
-
-          const response = await AxiosInstance.get<IMessage[]>(`/me/messages/${id}`)
-            .catch(() => null);
-
-          if (response?.data?.length) {
-            const otherUser = response.data[0].sender_id === user.id 
-              ? response.data[0].receiver 
-              : response.data[0].sender;
-
-            if (otherUser) {
-              uniqueUsers.set(otherUser.id, otherUser);
-              
-              if (!firstUserId) {
-                firstUserId = otherUser.id;
-                firstMessages = response.data;
-              }
-            }
-          }
-        }
-
-        // Mise à jour de l'état avec les utilisateurs trouvés
-        setUsers(Array.from(uniqueUsers.values()));
-        
-        if (firstUserId && firstMessages.length) {
-          setSelectedUserId(firstUserId);
-          setMessages(firstMessages);
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement des conversations:', error);
-      } finally {
+        const response = await AxiosInstance.get("/me/contacts");
+        console.log("response :>> ", response);
+        setUsers(response.data);
         setIsLoading(false);
+      } catch (error) {
+        console.log("error :>> ", error);
       }
     }
-
     loadAllConversations();
-  }, [user]);
+  }, []);
 
   // Affichage du chargement si pas d'utilisateur connecté
   if (!user) {
@@ -181,17 +158,17 @@ function Messages() {
       </div>
     );
   }
-// Affichage de la photo de profil par défaut en fonction du genre
-const getDefaultProfilePicture = (gender: string | undefined) => {  
-  if (gender === 'F') {
-    return 'https://avatar.iran.liara.run/public/52';
-  }
-  if (gender === 'M') {
-    return 'https://avatar.iran.liara.run/public/45';
-  }
-  // Par défaut, on affiche une silhouette
-  return 'https://avatar.iran.liara.run/public/45';
-};
+  // Affichage de la photo de profil par défaut en fonction du genre
+  const getDefaultProfilePicture = (gender: string | undefined) => {
+    if (gender === "F") {
+      return "https://avatar.iran.liara.run/public/52";
+    }
+    if (gender === "M") {
+      return "https://avatar.iran.liara.run/public/45";
+    }
+    // Par défaut, on affiche une silhouette
+    return "https://avatar.iran.liara.run/public/45";
+  };
 
   // Rendu principal de l'interface
   return (
@@ -238,7 +215,12 @@ const getDefaultProfilePicture = (gender: string | undefined) => {
                   <button
                     type="button"
                     onClick={handleStartNewConversation}
-                    disabled={!newUserId || !newMessage || Number(newUserId) === user.id || isLoading}
+                    disabled={
+                      !newUserId ||
+                      !newMessage ||
+                      Number(newUserId) === user.id ||
+                      isLoading
+                    }
                     className="w-full p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors disabled:opacity-50"
                   >
                     Envoyer
@@ -258,19 +240,22 @@ const getDefaultProfilePicture = (gender: string | undefined) => {
                       Aucune conversation active
                     </div>
                   ) : (
-                    users.map(chatUser => (
+                    users.map((chatUser) => (
                       <button
                         type="button"
                         key={chatUser.id}
                         onClick={() => handleUserSelection(chatUser.id)}
                         className={`flex items-center space-x-3 p-2 rounded-full hover:bg-gray-100 w-full ${
-                          selectedUserId === chatUser.id ? 'bg-gray-100' : ''
+                          selectedUserId === chatUser.id ? "bg-gray-100" : ""
                         }`}
                         disabled={isLoading}
                       >
                         <img
-  src={chatUser.picture || getDefaultProfilePicture(chatUser.gender)}
-  alt={chatUser.userName}
+                          src={
+                            chatUser.picture ||
+                            getDefaultProfilePicture(chatUser.gender)
+                          }
+                          alt={chatUser.userName}
                           className="w-8 h-8 rounded-full flex-shrink-0"
                         />
                         <span className="bg-white px-4 py-1 rounded-full shadow-sm truncate">
@@ -301,22 +286,37 @@ const getDefaultProfilePicture = (gender: string | undefined) => {
                   Aucun message dans cette conversation
                 </div>
               ) : (
-                messages.map(message => (
+                messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex ${message.sender_id === user.id ? "justify-end" : "justify-start"}`}
+                    className={`flex ${
+                      message.sender_id === user.id
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
                   >
                     <div className="flex items-start space-x-2 max-w-md">
                       {message.sender_id !== user.id && (
                         <img
-                        src={message.sender.picture || getDefaultProfilePicture(message.sender.gender)}
-                        alt={message.sender.userName}
+                          src={
+                            message.sender.picture ||
+                            getDefaultProfilePicture(message.sender.gender)
+                          }
+                          alt={message.sender.userName}
                           className="w-8 h-8 rounded-full flex-shrink-0"
                         />
                       )}
                       <div>
-                        <div className={`text-sm text-gray-600 ${message.sender_id === user.id ? "text-right" : "text-left"}`}>
-                          {message.sender_id === user.id ? "Vous" : message.sender.userName}
+                        <div
+                          className={`text-sm text-gray-600 ${
+                            message.sender_id === user.id
+                              ? "text-right"
+                              : "text-left"
+                          }`}
+                        >
+                          {message.sender_id === user.id
+                            ? "Vous"
+                            : message.sender.userName}
                         </div>
                         <div className="mt-1 p-2.5 rounded-lg shadow-sm bg-gray-50 text-gray-900 break-words">
                           {message.content}
@@ -324,8 +324,11 @@ const getDefaultProfilePicture = (gender: string | undefined) => {
                       </div>
                       {message.sender_id === user.id && (
                         <img
-                        src={user.picture || getDefaultProfilePicture(user.gender)}
-                        alt="Vous"
+                          src={
+                            user.picture ||
+                            getDefaultProfilePicture(user.gender)
+                          }
+                          alt="Vous"
                           className="w-8 h-8 rounded-full flex-shrink-0"
                         />
                       )}
@@ -340,8 +343,8 @@ const getDefaultProfilePicture = (gender: string | undefined) => {
               <div className="p-3 bg-gray-100 flex-shrink-0">
                 <div className="flex items-center space-x-2">
                   <img
-  src={user.picture || getDefaultProfilePicture(user.gender)}
-  alt="Vous"
+                    src={user.picture || getDefaultProfilePicture(user.gender)}
+                    alt="Vous"
                     className="w-8 h-8 rounded-full flex-shrink-0"
                   />
                   <div className="flex-1 flex items-center space-x-2 bg-white rounded-full border border-gray-200 pr-2">
@@ -353,7 +356,11 @@ const getDefaultProfilePicture = (gender: string | undefined) => {
                       className="flex-1 p-2 rounded-full border-none focus:outline-none min-w-0"
                       disabled={isLoading}
                       onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !isLoading && newMessage.trim()) {
+                        if (
+                          e.key === "Enter" &&
+                          !isLoading &&
+                          newMessage.trim()
+                        ) {
                           handleSendMessage();
                         }
                       }}
