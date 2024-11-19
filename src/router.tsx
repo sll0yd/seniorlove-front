@@ -5,8 +5,7 @@ import ProtectedRoute from "./pages/Auth/ProtectedRoute.tsx";
 // Pages publiques
 //----------------
 import HomePage from "./pages/Home/HomePage.tsx";
-// import Login
-// import Register
+
 
 // Pages protégées
 //----------------
@@ -27,6 +26,9 @@ import EventEdit from "./pages/Events/EventEdit.tsx";
 // import Conversation
 
 import Page404 from "./pages/Page404.tsx";
+import TermsAndConditions from "./pages/Legal/Terms.tsx";
+import PrivacyPolicy from "./pages/Legal/Privacy.tsx";
+import CommunityGuidelines from "./pages/Legal/Community.tsx";
 
 // Routes
 const router = createBrowserRouter([
@@ -96,11 +98,19 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/messages",
-				element: (
-					//<ProtectedRoute>
-					<Messages />
-					//</ProtectedRoute>
-				),
+				element: <Messages />,
+			},
+			{
+				path: "/terms",
+				element: <TermsAndConditions />,
+			},
+			{
+				path: "/community",
+				element: <CommunityGuidelines />,
+			},
+			{
+				path: "/privacy",
+				element: <PrivacyPolicy />,
 			},
 			{
 				path: "*",
