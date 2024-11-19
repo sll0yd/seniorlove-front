@@ -200,7 +200,7 @@ function EventEdit() {
       <div className="relative  mb-8 ">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap ">
+          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap md: mt-6">
             Modifier votre évènement
           </h1>
         </div>
@@ -218,7 +218,7 @@ function EventEdit() {
 
         <label
           htmlFor="upload-picture"
-          className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block cursor-pointer w-96 text-center"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block cursor-pointer w-96 text-center sm: w-auto mb-4"
         >
           Choisissez une photo de couverture
         </label>
@@ -382,17 +382,17 @@ function EventEdit() {
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end sm: w-auto">
             <button
               type="button"
-              className="px-8 py-3 bg-red-500 border-2 border-white text-white rounded-lg shadow-md hover:bg-red-500 hover:scale-105 hover:shadow-lg hover:text-white-300 transition-all duration-300 mr-4"
+              className="px-4 py-2 bg-red-500 border-2 border-white text-white rounded-lg shadow-md hover:bg-red-500 hover:scale-105 hover:shadow-lg hover:text-white-300 transition-all duration-300 mr-4 sm:px-6 py-3"
               onClick={(e) => confirmAndDeleteEvent(e)}
             >
-              Supprimer l'évènement
+              Supprimer
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors sm:px-6 py-3"
             >
               Mettre à jour l'évènement
             </button>

@@ -40,7 +40,7 @@ function EventCreate() {
       <div className="relative">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap sm: mb-6">
+          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap sm: mb-6 md: mt-1">
             Créez votre évènement
           </h1>
         </div>
