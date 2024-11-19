@@ -194,7 +194,6 @@ function EventEdit() {
       handleDeleteEvent();
     }
   };
-
   return (
     <main className="pt-24">
       <div className="relative  mb-8 ">
@@ -274,7 +273,7 @@ function EventEdit() {
                 Date de l'évènement :
               </label>
               <input
-                type="text"
+                type="date"
                 id="date"
                 placeholder="22 / 10 /2024"
                 className="w-full p-2 border rounded-md"
@@ -381,7 +380,6 @@ function EventEdit() {
               )}
             </div>
           </div>
-
           <div className="flex justify-end sm: w-auto">
             <button
               type="button"
@@ -398,7 +396,6 @@ function EventEdit() {
             </button>
           </div>
         </form>
-
         {error && (
           <div className="mt-4 text-red-500">
             <p>{error}</p>

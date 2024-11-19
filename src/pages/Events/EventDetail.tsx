@@ -108,8 +108,13 @@ const EventDetail = () => {
             Proposé par {event.creator.userName}
           </div>
           <div className="text-sm text-gray-600 mb-4 text-center">
-            Où : {event.location} · Le · {event.date} · {participants}{' '}
-            participants actuellement
+            Le{' '}
+            {new Date(event.date).toLocaleDateString('fr-FR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}{' '}
+            · {participants} participants actuellement
           </div>
           <div className="flex flex-col items-center gap-4 mb-4">
             <h2 className="text-3xl font-bold text-gray-900 text-center">
