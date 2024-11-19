@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer className="bg-white">
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8">
+        <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
           <a href="/conditions-generales" className="text-gray-600 hover:text-black text-sm transition-colors duration-200">
             Conditions Générales
           </a>
