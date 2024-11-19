@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Footer() {
@@ -27,14 +26,14 @@ function Footer() {
             className="text-gray-600 hover:text-black text-sm transition-colors duration-200"
             onClick={scrollToTop}
           >
-            Politiques de Confidentialité
+            Politique de Confidentialité
           </Link>
           <Link 
             to="/community" 
             className="text-gray-600 hover:text-black text-sm transition-colors duration-200"
             onClick={scrollToTop}
           >
-            Règles de Communautés
+            Règles de Communauté
           </Link>
         </div>
         
