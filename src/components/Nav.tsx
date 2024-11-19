@@ -235,7 +235,7 @@ function Nav() {
             >
               Se connecter
             </button>
-            <Link to="/register">
+            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <button
                 type="button"
                 className="p-1 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
