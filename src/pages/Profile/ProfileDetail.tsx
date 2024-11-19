@@ -133,8 +133,7 @@ function ProfileDetail() {
 
               <p className="text-gray-700 text-lg leading-relaxed italic">
                 "
-                {user.bio ||
-                  "Grand(e) romantique à la recherche de la personne qui fera battre mon cœur. J'aime les balades au bord de l'eau, les couchers de soleil, et les longues discussions qui s'étirent jusqu'au petit matin. Ici pour construire quelque chose de vrai et durable."}
+                {user.bio ? user.bio : "Aucune bio n'a été trouvé."}
                 "
               </p>
             </div>
