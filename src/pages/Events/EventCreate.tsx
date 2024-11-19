@@ -40,7 +40,7 @@ function EventCreate() {
       <div className="relative">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap">
+          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap sm: mb-6">
             Créez votre évènement
           </h1>
         </div>
@@ -48,22 +48,6 @@ function EventCreate() {
 
       <div className="max-w-4xl mx-auto px-8">
         <div className="bg-pink-50 rounded-lg p-8">
-          {/* <div className="mb-8">
-            <div className="w-full h-64 bg-gray-200 rounded-lg mb-4">
-              <img
-                src={event?.picture || '/api/placeholder/1200/600'}
-                alt={event?.title}
-                className="w-full h-[400px] object-cover"
-              />
-            </div>
-            <button
-              type="button"
-              className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block"
-            >
-              Choisissez une photo de couverture
-            </button>
-          </div> */}
-
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="title" className="block text-gray-700 mb-2">

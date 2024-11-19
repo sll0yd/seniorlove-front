@@ -200,7 +200,7 @@ function EventEdit() {
       <div className="relative  mb-8 ">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap">
+          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap ">
             Modifier votre évènement
           </h1>
         </div>
