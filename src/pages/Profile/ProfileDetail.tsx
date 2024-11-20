@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react';
-import type { IUser } from '../../@types';
-import { Link, useParams } from 'react-router-dom';
-import AxiosInstance from '../../utils/axios';
-import { useTags } from '../../context/TagContext';
+import { useEffect, useState } from "react";
+import type { IUser } from "../../@types";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import AxiosInstance from "../../utils/axios";
+import { useTags } from "../../context/TagContext";
 
 function ProfileDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [user, setUser] = useState<IUser | null>(null);
   const { tags } = useTags();
   // Définir la modale de chat comme ouverte ou fermée
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
-  const [msgContent, setMsgContent] = useState('');
+  const [msgContent, setMsgContent] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -18,7 +19,7 @@ function ProfileDetail() {
         const response = await AxiosInstance.get<IUser>(`/users/${id}`);
         setUser(response.data);
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
       }
     };
 
@@ -31,18 +32,18 @@ function ProfileDetail() {
 
   const userTags =
     user.tags?.map(
-      (userTag) => tags.find((tag) => tag.id === userTag.id), // Trouver les tags correspondant à ceux de l'utilisateur
+      (userTag) => tags.find((tag) => tag.id === userTag.id) // Trouver les tags correspondant à ceux de l'utilisateur
     ) || [];
 
   const getDefaultProfilePicture = (gender: string) => {
-    if (gender === 'F') {
-      return 'https://avatar.iran.liara.run/public/52';
+    if (gender === "F") {
+      return "https://avatar.iran.liara.run/public/52";
     }
-    return 'https://avatar.iran.liara.run/public/45';
+    return "https://avatar.iran.liara.run/public/45";
   };
 
   const getBackgroundColor = (gender: string) => {
-    return gender === 'F' ? 'bg-pink-50' : 'bg-blue-50';
+    return gender === "F" ? "bg-pink-50" : "bg-blue-50";
   };
 
   // Ouvrir une modale de chat au clique sur le bouton "Lui Écrire"
@@ -62,9 +63,9 @@ function ProfileDetail() {
       await AxiosInstance.post(`/me/messages/${user.id}`, {
         content: msgContent,
       });
-      alert('Message envoyé avec succès !');
+      navigate("/messages");
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
 
@@ -96,13 +97,29 @@ function ProfileDetail() {
                   >
                     Annuler
                   </button>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+                  {/* <Link to="/messages"> */}
+>>>>>>> Stashed changes
+=======
+                  {/* <Link to="/messages"> */}
+>>>>>>> Stashed changes
                   <button
                     type="submit"
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                   >
                     Envoyer
                   </button>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+                  {/* </Link> */}
+>>>>>>> Stashed changes
+=======
+                  {/* </Link> */}
+>>>>>>> Stashed changes
                 </div>
               </form>
             </div>
@@ -117,11 +134,11 @@ function ProfileDetail() {
       </div>
 
       <div className="max-w-6xl mx-auto px-8">
-        {' '}
+        {" "}
         <div className={`${getBackgroundColor(user.gender)} rounded-lg p-12`}>
-          {' '}
+          {" "}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-            {' '}
+            {" "}
             <div className="md:col-span-1">
               <img
                 src={user.picture || getDefaultProfilePicture(user.gender)}
@@ -140,7 +157,7 @@ function ProfileDetail() {
                         >
                           {tag.name}
                         </span>
-                      ) : null, // Si le tag n'a pas toutes les propriétés nécessaires, il n'est pas affiché
+                      ) : null // Si le tag n'a pas toutes les propriétés nécessaires, il n'est pas affiché
                   )
                 ) : (
                   <p>Aucun tag associé à ce profil</p>
