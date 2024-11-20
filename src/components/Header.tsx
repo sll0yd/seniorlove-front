@@ -276,7 +276,7 @@ function Header() {
             <div className="mr-24 md:mr-32 ml-auto w-fit max-w-[320px] mt-1">
               <div className="bg-white/10 backdrop-blur-sm rounded-3xl px-8 py-6 shadow-lg">
                 <h2 className="text-2xl font-bold text-center truncate">
-                  Bienvenue {user.userName}
+                Bienvenue {user.userName[0].toUpperCase() + user.userName.slice(1)}
                 </h2>
               </div>
             </div>
