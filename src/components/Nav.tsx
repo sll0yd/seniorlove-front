@@ -71,7 +71,7 @@ function Nav() {
   };
 
   return (
-    <nav className="fixed z-50 flex justify-evenly items-center bg-white shadow-lg w-full pt-4 pl-6 pr-16 pb-4">
+    <nav className="fixed z-50 flex justify-between items-center bg-white shadow-lg w-full pt-4 pl-6 pr-16 pb-4">
       <Link
         className="max-h-8"
         to="/"
@@ -80,7 +80,7 @@ function Nav() {
         <img
           src={isMenuOpen ? '/icon/heart.png' : '/icon/copie_logo.png'}
           alt="logo"
-          className="flex-col max-h-11 items-center pb-3"
+          className="flex-col max-h-11 items-center pb-3 sm:max-h-10 md:max-h-8 lg:max-h-10 xl:max-h-11"
         />
       </Link>
 
@@ -109,26 +109,32 @@ function Nav() {
       </button>
 
       <ul
-        className={`flex-col space-y-4 md:mt-0 md:space-y-0 md:flex-row md:space-x-20 ${
+        className={`flex-col space-y-4 md:mt-0 md:space-y-0 md:flex-row md:space-x-6 lg:space-x-16 xl:space-x-24 ${
           isMenuOpen ? 'flex' : 'hidden'
-        } md:flex`}
+        } md:flex text-center`}
       >
         {user ? (
           <>
             <li>
-              <Link to="/profile" className="text-gray-700 hover:text-gray-900 font-bold">
+              <Link
+                to="/profile"
+                className="relative text-sm lg:text-base text-gray-700 hover:text-gray-900 font-bold after:content-[''] after:block after:w-0 after:h-[2px] after:bg-gray-700 after:rounded-full after:mx-auto hover:after:w-full after:transition-all after:duration-500 after:mt-1"
+              >
                 Trouver des profils
               </Link>
             </li>
             <li>
-              <Link to="/events" className="text-gray-700 hover:text-gray-900 font-bold">
+              <Link
+                to="/events"
+                className="relative text-sm lg:text-base text-gray-700 hover:text-gray-900 font-bold after:content-[''] after:block after:w-0 after:h-[2px] after:bg-gray-700 after:rounded-full after:mx-auto hover:after:w-full after:transition-all after:duration-500 after:mt-1"
+              >
                 Évènements
               </Link>
             </li>
             <li>
               <Link
                 to="/messages"
-                className="text-gray-700 hover:text-gray-900 font-bold"
+                className="relative text-sm lg:text-base text-gray-700 hover:text-gray-900 font-bold after:content-[''] after:block after:w-0 after:h-[2px] after:bg-gray-700 after:rounded-full after:mx-auto hover:after:w-full after:transition-all after:duration-500 after:mt-1"
               >
                 Messagerie
               </Link>
@@ -146,7 +152,10 @@ function Nav() {
               </button>
             </li>
             <li>
-              <Link to="/events" className="text-gray-700 hover:text-gray-900 font-bold">
+              <Link
+                to="/events"
+                className="text-gray-700 hover:text-gray-900 font-bold"
+              >
                 Évènements
               </Link>
             </li>
@@ -166,7 +175,7 @@ function Nav() {
       <div
         className={`flex-col space-y-4 ${
           isMenuOpen ? 'flex' : 'hidden'
-        } md:hidden`}
+        } md:hidden mr-2`}
       >
         {user ? (
           <>
@@ -183,7 +192,7 @@ function Nav() {
               className="p-1 border-2 shadow-lg rounded-lg bg-white border-red-400 text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-300"
               onClick={handleLogout}
             >
-              Se déconnecter
+              Déconnexion
             </button>
           </>
         ) : (
@@ -207,23 +216,23 @@ function Nav() {
         )}
       </div>
 
-      <div className="hidden md:flex items-center space-x-4">
+      <div className="hidden md:flex space-x-2">
         {user ? (
           <>
             <Link to="/account">
               <button
                 type="button"
-                className="p-1 border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-300"
+                className="p-1  border-2 shadow-lg rounded-lg bg-white border-custom-blue text-custom-blue text-xs lg:text-base hover:bg-custom-blue hover:text-white transition-colors duration-300"
               >
                 Mon compte
               </button>
             </Link>
             <button
               type="button"
-              className="p-1 border-2 shadow-lg rounded-lg bg-white border-red-400 text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-300"
+              className="p-1 border-2 shadow-lg rounded-lg bg-white border-red-400 text-red-400 text-xs lg:text-base hover:bg-red-400 hover:text-white transition-colors duration-300"
               onClick={handleLogout}
             >
-              Se déconnecter
+              Déconnexion
             </button>
           </>
         ) : (

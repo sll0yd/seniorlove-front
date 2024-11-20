@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import AxiosInstance from "../../utils/axios";
-import type { IUser, IMessage } from "../../@types";
-import { useUser } from "../../context/UserContext";
+import { useState, useEffect } from 'react';
+import AxiosInstance from '../../utils/axios';
+import type { IUser, IMessage } from '../../@types';
+import { useUser } from '../../context/UserContext';
 
 /**
  * Composant Messages - Gère l'interface de messagerie entre utilisateurs
@@ -17,9 +17,7 @@ function Messages() {
   const [messages, setMessages] = useState<IMessage[]>([]); // Messages de la conversation active
   const [users, setUsers] = useState<IUser[]>([]); // Liste des utilisateurs avec conversations
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null); // ID de l'utilisateur sélectionné
-  const [newMessage, setNewMessage] = useState(""); // Contenu du nouveau message
-  const [newUserId, setNewUserId] = useState(""); // ID pour nouvelle conversation
-  const [showNewMessageInput, setShowNewMessageInput] = useState(false); // Affichage du formulaire de nouvelle conversation
+  const [newMessage, setNewMessage] = useState(''); // Contenu du nouveau message
   const [isLoading, setIsLoading] = useState(false); // État de chargement
 
   /**
@@ -29,85 +27,28 @@ function Messages() {
   const loadMessagesForUser = async (targetUserId: number) => {
     if (!user) return;
     setIsLoading(true);
-    console.log("dedans ! ");
     try {
       const response = await AxiosInstance.get<IMessage[]>(
-        `/me/messages/${targetUserId}`
+        `/me/messages/${targetUserId}`,
       );
       if (response.data) {
         setMessages(response.data);
         setSelectedUserId(targetUserId);
       }
     } catch (error) {
-      console.error("Erreur lors du chargement des messages:", error);
+      console.error('Erreur lors du chargement des messages:', error);
     } finally {
       setIsLoading(false);
     }
   };
-
   /**
    * Gère la sélection d'un utilisateur dans la liste
    * @param userId ID de l'utilisateur sélectionné
    */
   const handleUserSelection = (userId: number) => {
-    console.log("dans le handler");
     if (userId === selectedUserId) return;
     loadMessagesForUser(userId);
   };
-
-  /**
-   * Démarre une nouvelle conversation avec un utilisateur
-   * Récupère d'abord les informations de l'utilisateur avant d'envoyer le message
-   */
-  const handleStartNewConversation = async () => {
-    const userId = Number(newUserId);
-
-    if (
-      !newUserId.trim() ||
-      !newMessage.trim() ||
-      !user ||
-      Number.isNaN(userId) ||
-      userId === user.id
-    ) {
-      alert("Veuillez vérifier l'ID utilisateur et le message");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      // Récupération des informations de l'utilisateur
-      const userResponse = await AxiosInstance.get<IUser>(`/users/${userId}`);
-      const otherUser = userResponse.data;
-
-      // Ajout de l'utilisateur à la liste avec les informations correctes
-      setUsers((prev) =>
-        prev.some((u) => u.id === otherUser.id) ? prev : [...prev, otherUser]
-      );
-
-      // Envoi du message
-      const response = await AxiosInstance.post<IMessage>(
-        `/me/messages/${userId}`,
-        {
-          content: newMessage,
-        }
-      );
-
-      if (response.data) {
-        setSelectedUserId(userId);
-        setMessages([response.data]);
-        setNewMessage("");
-        setNewUserId("");
-        setShowNewMessageInput(false);
-      }
-    } catch (error) {
-      setUsers((prev) => prev.filter((u) => u.id !== userId));
-      alert("Une erreur est survenue lors de l'envoi du message");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   /**
    * Envoie un message dans la conversation active
    */
@@ -119,12 +60,11 @@ function Messages() {
         `/me/messages/${selectedUserId}`,
         {
           content: newMessage,
-        }
+        },
       );
-
       if (response.data) {
         setMessages((prev) => [...prev, response.data]);
-        setNewMessage("");
+        setNewMessage('');
       }
     } catch (error) {
       alert("Une erreur est survenue lors de l'envoi du message");
@@ -139,12 +79,12 @@ function Messages() {
     async function loadAllConversations() {
       setIsLoading(true);
       try {
-        const response = await AxiosInstance.get("/me/contacts");
-        console.log("response :>> ", response);
+        const response = await AxiosInstance.get('/me/contacts');
+        console.log('response :>> ', response);
         setUsers(response.data);
         setIsLoading(false);
       } catch (error) {
-        console.log("error :>> ", error);
+        console.log('error :>> ', error);
       }
     }
     loadAllConversations();
@@ -160,14 +100,14 @@ function Messages() {
   }
   // Affichage de la photo de profil par défaut en fonction du genre
   const getDefaultProfilePicture = (gender: string | undefined) => {
-    if (gender === "F") {
-      return "https://avatar.iran.liara.run/public/52";
+    if (gender === 'F') {
+      return 'https://avatar.iran.liara.run/public/52';
     }
-    if (gender === "M") {
-      return "https://avatar.iran.liara.run/public/45";
+    if (gender === 'M') {
+      return 'https://avatar.iran.liara.run/public/45';
     }
     // Par défaut, on affiche une silhouette
-    return "https://avatar.iran.liara.run/public/45";
+    return 'https://avatar.iran.liara.run/public/45';
   };
 
   // Rendu principal de l'interface
@@ -182,55 +122,14 @@ function Messages() {
         </div>
 
         {/* Conteneur principal */}
-        <div className="flex flex-1 mx-10 h-[calc(100vh-8rem)] overflow-hidden">
+        <div className="flex flex-1 mx-10 h-[calc(100vh-8rem)] overflow-hidden flex-col md:flex-row">
           {/* Barre latérale avec la liste des conversations */}
-          <div className="w-64 bg-pink-50 rounded-l-3xl shadow-md flex flex-col">
+          <div className="w-full md:w-64 bg-pink-50 rounded-xl md:rounded-l-xl md:rounded-r-none shadow-md flex flex-col mb-2 md:min-h-screen">
             <div className="p-4 flex flex-col h-full overflow-hidden">
-              {/* Bouton nouvelle conversation */}
-              <button
-                type="button"
-                onClick={() => setShowNewMessageInput(!showNewMessageInput)}
-                className="w-full p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-              >
-                Nouveau message
-              </button>
-
-              {/* Formulaire de nouvelle conversation */}
-              {showNewMessageInput && (
-                <div className="space-y-2 p-2 mt-2 bg-white rounded-lg">
-                  <input
-                    type="text"
-                    value={newUserId}
-                    onChange={(e) => setNewUserId(e.target.value)}
-                    placeholder="ID de l'utilisateur"
-                    className="w-full p-2 rounded-lg border border-gray-200"
-                  />
-                  <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Votre message"
-                    className="w-full p-2 rounded-lg border border-gray-200"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleStartNewConversation}
-                    disabled={
-                      !newUserId ||
-                      !newMessage ||
-                      Number(newUserId) === user.id ||
-                      isLoading
-                    }
-                    className="w-full p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors disabled:opacity-50"
-                  >
-                    Envoyer
-                  </button>
-                </div>
-              )}
-
               {/* Liste des conversations */}
-              <div className="mt-4 flex-1 overflow-y-auto">
-                <div className="space-y-2">
+              <div className="mt-4 flex-1">
+                {/* Comportement horizontal sur petits écrans */}
+                <div className="space-x-2 flex overflow-x-auto whitespace-nowrap md:flex-col md:space-x-0 md:space-y-2">
                   {isLoading && !users.length ? (
                     <div className="flex justify-center py-4">
                       <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent" />
@@ -245,8 +144,8 @@ function Messages() {
                         type="button"
                         key={chatUser.id}
                         onClick={() => handleUserSelection(chatUser.id)}
-                        className={`flex items-center space-x-3 p-2 rounded-full hover:bg-gray-100 w-full ${
-                          selectedUserId === chatUser.id ? "bg-gray-100" : ""
+                        className={`flex items-center space-x-3 p-2 rounded-full hover:bg-gray-200 w-auto ${
+                          selectedUserId === chatUser.id ? 'bg-gray-100' : ''
                         }`}
                         disabled={isLoading}
                       >
@@ -270,7 +169,7 @@ function Messages() {
           </div>
 
           {/* Zone des messages */}
-          <div className="flex-1 flex flex-col shadow-md border-y border-r border-gray-100 rounded-r-3xl bg-white">
+          <div className="flex-1 flex flex-col shadow-md border border-gray-100 rounded-t-3xl md:rounded-r-3xl md:rounded-t-none md:border-l-0 md:border-y md:border-r bg-white">
             {/* Liste des messages */}
             <div className="flex-1 overflow-y-auto p-3 space-y-3">
               {isLoading && !messages.length ? (
@@ -291,8 +190,8 @@ function Messages() {
                     key={message.id}
                     className={`flex ${
                       message.sender_id === user.id
-                        ? "justify-end"
-                        : "justify-start"
+                        ? 'justify-end'
+                        : 'justify-start'
                     }`}
                   >
                     <div className="flex items-start space-x-2 max-w-md">
@@ -310,12 +209,12 @@ function Messages() {
                         <div
                           className={`text-sm text-gray-600 ${
                             message.sender_id === user.id
-                              ? "text-right"
-                              : "text-left"
+                              ? 'text-right'
+                              : 'text-left'
                           }`}
                         >
                           {message.sender_id === user.id
-                            ? "Vous"
+                            ? 'Vous'
                             : message.sender.userName}
                         </div>
                         <div className="mt-1 p-2.5 rounded-lg shadow-sm bg-gray-50 text-gray-900 break-words">
@@ -353,11 +252,11 @@ function Messages() {
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       placeholder="Envoyer un message..."
-                      className="flex-1 p-2 rounded-full border-none focus:outline-none min-w-0"
+                      className="flex-grow p-2 rounded-full border-none focus:outline-none min-w-0"
                       disabled={isLoading}
                       onKeyPress={(e) => {
                         if (
-                          e.key === "Enter" &&
+                          e.key === 'Enter' &&
                           !isLoading &&
                           newMessage.trim()
                         ) {
