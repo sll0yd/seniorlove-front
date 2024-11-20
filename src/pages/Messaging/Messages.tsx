@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import AxiosInstance from '../../utils/axios';
-import type { IUser, IMessage } from '../../@types';
-import { useUser } from '../../context/UserContext';
+import { useState, useEffect } from "react";
+import AxiosInstance from "../../utils/axios";
+import type { IUser, IMessage } from "../../@types";
+import { useUser } from "../../context/UserContext";
 
 /**
  * Composant Messages - Gère l'interface de messagerie entre utilisateurs
@@ -17,7 +17,7 @@ function Messages() {
   const [messages, setMessages] = useState<IMessage[]>([]); // Messages de la conversation active
   const [users, setUsers] = useState<IUser[]>([]); // Liste des utilisateurs avec conversations
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null); // ID de l'utilisateur sélectionné
-  const [newMessage, setNewMessage] = useState(''); // Contenu du nouveau message
+  const [newMessage, setNewMessage] = useState(""); // Contenu du nouveau message
   const [isLoading, setIsLoading] = useState(false); // État de chargement
 
   /**
@@ -25,20 +25,20 @@ function Messages() {
    * @param targetUserId ID de l'utilisateur cible
    */
   const loadMessagesForUser = async (targetUserId: number) => {
-    if (!user) return;
+    if (!user) return setIsLoading(false);
     setIsLoading(true);
     try {
       const response = await AxiosInstance.get<IMessage[]>(
-        `/me/messages/${targetUserId}`,
+        `/me/messages/${targetUserId}`
       );
       if (response.data) {
         setMessages(response.data);
         setSelectedUserId(targetUserId);
+        setIsLoading(false);
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des messages:', error);
-    } finally {
       setIsLoading(false);
+      console.error("Erreur lors du chargement des messages:", error);
     }
   };
   /**
@@ -60,11 +60,11 @@ function Messages() {
         `/me/messages/${selectedUserId}`,
         {
           content: newMessage,
-        },
+        }
       );
       if (response.data) {
         setMessages((prev) => [...prev, response.data]);
-        setNewMessage('');
+        setNewMessage("");
       }
     } catch (error) {
       alert("Une erreur est survenue lors de l'envoi du message");
@@ -79,12 +79,13 @@ function Messages() {
     async function loadAllConversations() {
       setIsLoading(true);
       try {
-        const response = await AxiosInstance.get('/me/contacts');
-        console.log('response :>> ', response);
+        const response = await AxiosInstance.get("/me/contacts");
+        console.log("response :>> ", response);
         setUsers(response.data);
         setIsLoading(false);
       } catch (error) {
-        console.log('error :>> ', error);
+        setIsLoading(false);
+        console.log("error :>> ", error);
       }
     }
     loadAllConversations();
@@ -100,16 +101,19 @@ function Messages() {
   }
   // Affichage de la photo de profil par défaut en fonction du genre
   const getDefaultProfilePicture = (gender: string | undefined) => {
-    if (gender === 'F') {
-      return 'https://avatar.iran.liara.run/public/52';
+    if (gender === "F") {
+      return "https://avatar.iran.liara.run/public/52";
     }
-    if (gender === 'M') {
-      return 'https://avatar.iran.liara.run/public/45';
+    if (gender === "M") {
+      return "https://avatar.iran.liara.run/public/45";
     }
     // Par défaut, on affiche une silhouette
-    return 'https://avatar.iran.liara.run/public/45';
+    return "https://avatar.iran.liara.run/public/45";
   };
 
+  useEffect(() => {
+    console.log("isLoading :>> ", isLoading);
+  }, [isLoading]);
   // Rendu principal de l'interface
   return (
     <main className="pt-16">
@@ -130,7 +134,7 @@ function Messages() {
               <div className="mt-4 flex-1">
                 {/* Comportement horizontal sur petits écrans */}
                 <div className="space-x-2 flex overflow-x-auto whitespace-nowrap md:flex-col md:space-x-0 md:space-y-2">
-                  {isLoading && !users.length ? (
+                  {isLoading ? (
                     <div className="flex justify-center py-4">
                       <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent" />
                     </div>
@@ -145,7 +149,7 @@ function Messages() {
                         key={chatUser.id}
                         onClick={() => handleUserSelection(chatUser.id)}
                         className={`flex items-center space-x-3 p-2 rounded-full hover:bg-gray-200 w-auto ${
-                          selectedUserId === chatUser.id ? 'bg-gray-100' : ''
+                          selectedUserId === chatUser.id ? "bg-gray-100" : ""
                         }`}
                         disabled={isLoading}
                       >
@@ -190,8 +194,8 @@ function Messages() {
                     key={message.id}
                     className={`flex ${
                       message.sender_id === user.id
-                        ? 'justify-end'
-                        : 'justify-start'
+                        ? "justify-end"
+                        : "justify-start"
                     }`}
                   >
                     <div className="flex items-start space-x-2 max-w-md">
@@ -209,12 +213,12 @@ function Messages() {
                         <div
                           className={`text-sm text-gray-600 ${
                             message.sender_id === user.id
-                              ? 'text-right'
-                              : 'text-left'
+                              ? "text-right"
+                              : "text-left"
                           }`}
                         >
                           {message.sender_id === user.id
-                            ? 'Vous'
+                            ? "Vous"
                             : message.sender.userName}
                         </div>
                         <div className="mt-1 p-2.5 rounded-lg shadow-sm bg-gray-50 text-gray-900 break-words">
@@ -256,7 +260,7 @@ function Messages() {
                       disabled={isLoading}
                       onKeyPress={(e) => {
                         if (
-                          e.key === 'Enter' &&
+                          e.key === "Enter" &&
                           !isLoading &&
                           newMessage.trim()
                         ) {

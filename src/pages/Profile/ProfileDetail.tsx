@@ -97,29 +97,13 @@ function ProfileDetail() {
                   >
                     Annuler
                   </button>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
-=======
-                  {/* <Link to="/messages"> */}
->>>>>>> Stashed changes
-=======
-                  {/* <Link to="/messages"> */}
->>>>>>> Stashed changes
                   <button
                     type="submit"
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                   >
                     Envoyer
                   </button>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-                  {/* </Link> */}
->>>>>>> Stashed changes
-=======
-                  {/* </Link> */}
->>>>>>> Stashed changes
                 </div>
               </form>
             </div>

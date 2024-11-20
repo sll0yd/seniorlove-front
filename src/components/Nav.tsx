@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import FormLogin from './FormLogin';
-import { useUser } from '../context/UserContext';
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import FormLogin from "./FormLogin";
+import { useUser } from "../context/UserContext";
 
 function Nav() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState("");
   const { user, logout, authErrorMsg, setAuthErrorMsg } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,11 +28,11 @@ function Nav() {
     };
 
     if (isFormOpen || authErrorMsg) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isFormOpen, authErrorMsg, setAuthErrorMsg]);
 
@@ -52,21 +52,22 @@ function Nav() {
   };
 
   const handleLogout = (): void => {
-    setUserName('');
+    setUserName("");
     logout();
     setIsMenuOpen(false);
     setIsFormOpen(false); // Ferme la modale de connexion
+    navigate("/");
   };
 
   const handleNavigation = (section: string): void => {
     setIsMenuOpen(false); // Ferme le menu mobile s’il est ouvert
 
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       window.dispatchEvent(
-        new CustomEvent('scrollToSection', { detail: section }),
+        new CustomEvent("scrollToSection", { detail: section })
       );
     } else {
-      navigate('/', { state: { scrollTo: section } });
+      navigate("/", { state: { scrollTo: section } });
     }
   };
 
@@ -75,10 +76,10 @@ function Nav() {
       <Link
         className="max-h-8"
         to="/"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <img
-          src={isMenuOpen ? '/icon/heart.png' : '/icon/copie_logo.png'}
+          src={isMenuOpen ? "/icon/heart.png" : "/icon/copie_logo.png"}
           alt="logo"
           className="flex-col max-h-11 items-center pb-3 sm:max-h-10 md:max-h-8 lg:max-h-10 xl:max-h-11"
         />
@@ -92,17 +93,17 @@ function Nav() {
         <div className="space-y-1 space h-5 pt-1">
           <span
             className={`h-1 block w-7 bg-gray-700 rounded-xl transform transition duration-200 ${
-              isMenuOpen ? 'rotate-45 translate-y-2' : ''
+              isMenuOpen ? "rotate-45 translate-y-2" : ""
             }`}
           />
           <span
             className={`h-1 block w-7 bg-gray-700 rounded-xl transition duration-200 ${
-              isMenuOpen ? 'opacity-0' : ''
+              isMenuOpen ? "opacity-0" : ""
             }`}
           />
           <span
             className={`h-1 block w-7 bg-gray-700 rounded-xl transform transition duration-200 ${
-              isMenuOpen ? '-rotate-45 -translate-y-2' : ''
+              isMenuOpen ? "-rotate-45 -translate-y-2" : ""
             }`}
           />
         </div>
@@ -110,7 +111,7 @@ function Nav() {
 
       <ul
         className={`flex-col space-y-4 md:mt-0 md:space-y-0 md:flex-row md:space-x-6 lg:space-x-16 xl:space-x-24 ${
-          isMenuOpen ? 'flex' : 'hidden'
+          isMenuOpen ? "flex" : "hidden"
         } md:flex text-center`}
       >
         {user ? (
@@ -145,7 +146,7 @@ function Nav() {
             <li>
               <button
                 type="button"
-                onClick={() => handleNavigation('DiscoverSeniorLove')}
+                onClick={() => handleNavigation("DiscoverSeniorLove")}
                 className="text-gray-700 hover:text-gray-900 font-bold"
               >
                 Qui sommes-nous ?
@@ -162,7 +163,7 @@ function Nav() {
             <li>
               <button
                 type="button"
-                onClick={() => handleNavigation('Testimony')}
+                onClick={() => handleNavigation("Testimony")}
                 className="text-gray-700 hover:text-gray-900 font-bold"
               >
                 Témoignages
@@ -174,7 +175,7 @@ function Nav() {
 
       <div
         className={`flex-col space-y-4 ${
-          isMenuOpen ? 'flex' : 'hidden'
+          isMenuOpen ? "flex" : "hidden"
         } md:hidden mr-2`}
       >
         {user ? (
@@ -244,7 +245,10 @@ function Nav() {
             >
               Se connecter
             </button>
-            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <Link
+              to="/"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
               <button
                 type="button"
                 className="p-1 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
