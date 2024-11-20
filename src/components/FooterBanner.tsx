@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
-function FooterBanner() {
+const FooterBanner = () => {
+  const { user } = useUser();
+
+  const buttonText = user ? "Trouver des profils" : "S'inscrire";
+  const buttonLink = user ? "/profile" : "/"; // Adjust these routes as needed
+
   return (
     <div className="py-8 md:py-12 w-full">
       <div className="relative">
@@ -10,18 +16,21 @@ function FooterBanner() {
             Commencez dès aujourd'hui à rencontrer des personnes prêtes à
             partager de beaux moments et à construire une relation sincère
           </p>
-          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <Link 
+            to={buttonLink} 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <button
               type="button"
               className="w-full md:w-auto px-6 md:px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300 whitespace-nowrap"
             >
-              S'inscrire
+              {buttonText}
             </button>
           </Link>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default FooterBanner;
