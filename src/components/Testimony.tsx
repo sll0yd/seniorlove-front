@@ -20,7 +20,7 @@ function Testimony() {
   return (
     <div
       id="testimony"
-      className="relative min-h-screen"
+      className="relative"
       style={{
         backgroundImage: "url('/images/coupletestimony.jpg')",
         backgroundSize: 'cover',
@@ -40,10 +40,10 @@ function Testimony() {
             {testimonies.map((testimony) => (
               <div
                 key={testimony.id}
-                className="bg-white p-6 md:p-10 rounded-lg shadow-lg flex flex-col min-h-[250px] md:min-h-[600px] lg:min-h-[650px]"
+                className="bg-white/85 p-6 text-justify rounded-lg shadow-lg flex flex-col min-h-[250px]"
               >
-                <h3 className="font-bold text-lg md:text-xl mb-4 md:mb-6 line-clamp-2">
-                  {testimony.content}
+                <h3 className="font-bold text-lg md:text-xl mb-4 md:mb-6 line-clamp-2 bg-blue-100 rounded-xl py-2 text-center">
+                  {testimony.title}
                 </h3>
                 {/* Reviewer info */}
                 <div className="flex items-center gap-4 mb-6 md:mb-8">
@@ -74,8 +74,8 @@ function Testimony() {
                 </div>
                 {/* Review text */}
                 <div className="flex-grow">
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                    {testimony.title}
+                  <p className="text-gray-600 leading-relaxed ">
+                    {testimony.content}
                   </p>
                 </div>
               </div>
