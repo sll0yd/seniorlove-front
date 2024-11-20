@@ -194,13 +194,12 @@ function EventEdit() {
       handleDeleteEvent();
     }
   };
-
   return (
     <main className="pt-24">
       <div className="relative  mb-8 ">
         <div className="absolute bg-pink-50 h-full w-[400px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[400px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap">
+          <h1 className="text-2xl font-bold py-4 text-center px-8 whitespace-nowrap md: mt-6">
             Modifier votre évènement
           </h1>
         </div>
@@ -218,7 +217,7 @@ function EventEdit() {
 
         <label
           htmlFor="upload-picture"
-          className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block cursor-pointer w-96 text-center"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg mx-auto block cursor-pointer w-96 text-center sm: w-auto mb-4"
         >
           Choisissez une photo de couverture
         </label>
@@ -381,24 +380,22 @@ function EventEdit() {
               )}
             </div>
           </div>
-
-          <div className="flex justify-end">
+          <div className="flex justify-end sm: w-auto">
             <button
               type="button"
-              className="px-8 py-3 bg-red-500 border-2 border-white text-white rounded-lg shadow-md hover:bg-red-500 hover:scale-105 hover:shadow-lg hover:text-white-300 transition-all duration-300 mr-4"
+              className="px-4 py-2 bg-red-500 border-2 border-white text-white rounded-lg shadow-md hover:bg-red-500 hover:scale-105 hover:shadow-lg hover:text-white-300 transition-all duration-300 mr-4 sm:px-6 py-3"
               onClick={(e) => confirmAndDeleteEvent(e)}
             >
-              Supprimer l'évènement
+              Supprimer
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors sm:px-6 py-3"
             >
               Mettre à jour l'évènement
             </button>
           </div>
         </form>
-
         {error && (
           <div className="mt-4 text-red-500">
             <p>{error}</p>
@@ -408,14 +405,14 @@ function EventEdit() {
       <div className="py-12">
         <div className="relative">
           <div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-5">
+          <div className="relative max-w-[950px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between p-5">
             <p className="text-center text-lg flex-1 italic mr-4 py-3">
               Modifiez les détails de l'évènement et partagez-les avec la
               communauté pour créer des moments uniques.
             </p>
             <button
               type="button"
-              className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+              className="mt-4 md:mt-0 px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
               onClick={() => navigate('/events')}
             >
               Retour à la liste des évènements
