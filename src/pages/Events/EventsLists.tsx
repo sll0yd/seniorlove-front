@@ -48,7 +48,7 @@ function Eventlists() {
       <div className="relative mb-12">
         <div className="absolute bg-pink-50 h-full w-[300px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[300px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8">
+          <h1 className="text-2xl font-bold py-4 text-center px-8 md: my-5">
             Évènements
           </h1>
         </div>

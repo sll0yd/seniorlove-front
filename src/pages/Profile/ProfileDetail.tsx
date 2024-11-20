@@ -56,9 +56,8 @@ function ProfileDetail() {
   };
 
   // Logique pour envoyer un message par le bakc via la route /messages/:receiver_id
-  const sendMessage = async (event) => {
+  const sendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('msgContent :>> ', msgContent);
     try {
       await AxiosInstance.post(`/me/messages/${user.id}`, {
         content: msgContent,
@@ -69,16 +68,50 @@ function ProfileDetail() {
     }
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMsgContent(event.target.value);
   };
 
   return (
     <main className="pt-24">
       <div className="relative mb-12">
+        {/* // en responsive la modal de chat s'affiche en plein écran */}
+        {isChatModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-auto sm:w-96">
+              <h2 className="text-xl font-semibold mb-4">Envoyer un message</h2>
+              <form onSubmit={sendMessage}>
+                <textarea
+                  className="w-full p-2 border rounded-md mb-4"
+                  rows={4}
+                  placeholder="Écrivez votre message ici..."
+                  onChange={handleChange}
+                  value={msgContent}
+                />
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={closeChatModal}
+                    className="px-4 py-2 bg-gray-300 rounded-lg"
+                  >
+                    Annuler
+                  </button>
+                  <Link to="/messages">
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                      Envoyer
+                    </button>
+                  </Link>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
         <div className="absolute bg-blue-50 h-full w-[300px] left-0 rounded-r-3xl" />
         <div className="relative max-w-[300px]">
-          <h1 className="text-2xl font-bold py-4 text-center px-8">
+          <h1 className="text-2xl font-bold py-4 text-center px-8 md: my-6">
             Son profil
           </h1>
         </div>
@@ -129,9 +162,9 @@ function ProfileDetail() {
               <p className="text-gray-600 mb-8">
                 {user.age} ans, {user.hometown}
               </p>
-
-              <p className="text-gray-700 text-lg leading-relaxed italic">
-                "{user.bio ? user.bio : "Aucune bio n'a été trouvé."}"
+              <p className="text-gray-700 text-lg leading-relaxed ">
+                <p className="mb-4">A propos de : </p>"
+                {user.bio ? user.bio : "Aucune bio n'a été trouvé."}"
               </p>
             </div>
           </div>
@@ -139,7 +172,7 @@ function ProfileDetail() {
       </div>
       <div className="py-12">
         <div className="relative">
-          <div className="absolute bg-blue-50 h-full right-[calc(50%-550px)] left-0 rounded-r-3xl" />
+          <div className="absolute bg-blue-50 h-full right-[calc(50%-500px)] left-0 rounded-r-3xl max-sm:right-[calc(50%-200px)]" />
           <div className="relative max-w-[950px] mx-auto px-4 flex flex-col items-center justify-between md:flex-row">
             <p className="text-center text-sm flex-1 italic mr-4 py-4">
               Commencez dès aujourd'hui à rencontrer des personnes prêtes à
@@ -148,7 +181,7 @@ function ProfileDetail() {
             <Link to="/profile" className="mt-4 md:mt-0">
               <button
                 type="button"
-                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
+                className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300 max-sm:mb-4"
               >
                 Retourner à la liste des profils
               </button>
@@ -156,38 +189,6 @@ function ProfileDetail() {
           </div>
         </div>
       </div>
-
-      {isChatModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold mb-4">Envoyer un message</h2>
-            <form onSubmit={sendMessage}>
-              <textarea
-                className="w-full p-2 border rounded-md mb-4"
-                rows={4}
-                placeholder="Écrivez votre message ici..."
-                onChange={handleChange}
-                value={msgContent}
-              />
-              <div className="flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={closeChatModal}
-                  className="px-4 py-2 bg-gray-300 rounded-lg"
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-                >
-                  Envoyer
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </main>
   );
 }

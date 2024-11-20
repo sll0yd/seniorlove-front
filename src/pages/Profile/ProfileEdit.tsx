@@ -458,11 +458,11 @@ function ProfileEdit() {
       <div className="py-12">
         <div className="relative">
           <div className="absolute bg-pink-50 h-full md:right-[calc(50%-500px)] right-[calc(50%-200px)] left-0 rounded-r-3xl" />
-          <div className="relative max-w-[950px] mx-auto px-4 flex items-center justify-between p-5">
+          <div className="relative max-w-[950px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between p-5">
             <p className="text-center text-lg flex-1 italic mr-4 py-4">
               Présentez-vous sous votre meilleur profile !
             </p>
-            <Link to="/profile">
+            <Link to="/profile" className="mt-4 md:mt-0">
               <button
                 type="button"
                 className="px-8 py-3 bg-white border-2 border-rose-400 text-rose-400 rounded-lg shadow-md hover:bg-rose-400 hover:text-white transition-colors duration-300"
