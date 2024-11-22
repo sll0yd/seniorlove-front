@@ -18,6 +18,7 @@ function ProfileEdit() {
   // const [newPassword, setNewPassword] = useState("");
   // Etats pour gérer l'image
   const [picture, setPicture] = useState<File | null>(null);
+// @ts-ignore
   const [preview, setPreview] = useState<string | null>(null);
   // États pour gérer les tags (centres d'intérêt)
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
